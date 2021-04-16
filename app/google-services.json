@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "633214330146",
+    "project_id": "gymodo-91473",
+    "storage_bucket": "gymodo-91473.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:633214330146:android:834e6baae3ce58b1bdb17b",
+        "android_client_info": {
+          "package_name": "com.github.gymodo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "633214330146-b8lh9p4qnd4bl65uq63onlhq07o5olou.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.github.gymodo",
+            "certificate_hash": "a51d380681016f470d04d761dc09c4408d2c1fa1"
+          }
+        },
+        {
+          "client_id": "633214330146-afkpdfreb12b3sal0fndk0g8tulj9373.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAT245MknqEyeEhCpPz_QPoNfOqYuQAlro"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "633214330146-afkpdfreb12b3sal0fndk0g8tulj9373.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
