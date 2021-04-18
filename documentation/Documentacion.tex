@@ -5,10 +5,12 @@
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{makeidx}
+\usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
-\author{Edgar Luque}
-\title{Proyecto Final}
+\graphicspath{ {./images/} }
+
+\title{Gymodo}
 \begin{document}
 
 \begin{titlepage}
@@ -42,7 +44,7 @@
 \newpage
 
 \begin{abstract}
-Gyomodo es una aplicación que tiene como objetivo resolver los problemas que puedan tener los gymnasios en estos tiempos modernos, pero sobretodo, problemas originados a partir de la pandémia del Covid-19.
+Gyomodo es una aplicación que tiene como objetivo resolver los problemas que puedan tener los gymnasios en estos tiempos modernos, pero sobretodo, problemas originados a partir de la pandemia del Covid-19.
 
 Este documento explica el desarrollo de esta aplicación, su funcionalidad y la organización del equipo.
 \end{abstract}
@@ -53,21 +55,50 @@ Este documento explica el desarrollo de esta aplicación, su funcionalidad y la 
 
 \newpage
 
-\section{Analísis funcional}
-
-\subsection{Diagrama UML}
-UML aqui
-
-\subsection{Diagrama Casos de Uso}
-Casos de uso aqui
-
-\subsection{Diagrama Relacional (bases de datos)}
-Diagrama aqui
-
-\subsection{Mockups}
-Imagenes de mockups aqui
+\section{Análisis funcional}
 
 \subsection{Tecnología usada}
-Git, asana, etc
+
+\begin{itemize}
+\item Git
+\item Asana
+\item toggl
+\item Android Studio
+\end{itemize}
+
+\newpage
+
+\subsection{Diagrama UML}
+
+\begin{figure}[h]
+ 	\centering
+	\includegraphics[width=0.6\textwidth]{uml}
+	\caption{Diagrama UML}
+\end{figure}
+
+\newpage
+
+\subsection{Diagrama Casos de Uso}
+
+\begin{figure}[h]
+ 	\centering
+	\includegraphics[width=0.6\textwidth]{casos_uso}
+	\caption{Diagrama de Casos de Uso}
+\end{figure}
+
+\newpage
+
+\subsection{Diagrama Relacional (bases de datos)}
+
+\begin{figure}[h]
+ 	\centering
+	\includegraphics[width=0.6\textwidth]{diagramaer}
+	\caption{Diagrama Entidad Relacion}
+\end{figure}
+
+\newpage
+
+\subsection{Mockup}
+\href{https://mockittapp.wondershare.com/app/3398ef738f7ac4f35fae5df4eb77004473612d19?simulator_type=device&sticky}{Link al mockup}
 
 \end{document}
