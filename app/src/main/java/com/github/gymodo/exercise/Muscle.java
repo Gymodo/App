@@ -1,4 +1,4 @@
-package com.github.gymodo.Exercise;
+package com.github.gymodo.exercise;
 
 
 /**
