@@ -21,7 +21,7 @@ public class Exercise {
      * Build nameless exercise
      */
     public Exercise() {
-        muscles = new ArrayList<>();
+        this.muscles = new ArrayList<>();
     }
 
     /**
