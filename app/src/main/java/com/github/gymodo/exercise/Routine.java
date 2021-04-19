@@ -1,5 +1,7 @@
 package com.github.gymodo.exercise;
 
+import com.github.gymodo.user.User;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,13 +15,15 @@ import java.util.List;
 public class Routine {
 
     private String name;
+    private User autor;
     private List<Serie> series;
+
 
     /**
      * Build nameless routine
      */
     public Routine() {
-        series = new ArrayList<>();
+        this.series = new ArrayList<>();
     }
 
     /**
@@ -28,8 +32,9 @@ public class Routine {
      * @param name   name
      * @param series series
      */
-    public Routine(String name, List<Serie> series) {
+    public Routine(String name, User autor, List<Serie> series) {
         this.name = name;
+        this.autor = autor;
         this.series = series;
     }
 
@@ -87,5 +92,25 @@ public class Routine {
         }
 
         return totalVolumen * series.size();
+    }
+
+    /**
+     * Returns author
+     *
+     * @return author
+     */
+    public User getAutor() {
+        return autor;
+    }
+
+    /**
+     * Set routine author
+     *
+     * @param autor author
+     * @return this
+     */
+    public Routine setAutor(User autor) {
+        this.autor = autor;
+        return this;
     }
 }
