@@ -11,6 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Gymodo">
+        <activity android:name=".DietDetailActivity"></activity>
         <activity
             android:name=".AddDietActivity"
             android:parentActivityName=".MainActivity" />
