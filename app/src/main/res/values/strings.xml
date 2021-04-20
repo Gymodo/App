@@ -7,4 +7,16 @@
     <string name="button_register">Register</string>
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
+    <string name="title_activity_diet_list">DietListActivity</string>
+    <string name="diet_tab_explore">Explore</string>
+    <string name="diet_tab_my_diets">My diets</string>
+    <string name="add_diet">Add Diet</string>
+    <string name="name">Name</string>
+    <string name="description">Description</string>
+    <string name="lunch">Lunch</string>
+    <string name="breakfast">Breakfast</string>
+    <string name="add_food">Add food</string>
+    <string name="snack">Snack</string>
+    <string name="dinner">Dinner</string>
+    <string name="make_public">Make public?</string>
 </resources>
