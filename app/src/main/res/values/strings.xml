@@ -7,6 +7,8 @@
     <string name="button_register">Register</string>
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
+    <string name="Time_label">Start time - End time</string>
+    <string name="reserve">RESERVE</string>
     <string name="add_diet">Add Diet</string>
     <string name="name">Name</string>
     <string name="description">Description</string>
