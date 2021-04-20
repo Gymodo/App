@@ -6,8 +6,99 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="start"
-    tools:context=".MainActivity"
-    tools:openDrawer="start">
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/home_diet_cardview"
+            android:layout_width="380dp"
+            android:layout_height="250dp"
+            android:layout_marginTop="80dp"
+            android:hapticFeedbackEnabled="false"
+            app:cardCornerRadius="20dp">
+
+            <ImageView
+                android:id="@+id/home_diet_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/food" />
+
+            <TextView
+                android:id="@+id/home_diet_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/home_diet"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:paddingTop="20dp">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/home_workout_cardview"
+                android:layout_width="180dp"
+                android:layout_height="270dp"
+                android:layout_marginRight="16dp"
+                app:cardCornerRadius="20dp">
+
+                <ImageView
+                    android:id="@+id/home_workout_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/women_working" />
+
+                <TextView
+                    android:id="@+id/home_workout_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/home_workout"
+                    android:textColor="@color/white"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/home_reservation_cardview"
+                android:layout_width="180dp"
+                android:layout_height="270dp"
+                app:cardCornerRadius="20dp">
+
+                <ImageView
+                    android:id="@+id/home_reservation_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/arm" />
+
+                <TextView
+                    android:id="@+id/home_reservation_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/home_reservation"
+                    android:textColor="@color/white"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

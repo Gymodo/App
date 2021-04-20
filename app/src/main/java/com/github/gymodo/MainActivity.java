@@ -3,6 +3,7 @@ package com.github.gymodo;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -12,9 +13,17 @@ import android.widget.Toast;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
+
+    //Menu burger and drawerlayout
     Toolbar toolbar;
     DrawerLayout drawerLayout;
     NavigationView navigationView;
+
+    //CardViews
+    private CardView cardViewDiet;
+    private CardView cardViewWorkout;
+    private CardView cardViewReservation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +34,11 @@ public class MainActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         navigationView = findViewById(R.id.nav_view);
         drawerLayout = findViewById(R.id.drawerLayout);
+
+        cardViewDiet = findViewById(R.id.home_diet_cardview);
+        cardViewWorkout = findViewById(R.id.home_workout_cardview);
+        cardViewReservation = findViewById(R.id.home_reservation_cardview);
+
 
         // Makes this activity use our toolbar.
         setSupportActionBar(toolbar);
@@ -51,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
             drawerLayout.closeDrawer(GravityCompat.START);
             return true;
         }));
+
     }
 
     @Override

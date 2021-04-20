@@ -7,4 +7,9 @@
     <string name="button_register">Register</string>
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
+
+    <string name="home_diet">Explore Diets</string>
+    <string name="home_workout">Explore Workouts</string>
+    <string name="home_reservation">Make Reservation</string>
+
 </resources>
