@@ -8,8 +8,8 @@
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
 
-    <string name="home_diet">Explore Diets</string>
-    <string name="home_workout">Explore Workouts</string>
-    <string name="home_reservation">Make Reservation</string>
+    <string name="explore_diets">Explore Diets</string>
+    <string name="explore_workouts">Explore Workouts</string>
+    <string name="make_reservations">Make Reservation</string>
 
 </resources>
