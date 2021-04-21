@@ -85,7 +85,7 @@
 
         <Button
             android:id="@+id/AddDietBreakfastButton"
-            style="@style/Widget.AppCompat.Button.Colored"
+            style="@android:style/Widget.Material.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -126,7 +126,7 @@
 
         <Button
             android:id="@+id/AddDietLunchButton"
-            style="@style/Widget.AppCompat.Button.Colored"
+            style="@android:style/Widget.Material.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -167,7 +167,7 @@
 
         <Button
             android:id="@+id/AddDietDinnerButton"
-            style="@style/Widget.AppCompat.Button.Colored"
+            style="@android:style/Widget.Material.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -208,22 +208,21 @@
 
         <Button
             android:id="@+id/AddDietSnackButton"
-            style="@style/Widget.AppCompat.Button.Colored"
+            style="@android:style/Widget.Material.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:drawableLeft="@drawable/ic_add"
             android:text="@string/add_food" />
 
-        <com.google.android.material.chip.Chip
+        <Switch
             android:id="@+id/AddDietMakePublicButton"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/make_public" />
 
         <Button
             android:id="@+id/AddDietCreateDietButton"
-            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
