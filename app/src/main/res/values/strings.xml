@@ -21,4 +21,6 @@
     <string name="explore_diets">Explore Diets</string>
     <string name="explore_workouts">Explore Workouts</string>
     <string name="make_reservations">Make Reservation</string>
+    <string name="my_diets">My diets</string>
+    <string name="explore">Explore</string>
 </resources>
