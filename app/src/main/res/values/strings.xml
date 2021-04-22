@@ -14,6 +14,10 @@
     <string name="tell_us_about_you">Tell us about you</string>
     <string name="birthdate">Birthdate</string>
     <string name="weight">Weight(kg)</string>
+    <string name="what_is_your_goal">What"'"s your goal?</string>
+    <string name="build_muscle">Build Muscle</string>
+    <string name="loose_fat">Loose Fat</string>
+    <string name="get_hardy">Get Hardy</string>
 
 
 </resources>

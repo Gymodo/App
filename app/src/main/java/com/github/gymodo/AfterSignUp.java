@@ -26,10 +26,10 @@ public class AfterSignUp extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_after_sign_up);
-        
+
         //Hooks
-        textDate = findViewById(R.id.aftersignup_birthdate);
-        numberPicker = findViewById(R.id.aftersignup_numberpicker);
+        textDate = findViewById(R.id.aftersignupBirthdate);
+        numberPicker = findViewById(R.id.aftersignupNumberPicker);
 
         numberPicker.setMinValue(18);
         numberPicker.setMaxValue(250);
@@ -58,7 +58,7 @@ public class AfterSignUp extends AppCompatActivity {
         numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                Toast.makeText(AfterSignUp.this, newVal+"", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AfterSignUp.this, newVal + "", Toast.LENGTH_SHORT).show();
             }
         });
 

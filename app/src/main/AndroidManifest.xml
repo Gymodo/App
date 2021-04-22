@@ -11,10 +11,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Gymodo">
-        <!-- <activity android:name=".AfterSignUp"></activity> -->
+        <activity android:name=".AfterSignUp"
+            android:theme="@android:style/Theme.NoTitleBar"/>
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".AfterSignUp">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
