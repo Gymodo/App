@@ -1,53 +1,61 @@
 package com.github.gymodo.user;
 
+import com.github.gymodo.Constants;
 import com.github.gymodo.exercise.Routine;
 import com.github.gymodo.food.Diet;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.FieldPath;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Represents a user profile.
  */
 public class User {
-
+    @DocumentId
+    private String id;
     private String name;
     private Date birthDate;
     private float weight;
     private boolean isAdmin;
-    private List<Diet> savedDiets;
-    private List<Routine> savedRoutine;
+    private List<String> savedDietsIds;
+    private List<String> savedRoutinesIds;
 
     /**
      * Build nameless user
      */
     public User() {
-        this.savedDiets = new ArrayList<>();
-        this.savedRoutine = new ArrayList<>();
+        this.savedDietsIds = new ArrayList<>();
+        this.savedRoutinesIds = new ArrayList<>();
     }
 
     /**
      * Build a user with the data received by parameter
      *
-     * @param name name
-     * @param birthDate birthDate
-     * @param weight weight
-     * @param isAdmin isAdmin
-     * @param savedDiets Diets
-     * @param savedRoutine Routine
+     * @param name             name
+     * @param birthDate        birthDate
+     * @param weight           weight
+     * @param isAdmin          isAdmin
+     * @param savedDietsIds    Diets
+     * @param savedRoutinesIds Routine
      */
-    public User(String name, Date birthDate, float weight, boolean isAdmin, List<Diet> savedDiets, List<Routine> savedRoutine) {
+    public User(String name, Date birthDate, float weight, boolean isAdmin, List<String> savedDietsIds, List<String> savedRoutinesIds) {
         this.name = name;
         this.birthDate = birthDate;
         this.weight = weight;
         this.isAdmin = isAdmin;
-        this.savedDiets = savedDiets;
-        this.savedRoutine = savedRoutine;
+        this.savedDietsIds = savedDietsIds;
+        this.savedRoutinesIds = savedRoutinesIds;
     }
 
     /**
      * Returns user name
+     *
      * @return user name
      */
     public String getName() {
@@ -56,6 +64,7 @@ public class User {
 
     /**
      * Set user name
+     *
      * @param name user name
      * @return this
      */
@@ -66,6 +75,7 @@ public class User {
 
     /**
      * Returns birthdate
+     *
      * @return birthdate
      */
     public Date getBirthDate() {
@@ -74,6 +84,7 @@ public class User {
 
     /**
      * Set bithdate
+     *
      * @param birthDate
      * @return this
      */
@@ -84,6 +95,7 @@ public class User {
 
     /**
      * Returns weight
+     *
      * @return weight
      */
     public float getWeight() {
@@ -92,6 +104,7 @@ public class User {
 
     /**
      * Set weight
+     *
      * @param weight weight
      * @return this
      */
@@ -102,6 +115,7 @@ public class User {
 
     /**
      * Returns true if user is admin
+     *
      * @return true if user is admin
      */
     public boolean isAdmin() {
@@ -110,6 +124,7 @@ public class User {
 
     /**
      * Set admin
+     *
      * @param admin true if user is admin
      * @return this
      */
@@ -120,37 +135,81 @@ public class User {
 
     /**
      * Returns diet list
+     *
      * @return diet list
      */
-    public List<Diet> getSavedDiets() {
-        return savedDiets;
+    public List<String> getSavedDietsIds() {
+        return savedDietsIds;
     }
 
     /**
      * Set diet list
-     * @param savedDiets dietList
+     *
+     * @param savedDietsIds dietList
      * @return this
      */
-    public User setSavedDiets(List<Diet> savedDiets) {
-        this.savedDiets = savedDiets;
+    public User setSavedDietsIds(List<String> savedDietsIds) {
+        this.savedDietsIds = savedDietsIds;
         return this;
     }
 
     /**
      * Returns routine list
+     *
      * @return routineList
      */
-    public List<Routine> getSavedRoutine() {
-        return savedRoutine;
+    public List<String> getSavedRoutinesIds() {
+        return savedRoutinesIds;
     }
 
     /**
      * Set routine list
-     * @param savedRoutine routineList
+     *
+     * @param savedRoutinesIds routineList
      * @return this
      */
-    public User setSavedRoutine(List<Routine> savedRoutine) {
-        this.savedRoutine = savedRoutine;
+    public User setSavedRoutinesIds(List<String> savedRoutinesIds) {
+        this.savedRoutinesIds = savedRoutinesIds;
         return this;
+    }
+
+    @DocumentId
+    public String getId() {
+        return id;
+    }
+
+    public User setId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    public Task<List<Routine>> getSavedRoutines() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        return db.collection(Constants.COLLECTION_ROUTINES)
+                .whereIn(FieldPath.documentId(), savedRoutinesIds)
+                .get()
+                .continueWith(x ->
+                        x.getResult()
+                                .getDocuments()
+                                .parallelStream()
+                                .map(y -> y.toObject(Routine.class))
+                                .collect(Collectors.toList())
+                );
+    }
+
+    public Task<List<Diet>> getSavedDiets() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        return db.collection(Constants.COLLECTION_DIETS)
+                .whereIn(FieldPath.documentId(), savedRoutinesIds)
+                .get()
+                .continueWith(x ->
+                        x.getResult()
+                                .getDocuments()
+                                .parallelStream()
+                                .map(y -> y.toObject(Diet.class))
+                                .collect(Collectors.toList())
+                );
     }
 }

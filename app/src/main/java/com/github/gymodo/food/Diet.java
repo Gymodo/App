@@ -1,6 +1,12 @@
 package com.github.gymodo.food;
 
+import com.github.gymodo.Constants;
 import com.github.gymodo.user.User;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import kotlin.NotImplementedError;
 
 /**
  * Represents a diet
@@ -10,21 +16,24 @@ import com.github.gymodo.user.User;
  * @see MealType
  */
 public class Diet {
-    private Meal dinner;
-    private Meal breakfast;
-    private Meal launch;
-    private Meal snack;
-    private User author;
+    @DocumentId
+    private String id;
+    private String dinnerId;
+    private String breakfastId;
+    private String launchId;
+    private String snackId;
+    private String authorId;
 
     public Diet() {
     }
 
-    public Diet(Meal dinner, Meal breakfast, Meal launch, Meal snack, User author) {
-        this.dinner = dinner;
-        this.breakfast = breakfast;
-        this.launch = launch;
-        this.snack = snack;
-        this.author = author;
+    public Diet(String id, String dinnerId, String breakfastId, String launchId, String snackId, String authorId) {
+        this.id = id;
+        this.dinnerId = dinnerId;
+        this.breakfastId = breakfastId;
+        this.launchId = launchId;
+        this.snackId = snackId;
+        this.authorId = authorId;
     }
 
     /**
@@ -32,18 +41,18 @@ public class Diet {
      *
      * @return The dinner meal.
      */
-    public Meal getDinner() {
-        return dinner;
+    public String getDinnerId() {
+        return dinnerId;
     }
 
     /**
      * Sets the dinner meal.
      *
-     * @param dinner The dinner meal.
+     * @param dinnerId The dinner meal.
      * @return this
      */
-    public Diet setDinner(Meal dinner) {
-        this.dinner = dinner;
+    public Diet setDinnerId(String dinnerId) {
+        this.dinnerId = dinnerId;
         return this;
     }
 
@@ -52,18 +61,18 @@ public class Diet {
      *
      * @return The breakfast meal.
      */
-    public Meal getBreakfast() {
-        return breakfast;
+    public String getBreakfastId() {
+        return breakfastId;
     }
 
     /**
      * Sets the breakfast meal.
      *
-     * @param breakfast The breakfast meal.
+     * @param breakfastId The breakfast meal.
      * @return this
      */
-    public Diet setBreakfast(Meal breakfast) {
-        this.breakfast = breakfast;
+    public Diet setBreakfastId(String breakfastId) {
+        this.breakfastId = breakfastId;
         return this;
     }
 
@@ -72,18 +81,18 @@ public class Diet {
      *
      * @return The launch meal.
      */
-    public Meal getLaunch() {
-        return launch;
+    public String getLaunchId() {
+        return launchId;
     }
 
     /**
      * Sets the launch meal.
      *
-     * @param launch The launch meal.
+     * @param launchId The launch meal.
      * @return this
      */
-    public Diet setLaunch(Meal launch) {
-        this.launch = launch;
+    public Diet setLaunchId(String launchId) {
+        this.launchId = launchId;
         return this;
     }
 
@@ -92,60 +101,82 @@ public class Diet {
      *
      * @return The snack meal.
      */
-    public Meal getSnack() {
-        return snack;
+    public String getSnackId() {
+        return snackId;
     }
 
     /**
      * Sets the snack meal.
      *
-     * @param snack The snack meal.
+     * @param snackId The snack meal.
      * @return this
      */
-    public Diet setSnack(Meal snack) {
-        this.snack = snack;
+    public Diet setSnackId(String snackId) {
+        this.snackId = snackId;
         return this;
     }
 
-    /**
-     * Returns the author of this diet.
-     *
-     * @return The author
-     */
-    public User getAuthor() {
-        return author;
+    public Task<Meal> getLaunch() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        return db.collection(Constants.COLLECTION_MEALS)
+                .document(launchId)
+                .get()
+                .continueWith(task -> task.getResult().toObject(Meal.class));
     }
 
-    /**
-     * Sets the author.
-     *
-     * @param author The author.
-     * @return this
-     */
-    public Diet setAuthor(User author) {
-        this.author = author;
+    public Task<Meal> getBreakfast() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        return db.collection(Constants.COLLECTION_MEALS)
+                .document(breakfastId)
+                .get()
+                .continueWith(task -> task.getResult().toObject(Meal.class));
+    }
+
+    public Task<Meal> getDinner() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        return db.collection(Constants.COLLECTION_MEALS)
+                .document(dinnerId)
+                .get()
+                .continueWith(task -> task.getResult().toObject(Meal.class));
+    }
+
+    public Task<Meal> getSnack() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        return db.collection(Constants.COLLECTION_MEALS)
+                .document(snackId)
+                .get()
+                .continueWith(task -> task.getResult().toObject(Meal.class));
+    }
+
+
+    public String getId() {
+        return id;
+    }
+
+    public Diet setId(String id) {
+        this.id = id;
         return this;
     }
 
-    /**
-     * Returns the total calories in a day of this diet.
-     * @return The total calories
-     */
-    public int getTotalCalories() {
-        int total = 0;
+    public String getAuthorId() {
+        return authorId;
+    }
 
-        if(launch != null)
-            total += launch.getTotalCalories();
+    public Diet setAuthorId(String authorId) {
+        this.authorId = authorId;
+        return this;
+    }
 
-        if(dinner != null)
-            total += dinner.getTotalCalories();
+    public Task<User> getAuthor() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        if(breakfast != null)
-            total += breakfast.getTotalCalories();
-
-        if(snack != null)
-            total += snack.getTotalCalories();
-
-        return total;
+        return db.collection(Constants.COLLECTION_USERS)
+                .document(authorId)
+                .get()
+                .continueWith(x -> x.getResult().toObject(User.class));
     }
 }
