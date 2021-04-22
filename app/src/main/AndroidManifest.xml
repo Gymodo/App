@@ -13,6 +13,11 @@
         android:theme="@style/Theme.Gymodo">
         <activity android:name=".AfterSignUp"
             android:theme="@android:style/Theme.NoTitleBar"/>
+        <activity android:name=".DietListActivity"></activity>
+        <activity android:name=".DietDetailActivity" />
+        <activity
+            android:name=".AddDietActivity"
+            android:parentActivityName=".MainActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".MainActivity">
