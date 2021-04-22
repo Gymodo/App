@@ -1,9 +1,15 @@
 package com.github.gymodo.exercise;
 
+import com.github.gymodo.Constants;
 import com.github.gymodo.user.User;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.FieldPath;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Represents a Routine
@@ -13,29 +19,30 @@ import java.util.List;
  * @see Exercise
  */
 public class Routine {
-
+    @DocumentId
+    private String id;
     private String name;
-    private User autor;
-    private List<Serie> series;
+    private String authorId;
+    private List<String> seriesIds;
 
 
     /**
      * Build nameless routine
      */
     public Routine() {
-        this.series = new ArrayList<>();
+        this.seriesIds = new ArrayList<String>();
     }
 
     /**
      * Build an routine with the data received by parameter
      *
-     * @param name   name
-     * @param series series
+     * @param name      name
+     * @param seriesIds series
      */
-    public Routine(String name, User autor, List<Serie> series) {
+    public Routine(String name, String authorId, List<String> seriesIds) {
         this.name = name;
-        this.autor = autor;
-        this.series = series;
+        this.authorId = authorId;
+        this.seriesIds = seriesIds;
     }
 
     /**
@@ -63,18 +70,18 @@ public class Routine {
      *
      * @return seriesList
      */
-    public List<Serie> getSeries() {
-        return series;
+    public List<String> getSeriesIds() {
+        return seriesIds;
     }
 
     /**
      * Set a series list
      *
-     * @param series seriesList
+     * @param seriesIds seriesList
      * @return this
      */
-    public Routine setSeries(List<Serie> series) {
-        this.series = series;
+    public Routine setSeriesIds(List<String> seriesIds) {
+        this.seriesIds = seriesIds;
         return this;
     }
 
@@ -83,15 +90,17 @@ public class Routine {
      *
      * @return totalVolumen
      */
-    public Float getTotalVolumen() {
+    public Task<Float> getTotalVolumen() {
+        return getSeries()
+                .continueWith(series -> {
+                    float totalVolumen = 0;
 
-        Float totalVolumen = null;
+                    for (Serie serie : series.getResult()) {
+                        totalVolumen += (serie.getReps() * serie.getWeight());
+                    }
 
-        for (Serie s : series) {
-            totalVolumen += (s.getReps() * s.getWeight());
-        }
-
-        return totalVolumen * series.size();
+                    return totalVolumen;
+                });
     }
 
     /**
@@ -99,18 +108,42 @@ public class Routine {
      *
      * @return author
      */
-    public User getAutor() {
-        return autor;
+    public String getAuthorId() {
+        return authorId;
     }
 
     /**
      * Set routine author
      *
-     * @param autor author
+     * @param authorId author
      * @return this
      */
-    public Routine setAutor(User autor) {
-        this.autor = autor;
+    public Routine setAuthorId(String authorId) {
+        this.authorId = authorId;
         return this;
+    }
+
+    public Task<List<Serie>> getSeries() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        return db.collection(Constants.COLLECTION_SERIES)
+                .whereIn(FieldPath.documentId(), seriesIds)
+                .get()
+                .continueWith(x ->
+                        x.getResult()
+                                .getDocuments()
+                                .parallelStream()
+                                .map(y -> y.toObject(Serie.class))
+                                .collect(Collectors.toList())
+                );
+    }
+
+    public Task<User> getAuthor() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        return db.collection(Constants.COLLECTION_USERS)
+                .document(authorId)
+                .get()
+                .continueWith(x -> x.getResult().toObject(User.class));
     }
 }

@@ -1,5 +1,7 @@
 package com.github.gymodo.exercise;
 
+import com.google.firebase.firestore.DocumentId;
+
 /**
  * Represents a Exercise
  *
@@ -8,10 +10,11 @@ package com.github.gymodo.exercise;
  * @see Routine
  */
 public class Serie {
-
+    @DocumentId
+    private String id;
     private int reps;
     private int weight;
-    private Exercise exercise;
+    private String exerciseId;
 
     /**
      * Build nameless exercise
@@ -22,14 +25,14 @@ public class Serie {
     /**
      * Build an serie with the data received by parameter
      *
-     * @param reps     Repetitions
-     * @param weight   Weight
-     * @param exercise exercise
+     * @param reps       Repetitions
+     * @param weight     Weight
+     * @param exerciseId exerciseId
      */
-    public Serie(int reps, int weight, Exercise exercise) {
+    public Serie(int reps, int weight, String exerciseId) {
         this.reps = reps;
         this.weight = weight;
-        this.exercise = exercise;
+        this.exerciseId = exerciseId;
     }
 
     /**
@@ -77,18 +80,27 @@ public class Serie {
      *
      * @return Exercise
      */
-    public Exercise getExercise() {
-        return exercise;
+    public String getExerciseId() {
+        return exerciseId;
     }
 
     /**
-     * Set exercise to serie
+     * Set exerciseId to serie
      *
-     * @param exercise exercise
+     * @param exerciseId exercise
      * @return this
      */
-    public Serie setExercise(Exercise exercise) {
-        this.exercise = exercise;
+    public Serie setExerciseId(String exerciseId) {
+        this.exerciseId = exerciseId;
+        return this;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public Serie setId(String id) {
+        this.id = id;
         return this;
     }
 }

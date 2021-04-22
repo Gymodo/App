@@ -1,6 +1,8 @@
 package com.github.gymodo.exercise;
 
 
+import com.google.firebase.firestore.DocumentId;
+
 /**
  * Represents a muscle
  *
@@ -9,7 +11,8 @@ package com.github.gymodo.exercise;
  * @see Routine
  */
 public class Muscle {
-
+    @DocumentId
+    private String id;
     private String name;
 
     /**
@@ -44,6 +47,15 @@ public class Muscle {
      */
     public Muscle setName(String name) {
         this.name = name;
+        return this;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public Muscle setId(String id) {
+        this.id = id;
         return this;
     }
 }

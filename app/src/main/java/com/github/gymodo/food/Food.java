@@ -1,5 +1,7 @@
 package com.github.gymodo.food;
 
+import com.google.firebase.firestore.DocumentId;
+
 /**
  * Represents a food.
  *
@@ -8,6 +10,8 @@ package com.github.gymodo.food;
  * @see Meal
  */
 public class Food {
+    @DocumentId
+    private String id;
     private String name;
     private int calories;
     private int totalFat;
@@ -166,6 +170,15 @@ public class Food {
      */
     public Food setProtein(int protein) {
         this.protein = protein;
+        return this;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public Food setId(String id) {
+        this.id = id;
         return this;
     }
 }
