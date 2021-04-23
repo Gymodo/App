@@ -36,12 +36,9 @@ public class RegisterActivity extends AppCompatActivity {
         registerUserEmail = findViewById(R.id.registerInputTextEmail);
         registerSignupBtn = findViewById(R.id.btnRegister);
 
-        registerSignupBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if ((!registerUserEmail.getText().toString().isEmpty()) && (!registerUserPassword.getText().toString().isEmpty())) {
-                    createUser();
-                }
+        registerSignupBtn.setOnClickListener(v -> {
+            if ((!registerUserEmail.getText().toString().isEmpty()) && (!registerUserPassword.getText().toString().isEmpty())) {
+                createUser();
             }
         });
     }
@@ -51,14 +48,11 @@ public class RegisterActivity extends AppCompatActivity {
         registerFirebaseAuth.createUserWithEmailAndPassword(
                 registerUserEmail.getText().toString(),
                 registerUserPassword.getText().toString())
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            data();
-                        } else {
-                            Toast.makeText(RegisterActivity.this, "Error signing in", Toast.LENGTH_SHORT).show();
-                        }
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        data();
+                    } else {
+                        Toast.makeText(RegisterActivity.this, "Error signing in", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

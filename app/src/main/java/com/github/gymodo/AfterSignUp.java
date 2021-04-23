@@ -34,33 +34,20 @@ public class AfterSignUp extends AppCompatActivity {
         numberPicker.setMinValue(18);
         numberPicker.setMaxValue(250);
 
-        textDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        textDate.setOnClickListener(v -> {
 
-                Calendar calendar = Calendar.getInstance();
-                final int day = calendar.get(Calendar.DAY_OF_MONTH);
-                final int month = calendar.get(Calendar.MONDAY);
-                final int year = calendar.get(Calendar.YEAR);
+            Calendar calendar = Calendar.getInstance();
+            final int day = calendar.get(Calendar.DAY_OF_MONTH);
+            final int month = calendar.get(Calendar.MONDAY);
+            final int year = calendar.get(Calendar.YEAR);
 
-                datePicker = new DatePickerDialog(AfterSignUp.this,
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                                textDate.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
-                            }
-                        }, year, month, day);
-                datePicker.show();
-            }
+            datePicker = new DatePickerDialog(AfterSignUp.this,
+                    (view, year1, month1, dayOfMonth) -> textDate.setText(dayOfMonth + "/" + (month1 + 1) + "/" + year1), year, month, day);
+            datePicker.show();
         });
 
 
-        numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                Toast.makeText(AfterSignUp.this, newVal + "", Toast.LENGTH_SHORT).show();
-            }
-        });
+        numberPicker.setOnValueChangedListener((picker, oldVal, newVal) -> Toast.makeText(AfterSignUp.this, newVal + "", Toast.LENGTH_SHORT).show());
 
     }
 }

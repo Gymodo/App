@@ -48,18 +48,10 @@ public class LoginActivity extends AppCompatActivity {
             try {
                 GoogleSignInAccount signInAccount = signInTask.getResult(ApiException.class);
                 AuthCredential authCredential = GoogleAuthProvider.getCredential(signInAccount.getIdToken(), null);
-                firebaseAuth.signInWithCredential(authCredential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Toast.makeText(getApplicationContext(), "Your google account is connected to our aplication", Toast.LENGTH_SHORT).show();
-                        data();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        showAlert();
-                    }
-                });
+                firebaseAuth.signInWithCredential(authCredential).addOnCompleteListener(task -> {
+                    Toast.makeText(getApplicationContext(), "Your google account is connected to our aplication", Toast.LENGTH_SHORT).show();
+                    data();
+                }).addOnFailureListener(e -> showAlert());
             } catch (ApiException e) {
                 e.printStackTrace();
                 showAlert();
@@ -80,14 +72,12 @@ public class LoginActivity extends AppCompatActivity {
         googleLoginBtn = findViewById(R.id.googleLoginBtn);
 
 
-        loginLoginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if ((!loginUsername.getText().toString().isEmpty()) && (!loginPassword.getText().toString().isEmpty())) {
-                    loginUser();
-                }
+        loginLoginBtn.setOnClickListener(v -> {
+            if ((!loginUsername.getText().toString().isEmpty()) && (!loginPassword.getText().toString().isEmpty())) {
+                loginUser();
             }
         });
+
 
         //SignIn with google
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -97,27 +87,21 @@ public class LoginActivity extends AppCompatActivity {
 
         signInClient = GoogleSignIn.getClient(this, gso);
 
-        googleLoginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Configure Google Sign In
-                signInClient.signOut();
-                Intent sign = signInClient.getSignInIntent();
-                startActivityForResult(sign, GOOGLE_SIGN_IN_CODE);
-            }
+        googleLoginBtn.setOnClickListener(v -> {
+            //Configure Google Sign In
+            signInClient.signOut();
+            Intent sign = signInClient.getSignInIntent();
+            startActivityForResult(sign, GOOGLE_SIGN_IN_CODE);
         });
     }
 
     //Login user
     public void loginUser() {
-        firebaseAuth.signInWithEmailAndPassword(loginUsername.getText().toString(), loginPassword.getText().toString()).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    data();
-                } else {
-                    showAlert();
-                }
+        firebaseAuth.signInWithEmailAndPassword(loginUsername.getText().toString(), loginPassword.getText().toString()).addOnCompleteListener(this, task -> {
+            if (task.isSuccessful()) {
+                data();
+            } else {
+                showAlert();
             }
         });
     }
