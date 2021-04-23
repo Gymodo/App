@@ -37,13 +37,13 @@ public class LoginActivity extends AppCompatActivity {
     //Login google
     private GoogleSignInOptions gso;
     private GoogleSignInClient signInClient;
-    private static final int GOOGLE_SING_IN_CODE = 10005;
+    private static final int GOOGLE_SIGN_IN_CODE = 10005;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == GOOGLE_SING_IN_CODE){
+        if (requestCode == GOOGLE_SIGN_IN_CODE) {
             Task<GoogleSignInAccount> signInTask = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount signInAccount = signInTask.getResult(ApiException.class);
@@ -103,7 +103,7 @@ public class LoginActivity extends AppCompatActivity {
                 //Configure Google Sign In
                 signInClient.signOut();
                 Intent sign = signInClient.getSignInIntent();
-                startActivityForResult(sign, GOOGLE_SING_IN_CODE);
+                startActivityForResult(sign, GOOGLE_SIGN_IN_CODE);
             }
         });
     }
@@ -138,7 +138,7 @@ public class LoginActivity extends AppCompatActivity {
         builder.show();
     }
 
-    public void intentToRegisterActivity(View view){
+    public void intentToRegisterActivity(View view) {
         Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
         startActivity(intent);
     }
