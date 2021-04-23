@@ -1,6 +1,11 @@
 package com.github.gymodo.exercise;
 
+import com.github.gymodo.Constants;
+import com.github.gymodo.DatabaseUtil;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentId;
+
+import java.util.List;
 
 /**
  * Represents a Exercise
@@ -76,6 +81,14 @@ public class Serie {
     }
 
     /**
+     * Returns the calculated volume.
+     * @return The volume.
+     */
+    public int getVolume() {
+        return getWeight() * getReps();
+    }
+
+    /**
      * Returns Exercise
      *
      * @return Exercise
@@ -102,5 +115,40 @@ public class Serie {
     public Serie setId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Saves this object on the database
+     * @return A empty task.
+     */
+    public Task<Void> save() {
+        return DatabaseUtil.saveObject(Constants.COLLECTION_SERIES, this, Serie.class);
+    }
+
+    /**
+     * Updates this object on the database
+     * @return A empty task.
+     */
+    public Task<Void> update() {
+        return DatabaseUtil.updateObject(Constants.COLLECTION_SERIES, id, this, Serie.class);
+    }
+
+    /**
+     * Gets a Serie by id.
+     *
+     * @param id The id of the Serie.
+     * @return A task with the Serie as result.
+     */
+    public static Task<Serie> getByID(String id) {
+        return DatabaseUtil.getByID(Constants.COLLECTION_SERIES, id, Serie.class);
+    }
+
+    /**
+     * Gets a list of Serie by ids.
+     * @param ids The list of ids.
+     * @return A task with a list of ids.
+     */
+    public static Task<List<Serie>> getWhereIdIn(List<String> ids) {
+        return DatabaseUtil.getWhereIdIn(Constants.COLLECTION_SERIES, ids, Serie.class);
     }
 }

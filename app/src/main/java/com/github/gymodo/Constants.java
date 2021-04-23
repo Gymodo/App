@@ -11,4 +11,5 @@ public abstract class Constants {
     public static final String COLLECTION_SERIES = "series";
     public static final String COLLECTION_EXERCISES = "exercises";
     public static final String COLLECTION_MUSCLES = "muscles";
+    public static final String COLLECTION_RESERVATIONS = "reservations";
 }

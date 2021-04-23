@@ -1,7 +1,13 @@
 package com.github.gymodo.exercise;
 
 
+import com.github.gymodo.Constants;
+import com.github.gymodo.DatabaseUtil;
+import com.github.gymodo.food.Food;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentId;
+
+import java.util.List;
 
 /**
  * Represents a muscle
@@ -57,5 +63,40 @@ public class Muscle {
     public Muscle setId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Saves this object on the database
+     * @return A empty task.
+     */
+    public Task<Void> save() {
+        return DatabaseUtil.saveObject(Constants.COLLECTION_MUSCLES, this, Muscle.class);
+    }
+
+    /**
+     * Updates this object on the database
+     * @return A empty task.
+     */
+    public Task<Void> update() {
+        return DatabaseUtil.updateObject(Constants.COLLECTION_MUSCLES, id, this, Muscle.class);
+    }
+
+    /**
+     * Gets a Muscle by id.
+     *
+     * @param id The id of the Muscle.
+     * @return A task with the Muscle as result.
+     */
+    public static Task<Muscle> getByID(String id) {
+        return DatabaseUtil.getByID(Constants.COLLECTION_MUSCLES, id, Muscle.class);
+    }
+
+    /**
+     * Gets a list of Muscle by ids.
+     * @param ids The list of ids.
+     * @return A task with a list of ids.
+     */
+    public static Task<List<Muscle>> getWhereIdIn(List<String> ids) {
+        return DatabaseUtil.getWhereIdIn(Constants.COLLECTION_MUSCLES, ids, Muscle.class);
     }
 }
