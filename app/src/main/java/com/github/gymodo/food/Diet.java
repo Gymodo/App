@@ -1,10 +1,14 @@
 package com.github.gymodo.food;
 
 import com.github.gymodo.Constants;
+import com.github.gymodo.DatabaseUtil;
+import com.github.gymodo.exercise.Routine;
 import com.github.gymodo.user.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.List;
 
 import kotlin.NotImplementedError;
 
@@ -117,39 +121,19 @@ public class Diet {
     }
 
     public Task<Meal> getLaunch() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        return db.collection(Constants.COLLECTION_MEALS)
-                .document(launchId)
-                .get()
-                .continueWith(task -> task.getResult().toObject(Meal.class));
+        return Meal.getByID(launchId);
     }
 
     public Task<Meal> getBreakfast() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        return db.collection(Constants.COLLECTION_MEALS)
-                .document(breakfastId)
-                .get()
-                .continueWith(task -> task.getResult().toObject(Meal.class));
+        return Meal.getByID(breakfastId);
     }
 
     public Task<Meal> getDinner() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        return db.collection(Constants.COLLECTION_MEALS)
-                .document(dinnerId)
-                .get()
-                .continueWith(task -> task.getResult().toObject(Meal.class));
+        return Meal.getByID(dinnerId);
     }
 
     public Task<Meal> getSnack() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        return db.collection(Constants.COLLECTION_MEALS)
-                .document(snackId)
-                .get()
-                .continueWith(task -> task.getResult().toObject(Meal.class));
+        return Meal.getByID(snackId);
     }
 
 
@@ -172,11 +156,41 @@ public class Diet {
     }
 
     public Task<User> getAuthor() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        return User.getByID(authorId);
+    }
 
-        return db.collection(Constants.COLLECTION_USERS)
-                .document(authorId)
-                .get()
-                .continueWith(x -> x.getResult().toObject(User.class));
+    /**
+     * Saves this object on the database
+     * @return A empty task.
+     */
+    public Task<Void> save() {
+        return DatabaseUtil.saveObject(Constants.COLLECTION_DIETS, this, Diet.class);
+    }
+
+    /**
+     * Updates this object on the database
+     * @return A empty task.
+     */
+    public Task<Void> update() {
+        return DatabaseUtil.updateObject(Constants.COLLECTION_DIETS, id, this, Diet.class);
+    }
+
+    /**
+     * Gets a Diet by id.
+     *
+     * @param id The id of the Diet.
+     * @return A task with the Diet as result.
+     */
+    public static Task<Diet> getByID(String id) {
+        return DatabaseUtil.getByID(Constants.COLLECTION_DIETS, id, Diet.class);
+    }
+
+    /**
+     * Gets a list of Diet by ids.
+     * @param ids The list of ids.
+     * @return A task with a list of ids.
+     */
+    public static Task<List<Diet>> getWhereIdIn(List<String> ids) {
+        return DatabaseUtil.getWhereIdIn(Constants.COLLECTION_DIETS, ids, Diet.class);
     }
 }

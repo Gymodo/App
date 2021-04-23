@@ -1,15 +1,23 @@
 package com.github.gymodo.food;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.github.gymodo.Constants;
+import com.github.gymodo.DatabaseUtil;
 import com.github.gymodo.user.User;
+import com.google.android.gms.tasks.SuccessContinuation;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 
 /**
@@ -86,23 +94,23 @@ public class Meal {
     }
 
     /**
+     * Sums all the Integer values of a property.
+     * Utility method to not repeat code.
+     *
+     * @param mapper The method to map the values
+     * @return The total value.
+     */
+    private Task<Integer> getTotalFoodProperty(ToIntFunction<Food> mapper) {
+        return DatabaseUtil.getMappedSumWhereIn(Constants.COLLECTION_FOODS, foodListIds, mapper, Food.class);
+    }
+
+    /**
      * Calculates the total calories of this meal.
      *
      * @return The total calories.
      */
     public Task<Integer> getTotalCalories() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        return db.collection(Constants.COLLECTION_FOODS).whereIn(FieldPath.documentId(), foodListIds)
-                .get()
-                .continueWith(task -> {
-                    int total = 0;
-                    for (DocumentSnapshot doc : task.getResult().getDocuments()) {
-                        Food food = doc.toObject(Food.class);
-                        total += food.getCalories();
-                    }
-                    return total;
-                });
+        return getTotalFoodProperty(Food::getCalories);
     }
 
     /**
@@ -111,18 +119,7 @@ public class Meal {
      * @return The total fat.
      */
     public Task<Integer> getTotalFat() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        return db.collection(Constants.COLLECTION_FOODS).whereIn(FieldPath.documentId(), foodListIds)
-                .get()
-                .continueWith(task -> {
-                    int total = 0;
-                    for (DocumentSnapshot doc : task.getResult().getDocuments()) {
-                        Food food = doc.toObject(Food.class);
-                        total += food.getTotalFat();
-                    }
-                    return total;
-                });
+        return getTotalFoodProperty(Food::getTotalFat);
     }
 
     /**
@@ -131,18 +128,7 @@ public class Meal {
      * @return The total sodium.
      */
     public Task<Integer> getTotalSodium() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        return db.collection(Constants.COLLECTION_FOODS).whereIn(FieldPath.documentId(), foodListIds)
-                .get()
-                .continueWith(task -> {
-                    int total = 0;
-                    for (DocumentSnapshot doc : task.getResult().getDocuments()) {
-                        Food food = doc.toObject(Food.class);
-                        total += food.getSodium();
-                    }
-                    return total;
-                });
+        return getTotalFoodProperty(Food::getSodium);
     }
 
     /**
@@ -151,18 +137,7 @@ public class Meal {
      * @return The total carbohydrates.
      */
     public Task<Integer> getTotalCarboHydrates() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        return db.collection(Constants.COLLECTION_FOODS).whereIn(FieldPath.documentId(), foodListIds)
-                .get()
-                .continueWith(task -> {
-                    int total = 0;
-                    for (DocumentSnapshot doc : task.getResult().getDocuments()) {
-                        Food food = doc.toObject(Food.class);
-                        total += food.getTotalCarboHydrate();
-                    }
-                    return total;
-                });
+        return getTotalFoodProperty(Food::getTotalCarboHydrate);
     }
 
     /**
@@ -171,18 +146,7 @@ public class Meal {
      * @return The total cholesterol.
      */
     public Task<Integer> getTotalCholesterol() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        return db.collection(Constants.COLLECTION_FOODS).whereIn(FieldPath.documentId(), foodListIds)
-                .get()
-                .continueWith(task -> {
-                    int total = 0;
-                    for (DocumentSnapshot doc : task.getResult().getDocuments()) {
-                        Food food = doc.toObject(Food.class);
-                        total += food.getCholesterol();
-                    }
-                    return total;
-                });
+        return getTotalFoodProperty(Food::getCholesterol);
     }
 
     /**
@@ -191,18 +155,7 @@ public class Meal {
      * @return The total protein.
      */
     public Task<Integer> getTotalProtein() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        return db.collection(Constants.COLLECTION_FOODS).whereIn(FieldPath.documentId(), foodListIds)
-                .get()
-                .continueWith(task -> {
-                    int total = 0;
-                    for (DocumentSnapshot doc : task.getResult().getDocuments()) {
-                        Food food = doc.toObject(Food.class);
-                        total += food.getProtein();
-                    }
-                    return total;
-                });
+        return getTotalFoodProperty(Food::getProtein);
     }
 
     public String getId() {
@@ -225,25 +178,52 @@ public class Meal {
 
     /**
      * Returns a task with a list of foods this meal has.
+     *
      * @return A task with a list of foods.
      */
     public Task<List<Food>> getFoods() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        return db.collection(Constants.COLLECTION_FOODS).whereIn(FieldPath.documentId(), foodListIds)
-                .get()
-                .continueWith(task -> {
-                    List<DocumentSnapshot> docs = task.getResult().getDocuments();
-                    return docs.parallelStream().map(x -> x.toObject(Food.class)).collect(Collectors.toList());
-                });
+        return DatabaseUtil.getWhereIdIn(Constants.COLLECTION_FOODS, foodListIds, Food.class);
     }
 
     public Task<User> getAuthor() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        return User.getByID(authorId);
+    }
 
-        return db.collection(Constants.COLLECTION_USERS)
-                .document(authorId)
-                .get()
-                .continueWith(x -> x.getResult().toObject(User.class));
+    /**
+     * Saves this object on the database
+     *
+     * @return A empty task.
+     */
+    public Task<Void> save() {
+        return DatabaseUtil.saveObject(Constants.COLLECTION_MEALS, this, Meal.class);
+    }
+
+    /**
+     * Updates this object on the database
+     *
+     * @return A empty task.
+     */
+    public Task<Void> update() {
+        return DatabaseUtil.updateObject(Constants.COLLECTION_MEALS, id, this, Meal.class);
+    }
+
+    /**
+     * Gets a Meal by id.
+     *
+     * @param id The id of the Meal.
+     * @return A task with the Meal as result.
+     */
+    public static Task<Meal> getByID(String id) {
+        return DatabaseUtil.getByID(Constants.COLLECTION_MEALS, id, Meal.class);
+    }
+
+    /**
+     * Gets a list of Meal by ids.
+     *
+     * @param ids The list of ids.
+     * @return A task with a list of ids.
+     */
+    public static Task<List<Meal>> getWhereIdIn(List<String> ids) {
+        return DatabaseUtil.getWhereIdIn(Constants.COLLECTION_MEALS, ids, Meal.class);
     }
 }

@@ -1,6 +1,7 @@
 package com.github.gymodo.exercise;
 
 import com.github.gymodo.Constants;
+import com.github.gymodo.DatabaseUtil;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.FieldPath;
@@ -107,18 +108,7 @@ public class Exercise {
     }
 
     public Task<List<Muscle>> getMuscles() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        return db.collection(Constants.COLLECTION_MUSCLES)
-                .whereIn(FieldPath.documentId(), muscleIds)
-                .get()
-                .continueWith(x ->
-                        x.getResult()
-                                .getDocuments()
-                                .parallelStream()
-                                .map(y -> y.toObject(Muscle.class))
-                                .collect(Collectors.toList())
-                );
+        return Muscle.getWhereIdIn(muscleIds);
     }
 
     public String getId() {
@@ -128,5 +118,40 @@ public class Exercise {
     public Exercise setId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Saves this object on the database
+     * @return A empty task.
+     */
+    public Task<Void> save() {
+        return DatabaseUtil.saveObject(Constants.COLLECTION_EXERCISES, this, Exercise.class);
+    }
+
+    /**
+     * Updates this object on the database
+     * @return A empty task.
+     */
+    public Task<Void> update() {
+        return DatabaseUtil.updateObject(Constants.COLLECTION_EXERCISES, id, this, Exercise.class);
+    }
+
+    /**
+     * Gets a Exercise by id.
+     *
+     * @param id The id of the Exercise.
+     * @return A task with the Exercise as result.
+     */
+    public static Task<Exercise> getByID(String id) {
+        return DatabaseUtil.getByID(Constants.COLLECTION_EXERCISES, id, Exercise.class);
+    }
+
+    /**
+     * Gets a list of Exercise by ids.
+     * @param ids The list of ids.
+     * @return A task with a list of ids.
+     */
+    public static Task<List<Exercise>> getWhereIdIn(List<String> ids) {
+        return DatabaseUtil.getWhereIdIn(Constants.COLLECTION_EXERCISES, ids, Exercise.class);
     }
 }

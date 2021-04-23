@@ -1,9 +1,11 @@
 package com.github.gymodo.user;
 
 import com.github.gymodo.Constants;
+import com.github.gymodo.DatabaseUtil;
 import com.github.gymodo.exercise.Routine;
 import com.github.gymodo.food.Diet;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -184,32 +186,48 @@ public class User {
     }
 
     public Task<List<Routine>> getSavedRoutines() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        return db.collection(Constants.COLLECTION_ROUTINES)
-                .whereIn(FieldPath.documentId(), savedRoutinesIds)
-                .get()
-                .continueWith(x ->
-                        x.getResult()
-                                .getDocuments()
-                                .parallelStream()
-                                .map(y -> y.toObject(Routine.class))
-                                .collect(Collectors.toList())
-                );
+        return Routine.getWhereIdIn(savedRoutinesIds);
     }
 
     public Task<List<Diet>> getSavedDiets() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        return Diet.getWhereIdIn(savedDietsIds);
+    }
 
-        return db.collection(Constants.COLLECTION_DIETS)
-                .whereIn(FieldPath.documentId(), savedRoutinesIds)
-                .get()
-                .continueWith(x ->
-                        x.getResult()
-                                .getDocuments()
-                                .parallelStream()
-                                .map(y -> y.toObject(Diet.class))
-                                .collect(Collectors.toList())
-                );
+    /**
+     * Saves this object on the database
+     *
+     * @return A empty task.
+     */
+    public Task<Void> save() {
+        return DatabaseUtil.saveObject(Constants.COLLECTION_USERS, this, User.class);
+    }
+
+    /**
+     * Updates this object on the database
+     *
+     * @return A empty task.
+     */
+    public Task<Void> update() {
+        return DatabaseUtil.updateObject(Constants.COLLECTION_USERS, id, this, User.class);
+    }
+
+    /**
+     * Gets a user by id.
+     *
+     * @param id The id of the user.
+     * @return A task with the User as result.
+     */
+    public static Task<User> getByID(String id) {
+        return DatabaseUtil.getByID(Constants.COLLECTION_USERS, id, User.class);
+    }
+
+    /**
+     * Gets a list of users by ids.
+     *
+     * @param ids The list of ids.
+     * @return A task with a list of ids.
+     */
+    public static Task<List<User>> getWhereIdIn(List<String> ids) {
+        return DatabaseUtil.getWhereIdIn(Constants.COLLECTION_USERS, ids, User.class);
     }
 }

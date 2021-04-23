@@ -1,8 +1,11 @@
 package com.github.gymodo.exercise;
 
 import com.github.gymodo.Constants;
+import com.github.gymodo.DatabaseUtil;
+import com.github.gymodo.food.Meal;
 import com.github.gymodo.user.User;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -90,17 +93,10 @@ public class Routine {
      *
      * @return totalVolumen
      */
-    public Task<Float> getTotalVolumen() {
-        return getSeries()
-                .continueWith(series -> {
-                    float totalVolumen = 0;
+    public Task<Integer> getTotalVolume() {
+        return DatabaseUtil.getMappedSumWhereIn(Constants.COLLECTION_SERIES, seriesIds,
+                Serie::getVolume, Serie.class);
 
-                    for (Serie serie : series.getResult()) {
-                        totalVolumen += (serie.getReps() * serie.getWeight());
-                    }
-
-                    return totalVolumen;
-                });
     }
 
     /**
@@ -124,26 +120,48 @@ public class Routine {
     }
 
     public Task<List<Serie>> getSeries() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        return db.collection(Constants.COLLECTION_SERIES)
-                .whereIn(FieldPath.documentId(), seriesIds)
-                .get()
-                .continueWith(x ->
-                        x.getResult()
-                                .getDocuments()
-                                .parallelStream()
-                                .map(y -> y.toObject(Serie.class))
-                                .collect(Collectors.toList())
-                );
+        return Serie.getWhereIdIn(seriesIds);
     }
 
     public Task<User> getAuthor() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        return User.getByID(authorId);
+    }
 
-        return db.collection(Constants.COLLECTION_USERS)
-                .document(authorId)
-                .get()
-                .continueWith(x -> x.getResult().toObject(User.class));
+    /**
+     * Saves this object on the database
+     *
+     * @return A empty task.
+     */
+    public Task<Void> save() {
+        return DatabaseUtil.saveObject(Constants.COLLECTION_ROUTINES, this, Routine.class);
+    }
+
+    /**
+     * Updates this object on the database
+     *
+     * @return A empty task.
+     */
+    public Task<Void> update() {
+        return DatabaseUtil.updateObject(Constants.COLLECTION_ROUTINES, id, this, Routine.class);
+    }
+
+    /**
+     * Gets a Routine by id.
+     *
+     * @param id The id of the Routine.
+     * @return A task with the Routine as result.
+     */
+    public static Task<Routine> getByID(String id) {
+        return DatabaseUtil.getByID(Constants.COLLECTION_ROUTINES, id, Routine.class);
+    }
+
+    /**
+     * Gets a list of Routine by ids.
+     *
+     * @param ids The list of ids.
+     * @return A task with a list of ids.
+     */
+    public static Task<List<Routine>> getWhereIdIn(List<String> ids) {
+        return DatabaseUtil.getWhereIdIn(Constants.COLLECTION_ROUTINES, ids, Routine.class);
     }
 }
