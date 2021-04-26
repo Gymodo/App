@@ -10,6 +10,7 @@ import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 /**
  * Represents a user profile.
  */
-public class User {
+public class User implements Serializable {
     @DocumentId
     private String id;
     private String name;

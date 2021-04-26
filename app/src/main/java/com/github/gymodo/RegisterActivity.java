@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.github.gymodo.user.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -59,7 +60,12 @@ public class RegisterActivity extends AppCompatActivity {
 
     //Intent to MainActivity
     public void data() {
-        Intent intent = new Intent(this, MainActivity.class);
+        //Create user with name
+        User userTmp = new User();
+        userTmp.setName(registerUserName.toString());
+
+        Intent intent = new Intent(this, AfterSignUp.class);
+        intent.putExtra("userTmp", userTmp);
         startActivity(intent);
     }
 
