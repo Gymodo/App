@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.dynamic.IFragmentWrapper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -209,14 +210,28 @@ public class MainActivity extends AppCompatActivity {
         Fragment fragment = adapter.getItem(viewPager.getCurrentItem());
 
         NavController navController =  NavHostFragment.findNavController(fragment.getChildFragmentManager().getPrimaryNavigationFragment());
-        Toast.makeText(this, "item: " + navController.getCurrentDestination(), Toast.LENGTH_SHORT).show();
+
+        //Toast.makeText(this, "item: " + navController.getCurrentDestination(), Toast.LENGTH_SHORT).show();
 
         // Handles the open/close actions of the drawer.
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+
+            //Toast.makeText(this, "Num stack " + navController.getBackStack().size(), Toast.LENGTH_SHORT).show();
+            if (!navController.navigateUp()){
+                super.onBackPressed();
+            }
+            /*
+            if (navController.navigateUp()){
+
+                Toast.makeText(this, "can navigate up", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "CAN'T navigate up", Toast.LENGTH_SHORT).show();
+            }*/
         }
 
-        super.onBackPressed();
+        //super.onBackPressed();
     }
 
 

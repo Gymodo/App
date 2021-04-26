@@ -102,7 +102,8 @@ public class AddReservationFragment extends Fragment {
 
         //NavController navController = Navigation.findNavController(view);
 
-        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+        /*
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default *//*) {
             @Override
             public void handleOnBackPressed() {
 
@@ -125,7 +126,7 @@ public class AddReservationFragment extends Fragment {
 
             }
         };
-        requireActivity().getOnBackPressedDispatcher().addCallback(getActivity(), callback);
+        requireActivity().getOnBackPressedDispatcher().addCallback(getActivity(), callback);*/
         // The callback can be enabled or disabled here or in handleOnBackPressed()
 
         //navController =  Navigation.findNavController(view);
