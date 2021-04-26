@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private WorkoutListFragment workoutListFragment;
     private ViewPager viewPager;
     MenuItem prevMenuItem;
+    int previousHostFragment;
 
     public static FragmentManager fragmentManager;
 
@@ -123,6 +124,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
+                previousHostFragment = viewPager.getCurrentItem();
+
                 switch (item.getItemId()){
 
                     case R.id.nav_home:
@@ -195,6 +198,9 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(workoutBaseFragment);
         adapter.addFragment(reservationBaseFragment);
         viewPager.setAdapter(adapter);
+
+        //initialize previous item variable
+        previousHostFragment = 0;
     }
 
     private void setFragment(Fragment fragment){
@@ -219,8 +225,13 @@ public class MainActivity extends AppCompatActivity {
         } else {
 
             //Toast.makeText(this, "Num stack " + navController.getBackStack().size(), Toast.LENGTH_SHORT).show();
-            if (!navController.navigateUp()){
-                super.onBackPressed();
+            if (!navController.navigateUp()){//Si el fragment no puede ir atras pues se va
+
+                if (viewPager.getCurrentItem() != 0){ //Si no es la home
+                    viewPager.setCurrentItem(previousHostFragment, false);
+                } else  {
+                    super.onBackPressed();
+                }
             }
             /*
             if (navController.navigateUp()){
