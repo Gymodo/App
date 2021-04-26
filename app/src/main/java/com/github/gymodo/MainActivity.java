@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     //Bottom navigation
     BottomNavigationView bottomNav;
     FrameLayout main_frame;
+    ViewPagerAdapter adapter;
     // Fragments
     private HomeFragment homeFragment;
     private UserReservationsFragment userReservationsFragment;
@@ -106,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //Bottom navigation
-
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
 
         //Assign the main fragment
@@ -177,9 +180,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void setupViewPager(ViewPager viewPager)
-    {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+    private void setupViewPager(ViewPager viewPager){
 
         HomeBaseFragment homeBaseFragment = new HomeBaseFragment();
         WorkoutBaseFragment  workoutBaseFragment = new WorkoutBaseFragment();
@@ -204,6 +205,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+
+        Fragment fragment = adapter.getItem(viewPager.getCurrentItem());
+
+        NavController navController =  NavHostFragment.findNavController(fragment.getChildFragmentManager().getPrimaryNavigationFragment());
+        Toast.makeText(this, "item: " + navController.getCurrentDestination(), Toast.LENGTH_SHORT).show();
+
         // Handles the open/close actions of the drawer.
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);

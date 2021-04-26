@@ -88,9 +88,15 @@ public class HomeFragment extends Fragment {
                 fragmentTransaction.commit();*/
 
 
+
                 NavController navController = Navigation.findNavController(view);
 
                 navController.navigate(R.id.home_to_addReservation);
+
+                /*
+                if (navController.getCurrentDestination().getId() == R.id.homeFragment) {
+                    navController.navigate(R.id.home_to_addReservation);
+                }*/
 
 
             }

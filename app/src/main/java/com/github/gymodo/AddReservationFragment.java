@@ -116,7 +116,9 @@ public class AddReservationFragment extends Fragment {
                     if (mainActivity.drawerLayout.isDrawerOpen(GravityCompat.START)) {
                         mainActivity.drawerLayout.closeDrawer(GravityCompat.START);
                     } else {
-                        getParentFragmentManager().popBackStack();
+                        //getParentFragmentManager().popBackStack();
+                        Toast.makeText(mainActivity, "result:_ " + Navigation.findNavController(view).navigateUp(), Toast.LENGTH_SHORT).show();
+                        //Navigation.findNavController(view).navigateUp();
                     }
                 }
 
