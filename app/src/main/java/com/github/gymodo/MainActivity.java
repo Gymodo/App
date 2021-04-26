@@ -9,10 +9,13 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -36,7 +39,8 @@ public class MainActivity extends AppCompatActivity {
     private UserReservationsFragment userReservationsFragment;
     Fragment activeFragment;
     private WorkoutListFragment workoutListFragment;
-
+    private ViewPager viewPager;
+    MenuItem prevMenuItem;
 
     public static FragmentManager fragmentManager;
 
@@ -62,13 +66,15 @@ public class MainActivity extends AppCompatActivity {
         cardViewReservation = findViewById(R.id.home_reservation_cardview);
 
         bottomNav = findViewById(R.id.bottomNav);
-        main_frame = findViewById(R.id.main_frame);
+        viewPager = findViewById(R.id.viewPager);
+        //main_frame = findViewById(R.id.main_frame);
 
+/*
         homeFragment = new HomeFragment();
         userReservationsFragment = new UserReservationsFragment();
-        workoutListFragment = new WorkoutListFragment();
+        workoutListFragment = new WorkoutListFragment();*/
 
-        fragmentManager = getSupportFragmentManager();
+        //fragmentManager = getSupportFragmentManager();
 
         // Makes this activity use our toolbar.
         setSupportActionBar(toolbar);
@@ -101,10 +107,13 @@ public class MainActivity extends AppCompatActivity {
 
         //Bottom navigation
 
+
+
         //Assign the main fragment
+/*
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.main_frame,homeFragment);
-        fragmentTransaction.commit();
+        fragmentTransaction.commit();*/
 
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -113,15 +122,18 @@ public class MainActivity extends AppCompatActivity {
                 switch (item.getItemId()){
 
                     case R.id.nav_home:
-                        setFragment(homeFragment);
+                        //setFragment(homeFragment);
+                        viewPager.setCurrentItem(0, false);
                         return true;
 
                     case R.id.nav_fitness:
-                        setFragment(workoutListFragment);
+                        //setFragment(workoutListFragment);
+                        viewPager.setCurrentItem(1, false);
                         return true;
 
                     case R.id.nav_reservations:
-                        setFragment(userReservationsFragment);
+                        //setFragment(userReservationsFragment);
+                        viewPager.setCurrentItem(2, false);
                         return true;
 
                     case R.id.nav_diets:
@@ -136,12 +148,58 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (prevMenuItem != null)
+                    prevMenuItem.setChecked(false);
+                else
+                    bottomNav.getMenu().getItem(0).setChecked(false);
+
+                bottomNav.getMenu().getItem(position).setChecked(true);
+                prevMenuItem = bottomNav.getMenu().getItem(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+
+        setupViewPager(viewPager);
+
+    }
+
+    private void setupViewPager(ViewPager viewPager)
+    {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+
+        HomeBaseFragment homeBaseFragment = new HomeBaseFragment();
+        WorkoutBaseFragment  workoutBaseFragment = new WorkoutBaseFragment();
+        ReservationBaseFragment  reservationBaseFragment = new ReservationBaseFragment();
+        /*
+        homeFragment = new HomeBaseFragment();
+        userReservationsFragment = new UserReservationsFragment();
+        workoutListFragment = new WorkoutListFragment();*/
+
+        adapter.addFragment(homeBaseFragment);
+        adapter.addFragment(workoutBaseFragment);
+        adapter.addFragment(reservationBaseFragment);
+        viewPager.setAdapter(adapter);
     }
 
     private void setFragment(Fragment fragment){
+/*
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.main_frame,fragment);
-        fragmentTransaction.commit();
+        fragmentTransaction.commit();*/
     }
 
     @Override
@@ -150,6 +208,7 @@ public class MainActivity extends AppCompatActivity {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         }
+
         super.onBackPressed();
     }
 

@@ -7,11 +7,15 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,6 +32,8 @@ public class HomeFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    AddReservationFragment addReservationFragment = new AddReservationFragment();
 
     public HomeFragment() {
         // Required empty public constructor
@@ -67,24 +73,29 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        getActivity().setTitle("Home");
+        CardView cardViewAddReservation = view.findViewById(R.id.home_reservation_cardview);
 
-        CardView cardViewDiet = view.findViewById(R.id.home_diet_cardview);
-
-        cardViewDiet.setOnClickListener(new View.OnClickListener() {
+        cardViewAddReservation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 //Previous fragment deleted so no overlapping
-                container.removeAllViews();
+                //container.removeAllViews();
 
-                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                fragmentTransaction.add(R.id.main_frame,new AddReservationFragment()).addToBackStack(null);
-                fragmentTransaction.commit();
+                /*
+                FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.main_frame,addReservationFragment).addToBackStack(null);
+                fragmentTransaction.commit();*/
+
+
+                NavController navController = Navigation.findNavController(view);
+
+                navController.navigate(R.id.home_to_addReservation);
+
+
             }
         });
 
         return view;
-        //return inflater.inflate(R.layout.fragment_home, container, false);
     }
 }
