@@ -60,12 +60,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     //Intent to MainActivity
     public void data() {
-        //Create user with name
-        User userTmp = new User();
-        userTmp.setName(registerUserName.toString());
-
         Intent intent = new Intent(this, AfterSignUp.class);
-        intent.putExtra("userTmp", userTmp);
+        intent.putExtra("name", registerUserName.toString());
         startActivity(intent);
     }
 

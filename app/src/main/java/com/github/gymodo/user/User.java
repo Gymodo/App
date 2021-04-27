@@ -19,13 +19,14 @@ import java.util.stream.Collectors;
 /**
  * Represents a user profile.
  */
-public class User implements Serializable {
+public class User {
     @DocumentId
     private String id;
     private String name;
     private Date birthDate;
     private float weight;
     private boolean isAdmin;
+    private UserGoal goal;
     private List<String> savedDietsIds;
     private List<String> savedRoutinesIds;
 
@@ -133,6 +134,18 @@ public class User implements Serializable {
      */
     public User setAdmin(boolean admin) {
         isAdmin = admin;
+        return this;
+    }
+
+    /**
+     * @return
+     */
+    public UserGoal getGoal() {
+        return goal;
+    }
+
+    public User setGoal(UserGoal goal) {
+        this.goal = goal;
         return this;
     }
 
