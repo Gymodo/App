@@ -2,6 +2,7 @@ package com.github.gymodo;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -51,10 +52,10 @@ public class LoginActivity extends AppCompatActivity {
                 firebaseAuth.signInWithCredential(authCredential).addOnCompleteListener(task -> {
                     Toast.makeText(getApplicationContext(), "Your google account is connected to our aplication", Toast.LENGTH_SHORT).show();
                     data();
-                }).addOnFailureListener(e -> showAlert());
+                }).addOnFailureListener(e -> showAlert(e));
             } catch (ApiException e) {
                 e.printStackTrace();
-                showAlert();
+                showAlert(e);
             }
         }
     }
@@ -101,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
             if (task.isSuccessful()) {
                 data();
             } else {
-                showAlert();
+                showAlert(task.getException());
             }
         });
     }
@@ -113,9 +114,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     //Show alert
-    public void showAlert() {
+    public void showAlert(Exception exception) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("User or password does not exist.");
+        builder.setMessage(exception.getLocalizedMessage());
         builder.setTitle("Error");
         builder.setPositiveButton("Accept", null);
         builder.create();
