@@ -8,95 +8,40 @@
     android:layout_gravity="start"
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <!--<include layout="@layout/fragment_home"/>-->
+
+
+    <!--
+    <FrameLayout
+        android:id="@+id/main_frame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:paddingBottom="?attr/actionBarSize">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/home_diet_cardview"
-            android:layout_width="380dp"
-            android:layout_height="250dp"
-            android:layout_marginTop="80dp"
-            android:hapticFeedbackEnabled="false"
-            app:cardCornerRadius="20dp">
+    </FrameLayout>-->
 
-            <ImageView
-                android:id="@+id/home_diet_image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                app:srcCompat="@drawable/food" />
 
-            <TextView
-                android:id="@+id/home_diet_text"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="@string/explore_diets"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="30sp"
-                android:textStyle="bold" />
-        </androidx.cardview.widget.CardView>
+    <com.github.gymodo.NonSwipeableViewPager
 
-        <LinearLayout
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="?attr/actionBarSize"
+        android:layout_alignParentTop="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNav"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:paddingTop="20dp">
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/home_workout_cardview"
-                android:layout_width="180dp"
-                android:layout_height="270dp"
-                android:layout_marginRight="16dp"
-                app:cardCornerRadius="20dp">
-
-                <ImageView
-                    android:id="@+id/home_workout_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/women_working" />
-
-                <TextView
-                    android:id="@+id/home_workout_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="@string/explore_workouts"
-                    android:textColor="@color/white"
-                    android:textSize="30sp"
-                    android:textStyle="bold" />
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/home_reservation_cardview"
-                android:layout_width="180dp"
-                android:layout_height="270dp"
-                app:cardCornerRadius="20dp">
-
-                <ImageView
-                    android:id="@+id/home_reservation_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/arm" />
-
-                <TextView
-                    android:id="@+id/home_reservation_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="@string/make_reservations"
-                    android:textColor="@color/white"
-                    android:textSize="30sp"
-                    android:textStyle="bold" />
-            </androidx.cardview.widget.CardView>
-        </LinearLayout>
+            android:layout_height="56dp"
+            android:layout_gravity="bottom"
+            android:background="@drawable/bottom_nav_curved"
+            app:menu="@menu/bottom_nav_menu"/>
 
     </LinearLayout>
 
@@ -108,6 +53,7 @@
         <include
             android:id="@+id/toolbar"
             layout="@layout/toolbar" />
+
     </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView
@@ -118,4 +64,5 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/header"
         app:menu="@menu/drawer_menu" />
+
 </androidx.drawerlayout.widget.DrawerLayout>

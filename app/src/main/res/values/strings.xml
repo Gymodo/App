@@ -21,6 +21,10 @@
     <string name="make_public">Make public?</string>
     <string name="explore_diets">Explore Diets</string>
     <string name="explore_workouts">Explore Workouts</string>
+    <string name="home">Home</string>
+    <string name="reservations">Reservations</string>
+    <string name="workouts">Workouts</string>
+    <string name="diets">Diets</string>
     <string name="make_reservations">Make Reservation</string>
     <string name="tell_us_about_you">Tell us about you</string>
     <string name="birthdate">Birthdate</string>
