@@ -173,6 +173,13 @@ public class MainActivity extends AppCompatActivity {
         previousHostFragment = 0;
     }
 
+    private void setHostFragment(int position){
+
+        viewPager.setCurrentItem(position, false);
+
+
+    }
+
 
     @Override
     public void onBackPressed() {
