@@ -36,18 +36,10 @@ public class MainActivity extends AppCompatActivity {
 
     //Bottom navigation
     BottomNavigationView bottomNav;
-    FrameLayout main_frame;
     ViewPagerAdapter adapter;
-    // Fragments
-    private HomeFragment homeFragment;
-    private UserReservationsFragment userReservationsFragment;
-    Fragment activeFragment;
-    private WorkoutListFragment workoutListFragment;
     private ViewPager viewPager;
     MenuItem prevMenuItem;
     int previousHostFragment;
-
-    public static FragmentManager fragmentManager;
 
 
     //CardViews
@@ -72,14 +64,6 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNav = findViewById(R.id.bottomNav);
         viewPager = findViewById(R.id.viewPager);
-        //main_frame = findViewById(R.id.main_frame);
-
-/*
-        homeFragment = new HomeFragment();
-        userReservationsFragment = new UserReservationsFragment();
-        workoutListFragment = new WorkoutListFragment();*/
-
-        //fragmentManager = getSupportFragmentManager();
 
         // Makes this activity use our toolbar.
         setSupportActionBar(toolbar);
@@ -113,13 +97,6 @@ public class MainActivity extends AppCompatActivity {
         //Bottom navigation
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-
-        //Assign the main fragment
-/*
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.main_frame,homeFragment);
-        fragmentTransaction.commit();*/
-
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -129,17 +106,14 @@ public class MainActivity extends AppCompatActivity {
                 switch (item.getItemId()){
 
                     case R.id.nav_home:
-                        //setFragment(homeFragment);
                         viewPager.setCurrentItem(0, false);
                         return true;
 
                     case R.id.nav_fitness:
-                        //setFragment(workoutListFragment);
                         viewPager.setCurrentItem(1, false);
                         return true;
 
                     case R.id.nav_reservations:
-                        //setFragment(userReservationsFragment);
                         viewPager.setCurrentItem(2, false);
                         return true;
 
@@ -189,10 +163,6 @@ public class MainActivity extends AppCompatActivity {
         HomeBaseFragment homeBaseFragment = new HomeBaseFragment();
         WorkoutBaseFragment  workoutBaseFragment = new WorkoutBaseFragment();
         ReservationBaseFragment  reservationBaseFragment = new ReservationBaseFragment();
-        /*
-        homeFragment = new HomeBaseFragment();
-        userReservationsFragment = new UserReservationsFragment();
-        workoutListFragment = new WorkoutListFragment();*/
 
         adapter.addFragment(homeBaseFragment);
         adapter.addFragment(workoutBaseFragment);
@@ -203,12 +173,6 @@ public class MainActivity extends AppCompatActivity {
         previousHostFragment = 0;
     }
 
-    private void setFragment(Fragment fragment){
-/*
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.main_frame,fragment);
-        fragmentTransaction.commit();*/
-    }
 
     @Override
     public void onBackPressed() {

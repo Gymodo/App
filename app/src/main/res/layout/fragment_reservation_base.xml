@@ -6,13 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ReservationBaseFragment">
 
-    <!--
-    <FrameLayout
-        android:id="@+id/main_frame_reservation"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingBottom="?attr/actionBarSize" />-->
-
     <fragment
         android:id="@+id/fragment6"
         android:name="androidx.navigation.fragment.NavHostFragment"
