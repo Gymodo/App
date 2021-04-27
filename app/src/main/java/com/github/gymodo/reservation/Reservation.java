@@ -1,6 +1,11 @@
 package com.github.gymodo.reservation;
 
+import com.github.gymodo.Constants;
+import com.github.gymodo.DatabaseUtil;
+import com.github.gymodo.exercise.Exercise;
 import com.github.gymodo.user.User;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentId;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,16 +15,17 @@ import java.util.List;
  * Represent a reservation
  */
 public class Reservation {
-
+    @DocumentId
+    private String id;
     private Date date;
     private int duration;
-    private List<User> users;
+    private List<String> userIds;
 
     /**
      * Build nameless reservation
      */
     public Reservation() {
-        users = new ArrayList<>();
+        userIds = new ArrayList<>();
     }
 
     /**
@@ -27,12 +33,12 @@ public class Reservation {
      *
      * @param date     date
      * @param duration Duration
-     * @param users    usersList
+     * @param userIds  users ids
      */
-    public Reservation(Date date, int duration, List<User> users) {
+    public Reservation(Date date, int duration, List<String> userIds) {
         this.date = date;
         this.duration = duration;
-        this.users = users;
+        this.userIds = userIds;
     }
 
     /**
@@ -80,8 +86,8 @@ public class Reservation {
      *
      * @return userList
      */
-    public List<User> getUsers() {
-        return users;
+    public List<String> getUsersIds() {
+        return userIds;
     }
 
     /**
@@ -90,17 +96,69 @@ public class Reservation {
      * @param users userList
      * @return this
      */
-    public Reservation setUsers(List<User> users) {
-        this.users = users;
+    public Reservation setUsersIds(List<String> users) {
+        this.userIds = users;
+        return this;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public Reservation setId(String id) {
+        this.id = id;
         return this;
     }
 
     /**
      * Add user to users list
      *
-     * @param user User
+     * @param userId The user id.
      */
-    public void addUser(User user) {
-        users.add(user);
+    public void addUserId(String userId) {
+        userIds.add(userId);
+    }
+
+    /**
+     * Gets the users that made this reservation
+     * @return A task with a list of users.
+     */
+    public Task<List<User>> getUsers() {
+        return User.getWhereIdIn(userIds);
+    }
+
+    /**
+     * Saves this object on the database
+     * @return A empty task.
+     */
+    public Task<Void> save() {
+        return DatabaseUtil.saveObject(Constants.COLLECTION_RESERVATIONS, this, Reservation.class);
+    }
+
+    /**
+     * Updates this object on the database
+     * @return A empty task.
+     */
+    public Task<Void> update() {
+        return DatabaseUtil.updateObject(Constants.COLLECTION_RESERVATIONS, id, this, Reservation.class);
+    }
+
+    /**
+     * Gets a Exercise by id.
+     *
+     * @param id The id of the Exercise.
+     * @return A task with the Exercise as result.
+     */
+    public static Task<Reservation> getByID(String id) {
+        return DatabaseUtil.getByID(Constants.COLLECTION_RESERVATIONS, id, Reservation.class);
+    }
+
+    /**
+     * Gets a list of Reservation by ids.
+     * @param ids The list of ids.
+     * @return A task with a list of ids.
+     */
+    public static Task<List<Reservation>> getWhereIdIn(List<String> ids) {
+        return DatabaseUtil.getWhereIdIn(Constants.COLLECTION_RESERVATIONS, ids, Reservation.class);
     }
 }

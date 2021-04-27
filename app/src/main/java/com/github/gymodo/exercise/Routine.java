@@ -1,9 +1,18 @@
 package com.github.gymodo.exercise;
 
+import com.github.gymodo.Constants;
+import com.github.gymodo.DatabaseUtil;
+import com.github.gymodo.food.Meal;
 import com.github.gymodo.user.User;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.FieldPath;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Represents a Routine
@@ -13,29 +22,30 @@ import java.util.List;
  * @see Exercise
  */
 public class Routine {
-
+    @DocumentId
+    private String id;
     private String name;
-    private User autor;
-    private List<Serie> series;
+    private String authorId;
+    private List<String> seriesIds;
 
 
     /**
      * Build nameless routine
      */
     public Routine() {
-        this.series = new ArrayList<>();
+        this.seriesIds = new ArrayList<String>();
     }
 
     /**
      * Build an routine with the data received by parameter
      *
-     * @param name   name
-     * @param series series
+     * @param name      name
+     * @param seriesIds series
      */
-    public Routine(String name, User autor, List<Serie> series) {
+    public Routine(String name, String authorId, List<String> seriesIds) {
         this.name = name;
-        this.autor = autor;
-        this.series = series;
+        this.authorId = authorId;
+        this.seriesIds = seriesIds;
     }
 
     /**
@@ -63,18 +73,18 @@ public class Routine {
      *
      * @return seriesList
      */
-    public List<Serie> getSeries() {
-        return series;
+    public List<String> getSeriesIds() {
+        return seriesIds;
     }
 
     /**
      * Set a series list
      *
-     * @param series seriesList
+     * @param seriesIds seriesList
      * @return this
      */
-    public Routine setSeries(List<Serie> series) {
-        this.series = series;
+    public Routine setSeriesIds(List<String> seriesIds) {
+        this.seriesIds = seriesIds;
         return this;
     }
 
@@ -83,15 +93,10 @@ public class Routine {
      *
      * @return totalVolumen
      */
-    public Float getTotalVolumen() {
+    public Task<Integer> getTotalVolume() {
+        return DatabaseUtil.getMappedSumWhereIn(Constants.COLLECTION_SERIES, seriesIds,
+                Serie::getVolume, Serie.class);
 
-        Float totalVolumen = null;
-
-        for (Serie s : series) {
-            totalVolumen += (s.getReps() * s.getWeight());
-        }
-
-        return totalVolumen * series.size();
     }
 
     /**
@@ -99,18 +104,64 @@ public class Routine {
      *
      * @return author
      */
-    public User getAutor() {
-        return autor;
+    public String getAuthorId() {
+        return authorId;
     }
 
     /**
      * Set routine author
      *
-     * @param autor author
+     * @param authorId author
      * @return this
      */
-    public Routine setAutor(User autor) {
-        this.autor = autor;
+    public Routine setAuthorId(String authorId) {
+        this.authorId = authorId;
         return this;
+    }
+
+    public Task<List<Serie>> getSeries() {
+        return Serie.getWhereIdIn(seriesIds);
+    }
+
+    public Task<User> getAuthor() {
+        return User.getByID(authorId);
+    }
+
+    /**
+     * Saves this object on the database
+     *
+     * @return A empty task.
+     */
+    public Task<Void> save() {
+        return DatabaseUtil.saveObject(Constants.COLLECTION_ROUTINES, this, Routine.class);
+    }
+
+    /**
+     * Updates this object on the database
+     *
+     * @return A empty task.
+     */
+    public Task<Void> update() {
+        return DatabaseUtil.updateObject(Constants.COLLECTION_ROUTINES, id, this, Routine.class);
+    }
+
+    /**
+     * Gets a Routine by id.
+     *
+     * @param id The id of the Routine.
+     * @return A task with the Routine as result.
+     */
+    public static Task<Routine> getByID(String id) {
+        return DatabaseUtil.getByID(Constants.COLLECTION_ROUTINES, id, Routine.class);
+    }
+
+    /**
+     * Gets a list of Routine by ids.
+     *
+     * @param ids The list of ids.
+     * @return A task with a list of ids.
+     */
+    public static Task<List<Routine>> getWhereIdIn(List<String> ids) {
+        return DatabaseUtil.getWhereIdIn(Constants.COLLECTION_ROUTINES, ids, Routine.class);
     }
 }

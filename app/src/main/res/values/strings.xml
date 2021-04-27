@@ -2,6 +2,7 @@
     <string name="app_name">Gymodo</string>
     <string name="hint_email">Email</string>
     <string name="button_login">Login</string>
+    <string name="button_login_google">Google</string>
     <string name="hint_name">Name</string>
     <string name="hint_password">Password</string>
     <string name="button_register">Register</string>
@@ -20,9 +21,22 @@
     <string name="make_public">Make public?</string>
     <string name="explore_diets">Explore Diets</string>
     <string name="explore_workouts">Explore Workouts</string>
-    <string name="make_reservations">Make Reservations</string>
     <string name="home">Home</string>
     <string name="reservations">Reservations</string>
     <string name="workouts">Workouts</string>
     <string name="diets">Diets</string>
+    <string name="make_reservations">Make Reservation</string>
+    <string name="tell_us_about_you">Tell us about you</string>
+    <string name="birthdate">Birthdate</string>
+    <string name="weight">Weight(kg)</string>
+    <string name="what_is_your_goal">What"'"s your goal?</string>
+    <string name="build_muscle">Build Muscle</string>
+    <string name="loose_fat">Loose Fat</string>
+    <string name="get_hardy">Get Hardy</string>
+    <string name="my_diets">My diets</string>
+    <string name="explore">Explore</string>
+    <string name="dont_have_account">Dont have an account?</string>
+    <string name="already_have_account">Already have a account?</string>
+    <string name="sign_up">Sign up</string>
+    <string name="sign_in">Sign in</string>
 </resources>

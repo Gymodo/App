@@ -1,15 +1,36 @@
 package com.github.gymodo.food;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.github.gymodo.Constants;
+import com.github.gymodo.DatabaseUtil;
+import com.github.gymodo.user.User;
+import com.google.android.gms.tasks.SuccessContinuation;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.ToIntFunction;
+import java.util.stream.Collectors;
 
 /**
  * Represents a meal
+ *
  * @see Food
  * @see MealType
  * @see Diet
  */
 public class Meal {
+    @DocumentId
+    private String id;
+    private String authorId;
     /**
      * The meal type.
      */
@@ -17,15 +38,17 @@ public class Meal {
     /**
      * The list of food in this meal.
      */
-    private List<Food> foodList;
+    private List<String> foodListIds;
 
     public Meal() {
-        this.foodList = new ArrayList<>();
+        this.foodListIds = new ArrayList<String>();
     }
 
-    public Meal(MealType mealType, List<Food> foodList) {
+    public Meal(String id, String authorId, MealType mealType, List<String> foodListIds) {
+        this.id = id;
+        this.authorId = authorId;
         this.mealType = mealType;
-        this.foodList = foodList;
+        this.foodListIds = foodListIds;
     }
 
     /**
@@ -55,19 +78,30 @@ public class Meal {
      *
      * @return The food list.
      */
-    public List<Food> getFoodList() {
-        return foodList;
+    public List<String> getFoodListIds() {
+        return foodListIds;
     }
 
     /**
      * Sets the food list.
      *
-     * @param foodList The food list.
+     * @param foodListIds The food list.
      * @return this
      */
-    public Meal setFoodList(List<Food> foodList) {
-        this.foodList = foodList;
+    public Meal setFoodListIds(List<String> foodListIds) {
+        this.foodListIds = foodListIds;
         return this;
+    }
+
+    /**
+     * Sums all the Integer values of a property.
+     * Utility method to not repeat code.
+     *
+     * @param mapper The method to map the values
+     * @return The total value.
+     */
+    private Task<Integer> getTotalFoodProperty(ToIntFunction<Food> mapper) {
+        return DatabaseUtil.getMappedSumWhereIn(Constants.COLLECTION_FOODS, foodListIds, mapper, Food.class);
     }
 
     /**
@@ -75,12 +109,8 @@ public class Meal {
      *
      * @return The total calories.
      */
-    public int getTotalCalories() {
-        int total = 0;
-        for (Food food : foodList) {
-            total += food.getCalories();
-        }
-        return total;
+    public Task<Integer> getTotalCalories() {
+        return getTotalFoodProperty(Food::getCalories);
     }
 
     /**
@@ -88,12 +118,8 @@ public class Meal {
      *
      * @return The total fat.
      */
-    public int getTotalFat() {
-        int total = 0;
-        for (Food food : foodList) {
-            total += food.getTotalFat();
-        }
-        return total;
+    public Task<Integer> getTotalFat() {
+        return getTotalFoodProperty(Food::getTotalFat);
     }
 
     /**
@@ -101,12 +127,8 @@ public class Meal {
      *
      * @return The total sodium.
      */
-    public int getTotalSodium() {
-        int total = 0;
-        for (Food food : foodList) {
-            total += food.getSodium();
-        }
-        return total;
+    public Task<Integer> getTotalSodium() {
+        return getTotalFoodProperty(Food::getSodium);
     }
 
     /**
@@ -114,12 +136,8 @@ public class Meal {
      *
      * @return The total carbohydrates.
      */
-    public int getTotalCarboHydrates() {
-        int total = 0;
-        for (Food food : foodList) {
-            total += food.getTotalCarboHydrate();
-        }
-        return total;
+    public Task<Integer> getTotalCarboHydrates() {
+        return getTotalFoodProperty(Food::getTotalCarboHydrate);
     }
 
     /**
@@ -127,12 +145,8 @@ public class Meal {
      *
      * @return The total cholesterol.
      */
-    public int getTotalCholesterol() {
-        int total = 0;
-        for (Food food : foodList) {
-            total += food.getCholesterol();
-        }
-        return total;
+    public Task<Integer> getTotalCholesterol() {
+        return getTotalFoodProperty(Food::getCholesterol);
     }
 
     /**
@@ -140,11 +154,76 @@ public class Meal {
      *
      * @return The total protein.
      */
-    public int getTotalProtein() {
-        int total = 0;
-        for (Food food : foodList) {
-            total += food.getProtein();
-        }
-        return total;
+    public Task<Integer> getTotalProtein() {
+        return getTotalFoodProperty(Food::getProtein);
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public Meal setId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    public String getAuthorId() {
+        return authorId;
+    }
+
+    public Meal setAuthorId(String authorId) {
+        this.authorId = authorId;
+        return this;
+    }
+
+    /**
+     * Returns a task with a list of foods this meal has.
+     *
+     * @return A task with a list of foods.
+     */
+    public Task<List<Food>> getFoods() {
+        return DatabaseUtil.getWhereIdIn(Constants.COLLECTION_FOODS, foodListIds, Food.class);
+    }
+
+    public Task<User> getAuthor() {
+        return User.getByID(authorId);
+    }
+
+    /**
+     * Saves this object on the database
+     *
+     * @return A empty task.
+     */
+    public Task<Void> save() {
+        return DatabaseUtil.saveObject(Constants.COLLECTION_MEALS, this, Meal.class);
+    }
+
+    /**
+     * Updates this object on the database
+     *
+     * @return A empty task.
+     */
+    public Task<Void> update() {
+        return DatabaseUtil.updateObject(Constants.COLLECTION_MEALS, id, this, Meal.class);
+    }
+
+    /**
+     * Gets a Meal by id.
+     *
+     * @param id The id of the Meal.
+     * @return A task with the Meal as result.
+     */
+    public static Task<Meal> getByID(String id) {
+        return DatabaseUtil.getByID(Constants.COLLECTION_MEALS, id, Meal.class);
+    }
+
+    /**
+     * Gets a list of Meal by ids.
+     *
+     * @param ids The list of ids.
+     * @return A task with a list of ids.
+     */
+    public static Task<List<Meal>> getWhereIdIn(List<String> ids) {
+        return DatabaseUtil.getWhereIdIn(Constants.COLLECTION_MEALS, ids, Meal.class);
     }
 }

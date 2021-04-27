@@ -1,5 +1,12 @@
 package com.github.gymodo.food;
 
+import com.github.gymodo.Constants;
+import com.github.gymodo.DatabaseUtil;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentId;
+
+import java.util.List;
+
 /**
  * Represents a food.
  *
@@ -8,6 +15,8 @@ package com.github.gymodo.food;
  * @see Meal
  */
 public class Food {
+    @DocumentId
+    private String id;
     private String name;
     private int calories;
     private int totalFat;
@@ -167,5 +176,49 @@ public class Food {
     public Food setProtein(int protein) {
         this.protein = protein;
         return this;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public Food setId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
+     * Saves this object on the database
+     * @return A empty task.
+     */
+    public Task<Void> save() {
+        return DatabaseUtil.saveObject(Constants.COLLECTION_FOODS, this, Food.class);
+    }
+
+    /**
+     * Updates this object on the database
+     * @return A empty task.
+     */
+    public Task<Void> update() {
+        return DatabaseUtil.updateObject(Constants.COLLECTION_FOODS, id, this, Food.class);
+    }
+
+    /**
+     * Gets a Food by id.
+     *
+     * @param id The id of the Food.
+     * @return A task with the Food as result.
+     */
+    public static Task<Food> getByID(String id) {
+        return DatabaseUtil.getByID(Constants.COLLECTION_FOODS, id, Food.class);
+    }
+
+    /**
+     * Gets a list of Food by ids.
+     * @param ids The list of ids.
+     * @return A task with a list of ids.
+     */
+    public static Task<List<Food>> getWhereIdIn(List<String> ids) {
+        return DatabaseUtil.getWhereIdIn(Constants.COLLECTION_FOODS, ids, Food.class);
     }
 }
