@@ -68,23 +68,23 @@ public class SeriesFragment extends Fragment {
         recyclerView = view.findViewById(R.id.SeriesRecyclerView);
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
-
         String userId = auth.getCurrentUser().getUid();
-
-        Serie.listByAuthor(userId).addOnSuccessListener(list -> {
-            // don't use = here, need to have the same reference.
-            series.addAll(list);
-        }).addOnFailureListener(fail -> {
-            Toast.makeText(getContext(), "Error loading series", Toast.LENGTH_SHORT).show();
-        });
 
         adapter = new SeriesAdapter(series, getContext());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
 
-        addButton.setOnClickListener(btnView -> {
+        Serie.listByAuthor(userId).addOnSuccessListener(list -> {
+            // don't use = here, need to have the same reference.
+            series.addAll(list);
+            adapter.notifyDataSetChanged();
+        }).addOnFailureListener(fail -> {
+            Toast.makeText(getContext(), "Error loading series", Toast.LENGTH_SHORT).show();
+        });
 
+        addButton.setOnClickListener(btnView -> {
             // TODO: Fragment Navigation.
+            throw new UnsupportedOperationException("falta implementar");
         });
 
         return view;

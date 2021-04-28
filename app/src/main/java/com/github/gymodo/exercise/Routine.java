@@ -25,6 +25,7 @@ public class Routine {
     @DocumentId
     private String id;
     private String name;
+    private String description;
     private String authorId;
     private List<String> seriesIds;
 
@@ -65,6 +66,24 @@ public class Routine {
      */
     public Routine setName(String name) {
         this.name = name;
+        return this;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public Routine setId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Routine setDescription(String description) {
+        this.description = description;
         return this;
     }
 
