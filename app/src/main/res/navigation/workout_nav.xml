@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/workoutListFragment"
-        android:name="com.github.gymodo.WorkoutListFragment"
+        android:name="com.github.gymodo.fragments.WorkoutListFragment"
         android:label="fragment_workout_list"
         tools:layout="@layout/fragment_workout_list" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/workoutDetailFragment"
-        android:name="com.github.gymodo.WorkoutDetailFragment"
+        android:name="com.github.gymodo.fragments.WorkoutDetailFragment"
         android:label="fragment_workout_detail"
         tools:layout="@layout/fragment_workout_detail" />
 </navigation>

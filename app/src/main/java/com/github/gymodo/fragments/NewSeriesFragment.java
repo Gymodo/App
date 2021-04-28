@@ -1,4 +1,4 @@
-package com.github.gymodo;
+package com.github.gymodo.fragments;
 
 import android.os.Bundle;
 
@@ -19,6 +19,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.github.gymodo.R;
 
 /**
  * A simple {@link Fragment} subclass.

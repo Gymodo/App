@@ -1,4 +1,4 @@
-package com.github.gymodo;
+package com.github.gymodo.fragments;
 
 import android.os.Bundle;
 
@@ -20,6 +20,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.github.gymodo.R;
 
 /**
  * A simple {@link Fragment} subclass.
