@@ -1,4 +1,4 @@
-package com.github.gymodo;
+package com.github.gymodo.fragments;
 
 import android.os.Bundle;
 
@@ -8,12 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.gymodo.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link WorkoutDetailFragment#newInstance} factory method to
+ * Use the {@link UserReservationsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class WorkoutDetailFragment extends Fragment {
+public class UserReservationsFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,7 +27,7 @@ public class WorkoutDetailFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public WorkoutDetailFragment() {
+    public UserReservationsFragment() {
         // Required empty public constructor
     }
 
@@ -34,11 +37,11 @@ public class WorkoutDetailFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment WorkoutDetailFragment.
+     * @return A new instance of fragment UserReservationsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static WorkoutDetailFragment newInstance(String param1, String param2) {
-        WorkoutDetailFragment fragment = new WorkoutDetailFragment();
+    public static UserReservationsFragment newInstance(String param1, String param2) {
+        UserReservationsFragment fragment = new UserReservationsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -58,7 +61,23 @@ public class WorkoutDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        getActivity().setTitle("Reservations");
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_workout_detail, container, false);
+        View view = inflater.inflate(R.layout.fragment_user_reservations, container, false);
+
+        FloatingActionButton floatingActionButton = view.findViewById(R.id.floatingActionButton);
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*
+                FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.main_frame_reservation, new AddReservationFragment()).addToBackStack(null);
+                fragmentTransaction.commit();*/
+            }
+        });
+
+        return view;
     }
 }

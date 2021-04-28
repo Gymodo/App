@@ -8,24 +8,23 @@ import androidx.cardview.widget.CardView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.viewpager.widget.ViewPager;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.google.android.gms.dynamic.IFragmentWrapper;
+import com.github.gymodo.fragments.base_fragments.DietBaseFragment;
+import com.github.gymodo.fragments.base_fragments.HomeBaseFragment;
+import com.github.gymodo.fragments.base_fragments.ReservationBaseFragment;
+import com.github.gymodo.fragments.base_fragments.WorkoutBaseFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
     MenuItem prevMenuItem;
     int previousHostFragment;
+
+    private Stack<Integer> backstack = new Stack<>();
 
 
     //CardViews
@@ -64,6 +65,11 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNav = findViewById(R.id.bottomNav);
         viewPager = findViewById(R.id.viewPager);
+
+        //Initialize backstack
+        if (backstack.empty()){
+            backstack.push(0);
+        }
 
         // Makes this activity use our toolbar.
         setSupportActionBar(toolbar);
@@ -106,19 +112,23 @@ public class MainActivity extends AppCompatActivity {
                 switch (item.getItemId()){
 
                     case R.id.nav_home:
-                        viewPager.setCurrentItem(0, false);
+                        //viewPager.setCurrentItem(0, false);
+                        setHostFragment(0);
                         return true;
 
                     case R.id.nav_fitness:
-                        viewPager.setCurrentItem(1, false);
+                        //viewPager.setCurrentItem(1, false);
+                        setHostFragment(1);
+
                         return true;
 
                     case R.id.nav_reservations:
-                        viewPager.setCurrentItem(2, false);
+                        //viewPager.setCurrentItem(2, false);
+                        setHostFragment(2);
                         return true;
 
                     case R.id.nav_diets:
-
+                        setHostFragment(3);
                         return true;
 
                     default:
@@ -161,12 +171,14 @@ public class MainActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager){
 
         HomeBaseFragment homeBaseFragment = new HomeBaseFragment();
-        WorkoutBaseFragment  workoutBaseFragment = new WorkoutBaseFragment();
-        ReservationBaseFragment  reservationBaseFragment = new ReservationBaseFragment();
+        WorkoutBaseFragment workoutBaseFragment = new WorkoutBaseFragment();
+        ReservationBaseFragment reservationBaseFragment = new ReservationBaseFragment();
+        DietBaseFragment dietBaseFragment = new DietBaseFragment();
 
         adapter.addFragment(homeBaseFragment);
         adapter.addFragment(workoutBaseFragment);
         adapter.addFragment(reservationBaseFragment);
+        adapter.addFragment(dietBaseFragment);
         viewPager.setAdapter(adapter);
 
         //initialize previous item variable
@@ -176,7 +188,9 @@ public class MainActivity extends AppCompatActivity {
     private void setHostFragment(int position){
 
         viewPager.setCurrentItem(position, false);
+        backstack.push(position);
 
+        Log.d("stack", "Size: " + backstack.size());
 
     }
 
@@ -198,8 +212,11 @@ public class MainActivity extends AppCompatActivity {
             //Toast.makeText(this, "Num stack " + navController.getBackStack().size(), Toast.LENGTH_SHORT).show();
             if (!navController.navigateUp()){//Si el fragment no puede ir atras pues se va
 
-                if (viewPager.getCurrentItem() != 0){ //Si no es la home
-                    viewPager.setCurrentItem(previousHostFragment, false);
+                Toast.makeText(this, "BACKSTACK: " + backstack.size(), Toast.LENGTH_SHORT).show();
+                if (backstack.size() > 1){ //Si no es la home
+                    //viewPager.setCurrentItem(previousHostFragment, false);
+                    backstack.pop();
+                    viewPager.setCurrentItem(backstack.peek(), false);
                 } else  {
                     super.onBackPressed();
                 }
