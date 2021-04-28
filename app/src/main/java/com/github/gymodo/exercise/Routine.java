@@ -164,4 +164,23 @@ public class Routine {
     public static Task<List<Routine>> getWhereIdIn(List<String> ids) {
         return DatabaseUtil.getWhereIdIn(Constants.COLLECTION_ROUTINES, ids, Routine.class);
     }
+
+    /**
+     * List all routines made by author.
+     *
+     * @param authorId The user id.
+     * @return A list of routines
+     */
+    public static Task<List<Routine>> listByAuthor(String authorId) {
+        return DatabaseUtil.getWhereValueIs(Constants.COLLECTION_ROUTINES, "authorId", authorId, Routine.class);
+    }
+
+    /**
+     * Get all the routines.
+     *
+     * @return all the routines
+     */
+    public static Task<List<Routine>> listAll() {
+        return DatabaseUtil.getAll(Constants.COLLECTION_ROUTINES, Routine.class);
+    }
 }

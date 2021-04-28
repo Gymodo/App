@@ -43,10 +43,11 @@ public abstract class DatabaseUtil {
 
     /**
      * Saves (creates) an object on the database.
+     *
      * @param collection The database collection.
-     * @param object The object.
-     * @param valueType The object class.
-     * @param <T> The object type.
+     * @param object     The object.
+     * @param valueType  The object class.
+     * @param <T>        The object type.
      * @return A task.
      */
     public static <T> Task<Void> saveObject(String collection, @NonNull T object, @NonNull Class<T> valueType) {
@@ -59,11 +60,12 @@ public abstract class DatabaseUtil {
 
     /**
      * Updates an object on the database.
+     *
      * @param collection The database collection.
-     * @param id The id of the object.
-     * @param object the object.
-     * @param valueType The object class.
-     * @param <T> The object type.
+     * @param id         The id of the object.
+     * @param object     the object.
+     * @param valueType  The object class.
+     * @param <T>        The object type.
      * @return A task.
      */
     public static <T> Task<Void> updateObject(String collection, @NonNull String id, @NonNull T object, @NonNull Class<T> valueType) {
@@ -72,6 +74,75 @@ public abstract class DatabaseUtil {
         return db.collection(collection)
                 .document(id)
                 .set(object);
+    }
+
+    /**
+     * Gets all the objects.
+     *
+     * @param collection The database collection.
+     * @param valueType  The class type.
+     * @param <T>        The class type.
+     * @return A task with the list of objects as result.
+     */
+    public static <T> Task<List<T>> getAll(@NonNull String collection, @NonNull Class<T> valueType) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        return db.collection(collection)
+                .get()
+                .onSuccessTask(query -> {
+                    if (query != null) {
+                        return Tasks.forResult(query.toObjects(valueType));
+                    }
+                    return Tasks.forCanceled();
+                });
+    }
+
+    /**
+     * Gets a list of objects where the value matches..
+     *
+     * @param collection The database collection.
+     * @param valueName  The value name.
+     * @param valueName  The value
+     * @param valueType  The class type.
+     * @param <T>        The class type.
+     * @return A task with the list of objects as result.
+     */
+    public static <T> Task<List<T>> getWhereValueIs(@NonNull String collection, String valueName, Object value, @NonNull Class<T> valueType) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        return db.collection(collection)
+                .whereEqualTo(valueName, value)
+                .get()
+                .onSuccessTask(query -> {
+                    if (query != null) {
+                        return Tasks.forResult(query.toObjects(valueType));
+                    }
+                    return Tasks.forCanceled();
+                });
+    }
+
+    /**
+     * Gets a list of objects where the value is greater .
+     *
+     * @param collection The database collection.
+     * @param valueName  The value name.
+     * @param valueName  The value
+     * @param valueType  The class type.
+     * @param <T>        The class type.
+     * @return A task with the list of objects as result.
+     */
+    public static <T> Task<List<T>> getWhereValueIsGreatherOrEqual(@NonNull String collection, String valueName, Object value, @NonNull Class<T> valueType) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        return db.collection(collection)
+                .whereGreaterThanOrEqualTo(valueName, value)
+                .get()
+                .onSuccessTask(query -> {
+                    if (query != null) {
+                        return Tasks.forResult(query.toObjects(valueType));
+                    }
+                    return Tasks.forCanceled();
+                });
     }
 
     /**
