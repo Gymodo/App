@@ -9,6 +9,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.NumberPicker;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 
 import com.github.gymodo.user.User;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -28,8 +30,9 @@ public class AfterSignUp extends AppCompatActivity {
     //Date picker
     private DatePickerDialog datePicker;
     private EditText textDate;
-
     private NumberPicker numberPicker;
+    private Button afterSignUpfinishBtn;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +42,17 @@ public class AfterSignUp extends AppCompatActivity {
         //Hooks
         textDate = findViewById(R.id.aftersignupBirthdate);
         numberPicker = findViewById(R.id.aftersignupNumberPicker);
+        afterSignUpfinishBtn = findViewById(R.id.aftersignupFinishButton);
 
-        //User received
+
+        //Create empty user
         User userTmp = new User();
-        userTmp.setName(getIntent().getStringExtra("name"));
 
 
+        //Set min and max value for numberpicker
         numberPicker.setMinValue(18);
         numberPicker.setMaxValue(250);
+
 
         //Date picker
         textDate.setOnClickListener(v -> {
@@ -59,12 +65,12 @@ public class AfterSignUp extends AppCompatActivity {
             datePicker = new DatePickerDialog(
                     AfterSignUp.this,
                     (view, year1, month1, dayOfMonth) -> textDate.setText(dayOfMonth + "/" + (month1 + 1) + "/" + year1), year, month, day);
-
             datePicker.show();
 
         });
 
-        //Every time you select a date in the date picker
+
+        //Every time user select a date, the user birthdate variable will be update automatically.
         textDate.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -86,10 +92,21 @@ public class AfterSignUp extends AppCompatActivity {
         numberPicker.setOnValueChangedListener((picker, oldVal, newVal) -> {
             userTmp.setWeight(numberPicker.getValue());
             //Toast.makeText(AfterSignUp.this, userTmp.getWeight() + "", Toast.LENGTH_SHORT).show();
-            Log.d("userWeight", userTmp.getWeight() + "");
+            //Log.d("userWeight", userTmp.getWeight() + "");
         });
 
+
+        //Get intent
+        userTmp.setName(getIntent().getStringExtra("registerUserName"));
+
+
+        afterSignUpfinishBtn.setOnClickListener(v -> {
+            Toast.makeText(this, "Save user in database", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        });
     }
+
 
     /**
      * Convert string to date

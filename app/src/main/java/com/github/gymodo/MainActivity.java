@@ -19,11 +19,6 @@ public class MainActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     NavigationView navigationView;
 
-    //CardViews
-    private CardView cardViewDiet;
-    private CardView cardViewWorkout;
-    private CardView cardViewReservation;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,10 +29,6 @@ public class MainActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         navigationView = findViewById(R.id.nav_view);
         drawerLayout = findViewById(R.id.drawerLayout);
-
-        cardViewDiet = findViewById(R.id.home_diet_cardview);
-        cardViewWorkout = findViewById(R.id.home_workout_cardview);
-        cardViewReservation = findViewById(R.id.home_reservation_cardview);
 
 
         // Makes this activity use our toolbar.

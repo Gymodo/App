@@ -3,7 +3,9 @@ package com.github.gymodo;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -24,6 +26,7 @@ public class RegisterActivity extends AppCompatActivity {
     private TextInputEditText registerUserEmail;
     private Button registerSignupBtn;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +45,9 @@ public class RegisterActivity extends AppCompatActivity {
                 createUser();
             }
         });
+
     }
+
 
     //Create a user
     public void createUser() {
@@ -53,16 +58,18 @@ public class RegisterActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         data();
                     } else {
-                        Toast.makeText(RegisterActivity.this, "Error signing in", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this, "The username or password is incorrect!", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
-    //Intent to MainActivity
+
+    //Intent to AfterSignUpActivity
     public void data() {
         Intent intent = new Intent(this, AfterSignUp.class);
-        intent.putExtra("name", registerUserName.toString());
+        intent.putExtra("registerUserName", registerUserName.toString());
         startActivity(intent);
+        finish();
     }
 
     public void intentToLoginActivity(View view) {
