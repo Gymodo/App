@@ -21,6 +21,7 @@ import com.github.gymodo.fragments.base_fragments.DietBaseFragment;
 import com.github.gymodo.fragments.base_fragments.HomeBaseFragment;
 import com.github.gymodo.fragments.base_fragments.ReservationBaseFragment;
 import com.github.gymodo.fragments.base_fragments.WorkoutBaseFragment;
+import com.github.gymodo.adapters.ViewPagerAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 

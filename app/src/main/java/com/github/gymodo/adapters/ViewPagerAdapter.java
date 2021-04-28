@@ -1,4 +1,4 @@
-package com.github.gymodo;
+package com.github.gymodo.adapters;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
