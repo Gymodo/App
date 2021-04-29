@@ -8,18 +8,22 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.github.gymodo.sharedPreferences.MySharedPreferences;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 
@@ -33,12 +37,26 @@ public class LoginActivity extends AppCompatActivity {
     private String email;
     private String password;
 
-    public static final String PREF_FILE_NAME = "Authentication";
+    //public static final String PREF_FILE_NAME = "Authentication";
+    public static final int REQUEST_EXIT = 12345;
+
 
     @Override
     protected void onStart() {
         super.onStart();
-        readSharedPref();
+
+        String[] credential = MySharedPreferences.readSharedPref(this);
+        if (credential != null) {
+            email = credential[0];
+            password = credential[1];
+
+            firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+                if (task.isSuccessful()){
+                    data();
+                }
+            });
+        }
+        //readSharedPref();
     }
 
     //Login google
@@ -64,6 +82,10 @@ public class LoginActivity extends AppCompatActivity {
                 showAlert();
             }
         }
+
+        if (requestCode == REQUEST_EXIT){
+            this.finish();
+        }
     }
 
     @Override
@@ -77,7 +99,6 @@ public class LoginActivity extends AppCompatActivity {
         loginPassword = findViewById(R.id.registerInputTextPassword);
         loginLoginBtn = findViewById(R.id.loginBtn);
         googleLoginBtn = findViewById(R.id.googleLoginBtn);
-
 
         loginLoginBtn.setOnClickListener(v -> {
             if ((!loginUseremail.getText().toString().isEmpty()) && (!loginPassword.getText().toString().isEmpty())) {
@@ -108,7 +129,8 @@ public class LoginActivity extends AppCompatActivity {
     public void loginUser() {
         firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
             if (task.isSuccessful()) {
-                saveSharePref();
+                //saveSharePref();
+                MySharedPreferences.saveSharePref(email, password, this);
                 data();
             } else {
                 showAlert();
@@ -135,9 +157,10 @@ public class LoginActivity extends AppCompatActivity {
 
     public void intentToRegisterActivity(View view) {
         Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, REQUEST_EXIT);
     }
 
+    /*
     private void saveSharePref() {
         SharedPreferences sharedPrefs = getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
@@ -145,18 +168,25 @@ public class LoginActivity extends AppCompatActivity {
         editor.putString("password", password);
         editor.commit();
         Toast.makeText(getApplicationContext(), "Field saved", Toast.LENGTH_SHORT).show();
-    }
+    }*/
 
+    /*
     private void readSharedPref() {//Si el fitxer de pref tenim dades vol dir que ja ens hem autenticat
         SharedPreferences sharedPreferences = getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
         email = sharedPreferences.getString("email", null);
         password = sharedPreferences.getString("password", null);
         if (email != null & password != null) {
             Toast.makeText(LoginActivity.this, "Already signing in", Toast.LENGTH_SHORT).show();
-            loginUser();
-            data();
+            //loginUser();
+            //+data();
+            firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+                if (task.isSuccessful()){
+                    data();
+                }
+            });
         }
-    }
+    }*/
+
 
 
 }

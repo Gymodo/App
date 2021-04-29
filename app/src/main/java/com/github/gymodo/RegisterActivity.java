@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.github.gymodo.sharedPreferences.MySharedPreferences;
 import com.github.gymodo.user.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -56,6 +57,7 @@ public class RegisterActivity extends AppCompatActivity {
                 registerUserPassword.getText().toString())
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
+                        MySharedPreferences.saveSharePref(registerUserEmail.getText().toString(), registerUserPassword.getText().toString(), this);
                         data();
                     } else {
                         Toast.makeText(RegisterActivity.this, "The username or password is incorrect!", Toast.LENGTH_SHORT).show();
@@ -69,10 +71,14 @@ public class RegisterActivity extends AppCompatActivity {
         Intent intent = new Intent(this, AfterSignUp.class);
         intent.putExtra("registerUserName", registerUserName.toString());
         startActivity(intent);
+        setResult(12345, null);
         finish();
     }
 
+
     public void intentToLoginActivity(View view) {
+
+
         Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
         startActivity(intent);
     }

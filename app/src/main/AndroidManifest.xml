@@ -12,8 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Gymodo">
 
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".AfterSignUp" />
+        <activity android:name=".RegisterActivity"
+            android:parentActivityName=".LoginActivity"/>
+        <activity android:name=".AfterSignUp"/>
         <activity android:name=".MainActivity" />
         <activity android:name=".NewSeries"></activity>
         <activity android:name=".SeriesActivity" android:parentActivityName=".NewSeries"/>
