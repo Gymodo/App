@@ -11,12 +11,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Gymodo">
+        <activity android:name=".MainActivity" />
         <activity android:name=".RegisterActivity"
             android:parentActivityName=".LoginActivity"/>
-      <activity
+        <activity android:name=".LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".AfterSignUp"
             android:theme="@android:style/Theme.NoTitleBar" />
-        <activity android:name=".MainActivity" />
         <activity android:name=".NewSeries"></activity>
         <activity android:name=".SeriesActivity" android:parentActivityName=".NewSeries"/>
         <activity android:name=".DietListActivity" />
@@ -24,22 +31,6 @@
         <activity
             android:name=".AddDietActivity"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".LoginActivity">
-        <activity android:name=".RegisterActivity" />
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".LoginActivity">
-            <!--
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
-        </activity>
     </application>
 
 </manifest>
