@@ -9,16 +9,22 @@
         android:id="@+id/homeFragment"
         android:name="com.github.gymodo.fragments.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home" >/>
         <action
-            android:id="@+id/home_to_addReservation"
-            app:destination="@id/addReservationFragment"
-            app:popUpTo="@id/homeFragment"/>
+            android:id="@+id/home_to_publicDiets"
+            app:destination="@id/publicDietsFragment2" />
+        <action
+            android:id="@+id/home_to_publicWorkouts"
+            app:destination="@id/publicWorkoutsFragment" />
     </fragment>
     <fragment
-        android:id="@+id/addReservationFragment"
-        android:name="com.github.gymodo.fragments.AddReservationFragment"
-        android:label="fragment_add_reservation"
-        tools:layout="@layout/fragment_add_reservation" >
-    </fragment>
+        android:id="@+id/publicWorkoutsFragment"
+        android:name="com.github.gymodo.fragments.PublicWorkoutsFragment"
+        android:label="fragment_public_workouts"
+        tools:layout="@layout/fragment_public_workouts" />
+    <fragment
+        android:id="@+id/publicDietsFragment2"
+        android:name="com.github.gymodo.fragments.PublicDietsFragment"
+        android:label="fragment_public_diets"
+        tools:layout="@layout/fragment_public_diets" />
 </navigation>
