@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/reservation_nav"
+    app:startDestination="@id/userReservationsFragment">
+
+    <fragment
+        android:id="@+id/userReservationsFragment"
+        android:name="com.github.gymodo.fragments.UserReservationsFragment"
+        android:label="fragment_user_reservations"
+        tools:layout="@layout/fragment_user_reservations" >
+        <action
+            android:id="@+id/user_reservations_to_addReservation"
+            app:destination="@id/addReservationFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/addReservationFragment2"
+        android:name="com.github.gymodo.fragments.AddReservationFragment"
+        android:label="fragment_add_reservation"
+        tools:layout="@layout/fragment_add_reservation" />
+</navigation>

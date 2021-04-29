@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/diet_nav"
+    app:startDestination="@id/publicDietsFragment">
+    <fragment
+        android:id="@+id/publicDietsFragment"
+        android:name="com.github.gymodo.fragments.PublicDietsFragment"
+        android:label="fragment_public_diets"
+        tools:layout="@layout/fragment_public_diets" />
+</navigation>

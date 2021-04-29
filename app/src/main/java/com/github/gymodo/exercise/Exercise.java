@@ -154,4 +154,12 @@ public class Exercise {
     public static Task<List<Exercise>> getWhereIdIn(List<String> ids) {
         return DatabaseUtil.getWhereIdIn(Constants.COLLECTION_EXERCISES, ids, Exercise.class);
     }
+
+    /**
+     * Get all the Exercise.
+     * @return all the Exercise
+     */
+    public static Task<List<Exercise>> listAll() {
+        return DatabaseUtil.getAll(Constants.COLLECTION_EXERCISES, Exercise.class);
+    }
 }

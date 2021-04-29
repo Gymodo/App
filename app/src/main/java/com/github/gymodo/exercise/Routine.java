@@ -25,6 +25,7 @@ public class Routine {
     @DocumentId
     private String id;
     private String name;
+    private String description;
     private String authorId;
     private List<String> seriesIds;
 
@@ -65,6 +66,24 @@ public class Routine {
      */
     public Routine setName(String name) {
         this.name = name;
+        return this;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public Routine setId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Routine setDescription(String description) {
+        this.description = description;
         return this;
     }
 
@@ -163,5 +182,24 @@ public class Routine {
      */
     public static Task<List<Routine>> getWhereIdIn(List<String> ids) {
         return DatabaseUtil.getWhereIdIn(Constants.COLLECTION_ROUTINES, ids, Routine.class);
+    }
+
+    /**
+     * List all routines made by author.
+     *
+     * @param authorId The user id.
+     * @return A list of routines
+     */
+    public static Task<List<Routine>> listByAuthor(String authorId) {
+        return DatabaseUtil.getWhereValueIs(Constants.COLLECTION_ROUTINES, "authorId", authorId, Routine.class);
+    }
+
+    /**
+     * Get all the routines.
+     *
+     * @return all the routines
+     */
+    public static Task<List<Routine>> listAll() {
+        return DatabaseUtil.getAll(Constants.COLLECTION_ROUTINES, Routine.class);
     }
 }

@@ -3,6 +3,7 @@ package com.github.gymodo.reservation;
 import com.github.gymodo.Constants;
 import com.github.gymodo.DatabaseUtil;
 import com.github.gymodo.exercise.Exercise;
+import com.github.gymodo.exercise.Routine;
 import com.github.gymodo.user.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentId;
@@ -160,5 +161,23 @@ public class Reservation {
      */
     public static Task<List<Reservation>> getWhereIdIn(List<String> ids) {
         return DatabaseUtil.getWhereIdIn(Constants.COLLECTION_RESERVATIONS, ids, Reservation.class);
+    }
+
+    /**
+     * Get all the Reservation.
+     *
+     * @return all the Reservation
+     */
+    public static Task<List<Reservation>> listAll() {
+        return DatabaseUtil.getAll(Constants.COLLECTION_RESERVATIONS, Reservation.class);
+    }
+
+    /**
+     * Get all the Reservation.
+     *
+     * @return all the Reservation
+     */
+    public static Task<List<Reservation>> listPastDate(Date date) {
+        return DatabaseUtil.getWhereValueIsGreatherOrEqual(Constants.COLLECTION_RESERVATIONS, "date", date, Reservation.class);
     }
 }

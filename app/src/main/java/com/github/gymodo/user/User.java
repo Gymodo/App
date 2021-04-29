@@ -244,4 +244,13 @@ public class User {
     public static Task<List<User>> getWhereIdIn(List<String> ids) {
         return DatabaseUtil.getWhereIdIn(Constants.COLLECTION_USERS, ids, User.class);
     }
+
+    /**
+     * Get all the User.
+     *
+     * @return all the User
+     */
+    public static Task<List<User>> listAll() {
+        return DatabaseUtil.getAll(Constants.COLLECTION_USERS, User.class);
+    }
 }

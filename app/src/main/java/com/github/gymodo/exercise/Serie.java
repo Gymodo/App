@@ -2,6 +2,7 @@ package com.github.gymodo.exercise;
 
 import com.github.gymodo.Constants;
 import com.github.gymodo.DatabaseUtil;
+import com.github.gymodo.user.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentId;
 
@@ -20,6 +21,7 @@ public class Serie {
     private int reps;
     private int weight;
     private String exerciseId;
+    private String authorId;
 
     /**
      * Build nameless exercise
@@ -34,10 +36,11 @@ public class Serie {
      * @param weight     Weight
      * @param exerciseId exerciseId
      */
-    public Serie(int reps, int weight, String exerciseId) {
+    public Serie(int reps, int weight, String exerciseId, String authorId) {
         this.reps = reps;
         this.weight = weight;
         this.exerciseId = exerciseId;
+        this.authorId = authorId;
     }
 
     /**
@@ -108,6 +111,15 @@ public class Serie {
         return this;
     }
 
+    public String getAuthorId() {
+        return authorId;
+    }
+
+    public Serie setAuthorId(String authorId) {
+        this.authorId = authorId;
+        return this;
+    }
+
     public String getId() {
         return id;
     }
@@ -139,6 +151,33 @@ public class Serie {
      * @param id The id of the Serie.
      * @return A task with the Serie as result.
      */
+    public static Task<Serie> get(String id) {
+        return DatabaseUtil.getByID(Constants.COLLECTION_SERIES, id, Serie.class);
+    }
+
+    /**
+     * List all series made by author.
+     * @param authorId The user id.
+     * @return A list of series
+     */
+    public static Task<List<Serie>> listByAuthor(String authorId) {
+        return DatabaseUtil.getWhereValueIs(Constants.COLLECTION_SERIES, "authorId", authorId, Serie.class);
+    }
+
+    /**
+     * Get all the series.
+     * @return all the series
+     */
+    public static Task<List<Serie>> listAll() {
+        return DatabaseUtil.getAll(Constants.COLLECTION_SERIES, Serie.class);
+    }
+
+    /**
+     * Gets a Serie by id.
+     *
+     * @param id The id of the Serie.
+     * @return A task with the Serie as result.
+     */
     public static Task<Serie> getByID(String id) {
         return DatabaseUtil.getByID(Constants.COLLECTION_SERIES, id, Serie.class);
     }
@@ -150,5 +189,9 @@ public class Serie {
      */
     public static Task<List<Serie>> getWhereIdIn(List<String> ids) {
         return DatabaseUtil.getWhereIdIn(Constants.COLLECTION_SERIES, ids, Serie.class);
+    }
+
+    public Task<User> getAuthor() {
+        return User.getByID(authorId);
     }
 }
