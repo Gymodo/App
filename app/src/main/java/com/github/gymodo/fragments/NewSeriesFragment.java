@@ -7,12 +7,14 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.gymodo.exercise.Exercise;
+import com.github.gymodo.exercise.Serie;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -21,6 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.github.gymodo.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,17 +31,19 @@ import com.github.gymodo.R;
  * create an instance of this fragment.
  */
 public class NewSeriesFragment extends Fragment {
-
     Spinner exerciseSpinner;
     TextView exerciseDescription;
     TextInputEditText reps;
     TextInputEditText weight;
     FloatingActionButton addButton;
-    List<Exercise> exercises;
+    Exercise selectedExercise;
+
+    List<Exercise> availableExercises;
+
 
     public NewSeriesFragment() {
         // Required empty public constructor
-        exercises = new ArrayList<>();
+        availableExercises = new ArrayList<>();
     }
 
     public static NewSeriesFragment newInstance() {
@@ -67,15 +72,50 @@ public class NewSeriesFragment extends Fragment {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(), R.layout.support_simple_spinner_dropdown_item);
 
         Exercise.listAll().addOnSuccessListener(exerciseList -> {
-            exercises.addAll(exerciseList);
-            arrayAdapter.addAll(exercises.stream().map(Exercise::getName).collect(Collectors.toList()));
+            availableExercises.addAll(exerciseList);
+            arrayAdapter.addAll(availableExercises.stream().map(Exercise::getName).collect(Collectors.toList()));
         })
-        .addOnFailureListener(fail -> {
-            Toast.makeText(getContext(), "Error fetching exercises.", Toast.LENGTH_SHORT).show();
-        });
+                .addOnFailureListener(fail -> {
+                    Toast.makeText(getContext(), "Error fetching exercises.", Toast.LENGTH_SHORT).show();
+                });
 
         exerciseSpinner.setAdapter(arrayAdapter);
 
+        exerciseSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectedExercise = availableExercises.get(position);
+                exerciseDescription.setText(selectedExercise.getDescription());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                selectedExercise = null;
+                exerciseDescription.setText("");
+            }
+        });
+
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        String userId = auth.getCurrentUser().getUid();
+
+        addButton.setOnClickListener(btnView -> {
+            if (selectedExercise == null) {
+                Toast.makeText(getContext(), "Select an exercise first.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            Serie serie = new Serie();
+            serie.setAuthorId(userId)
+                    .setExerciseId(selectedExercise.getId())
+                    .setReps(Integer.parseInt(reps.getText().toString()))
+                    .setWeight(Integer.parseInt(weight.getText().toString()));
+
+            serie.save().addOnSuccessListener(v -> {
+                // Seria is saved, redirect somewhere.
+
+                // TODO fragment nav
+                throw new UnsupportedOperationException("falta implementar");
+            });
+        });
         return view;
     }
 }

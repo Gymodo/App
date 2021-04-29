@@ -95,6 +95,7 @@ public class WorkoutDetailFragment extends Fragment {
             });
 
             addSerieButton.setOnClickListener(btnView -> {
+
                 // TODO do something
                 throw new UnsupportedOperationException("falta implementar");
             });
