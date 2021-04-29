@@ -6,11 +6,13 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.gymodo.MainActivity;
 import com.github.gymodo.R;
 
 /**
@@ -70,31 +72,39 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         CardView cardViewAddReservation = view.findViewById(R.id.home_reservation_cardview);
+        CardView cardViewDiets = view.findViewById(R.id.home_diet_cardview);
+        CardView cardViewWorkouts = view.findViewById(R.id.home_workout_cardview);
 
         cardViewAddReservation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                //Previous fragment deleted so no overlapping
-                //container.removeAllViews();
+                //Select another host frgament
+                MainActivity mainActivity = (MainActivity) getActivity();
+                mainActivity.setHostFragment(2);
 
-                /*
-                FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.main_frame,addReservationFragment).addToBackStack(null);
-                fragmentTransaction.commit();*/
+                Fragment fragment = mainActivity.adapter.getItem(mainActivity.viewPager.getCurrentItem());
+
+                NavController myNavController =  NavHostFragment.findNavController(fragment.getChildFragmentManager().getPrimaryNavigationFragment());
+                myNavController.navigate(R.id.user_reservations_to_addReservation);
 
 
+            }
+        });
 
+        cardViewDiets.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 NavController navController = Navigation.findNavController(view);
+                navController.navigate(R.id.home_to_publicDiets);
+            }
+        });
 
-                navController.navigate(R.id.home_to_addReservation);
-
-                /*
-                if (navController.getCurrentDestination().getId() == R.id.homeFragment) {
-                    navController.navigate(R.id.home_to_addReservation);
-                }*/
-
-
+        cardViewWorkouts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavController navController = Navigation.findNavController(view);
+                navController.navigate(R.id.home_to_publicWorkouts);
             }
         });
 

@@ -8,8 +8,11 @@ import androidx.navigation.NavController;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CalendarView;
 
 import com.github.gymodo.R;
+
+import java.util.Calendar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -96,36 +99,14 @@ public class AddReservationFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_reservation, container, false);
 
-        //NavController navController = Navigation.findNavController(view);
+        CalendarView calendarView = view.findViewById(R.id.calendarView);
 
-        /*
-        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default *//*) {
-            @Override
-            public void handleOnBackPressed() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DATE,Calendar.getInstance().getActualMinimum(Calendar.DATE));
+        long date = calendar.getTime().getTime();
 
+        calendarView.setMinDate(date);
 
-                int num = getParentFragmentManager().getBackStackEntryCount();
-                Toast.makeText(getActivity(), "entra: " + num, Toast.LENGTH_SHORT).show();
-
-                if (num > 0){
-
-                    MainActivity mainActivity = (MainActivity)getActivity();
-                    if (mainActivity.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                        mainActivity.drawerLayout.closeDrawer(GravityCompat.START);
-                    } else {
-                        //getParentFragmentManager().popBackStack();
-                        Toast.makeText(mainActivity, "result:_ " + Navigation.findNavController(view).navigateUp(), Toast.LENGTH_SHORT).show();
-                        //Navigation.findNavController(view).navigateUp();
-                    }
-                }
-
-
-            }
-        };
-        requireActivity().getOnBackPressedDispatcher().addCallback(getActivity(), callback);*/
-        // The callback can be enabled or disabled here or in handleOnBackPressed()
-
-        //navController =  Navigation.findNavController(view);
 
 
         return view;

@@ -36,8 +36,8 @@ public class MainActivity extends AppCompatActivity {
 
     //Bottom navigation
     BottomNavigationView bottomNav;
-    ViewPagerAdapter adapter;
-    private ViewPager viewPager;
+    public ViewPagerAdapter adapter;
+    public ViewPager viewPager;
     MenuItem prevMenuItem;
     int previousHostFragment;
 
@@ -186,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
         previousHostFragment = 0;
     }
 
-    private void setHostFragment(int position){
+    public void setHostFragment(int position){
 
         viewPager.setCurrentItem(position, false);
         backstack.push(position);
