@@ -14,6 +14,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:gravity="center_horizontal"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,7 +27,7 @@
             android:layout_marginTop="30dp"
             android:gravity="center"
             android:text="@string/tell_us_about_you"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="28sp" />
 
         <EditText
@@ -65,94 +66,61 @@
             android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
             android:text="@string/what_is_your_goal" />
 
-        <LinearLayout
+        <RadioGroup
             android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/aftersignupBuildMuscle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:drawableTop="@drawable/common_google_signin_btn_icon_dark"
+                    android:padding="15dp"
+                    android:button="@color/transparent"
+                    android:text="@string/build_muscle" />
+
+                <RadioButton
+                    android:id="@+id/aftersignupLooseFat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:drawableTop="@drawable/common_google_signin_btn_icon_dark"
+                    android:padding="15dp"
+                    android:button="@color/transparent"
+                    android:text="@string/loose_fat" />
+
+                <RadioButton
+                    android:id="@+id/aftersignupGetHardy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:drawableTop="@drawable/common_google_signin_btn_icon_dark"
+                    android:padding="15dp"
+                    android:button="@color/transparent"
+                    android:text="@string/get_hardy" />
+            </LinearLayout>
+
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/aftersignupFinishButton"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="10dp">
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_margin="10dp"
-                app:cardCornerRadius="10dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:id="@+id/aftersignupBuildMuscle"
-                        android:layout_width="match_parent"
-                        android:layout_height="80dp"
-                        app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
-
-                    <TextView
-                        android:id="@+id/aftersignupBuildMuscleText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/build_muscle" />
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_margin="10dp"
-                app:cardCornerRadius="10dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:id="@+id/aftersignupLooseFat"
-                        android:layout_width="match_parent"
-                        android:layout_height="80dp"
-                        app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
-
-                    <TextView
-                        android:id="@+id/aftersignupLooseFatText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/loose_fat" />
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_margin="10dp"
-                app:cardCornerRadius="10dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:id="@+id/aftersignupGetHardy"
-                        android:layout_width="match_parent"
-                        android:layout_height="80dp"
-                        app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
-
-                    <TextView
-                        android:id="@+id/aftersignupGetHardyText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/get_hardy" />
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-        </LinearLayout>
+            android:layout_marginTop="50dp"
+            android:background="@color/primaryColor"
+            android:padding="10dp"
+            android:text="@string/finish"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

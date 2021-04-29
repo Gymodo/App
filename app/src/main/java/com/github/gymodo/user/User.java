@@ -10,6 +10,7 @@ import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,6 +26,7 @@ public class User {
     private Date birthDate;
     private float weight;
     private boolean isAdmin;
+    private UserGoal goal;
     private List<String> savedDietsIds;
     private List<String> savedRoutinesIds;
 
@@ -132,6 +134,18 @@ public class User {
      */
     public User setAdmin(boolean admin) {
         isAdmin = admin;
+        return this;
+    }
+
+    /**
+     * @return
+     */
+    public UserGoal getGoal() {
+        return goal;
+    }
+
+    public User setGoal(UserGoal goal) {
+        this.goal = goal;
         return this;
     }
 
