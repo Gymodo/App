@@ -21,9 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".AfterSignUp"
-            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity android:name=".AfterSignUp" />
         <activity android:name=".NewSeries"></activity>
         <activity android:name=".SeriesActivity" android:parentActivityName=".NewSeries"/>
         <activity android:name=".DietListActivity" />

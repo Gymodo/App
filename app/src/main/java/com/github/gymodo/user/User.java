@@ -138,12 +138,20 @@ public class User {
     }
 
     /**
-     * @return
+     * Get user goal
+     *
+     * @return UserGoal
      */
     public UserGoal getGoal() {
         return goal;
     }
 
+    /**
+     * Set UserGoal
+     *
+     * @param goal
+     * @return this
+     */
     public User setGoal(UserGoal goal) {
         this.goal = goal;
         return this;
