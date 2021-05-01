@@ -3,6 +3,8 @@ package com.github.gymodo.fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +25,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.github.gymodo.R;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
 /**
@@ -33,6 +36,8 @@ import com.google.firebase.auth.FirebaseAuth;
 public class NewSeriesFragment extends Fragment {
     Spinner exerciseSpinner;
     TextView exerciseDescription;
+    TextInputLayout repsLayout;
+    TextInputLayout weightLayout;
     TextInputEditText reps;
     TextInputEditText weight;
     FloatingActionButton addButton;
@@ -61,6 +66,8 @@ public class NewSeriesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        getActivity().setTitle("New Serie");
+
         View view = inflater.inflate(R.layout.fragment_new_series, container, false);
 
         exerciseSpinner = view.findViewById(R.id.NewSeriesExerciseSpinner);
@@ -68,6 +75,8 @@ public class NewSeriesFragment extends Fragment {
         reps = view.findViewById(R.id.NewSeriesReps);
         weight = view.findViewById(R.id.NewSeriesWeight);
         addButton = view.findViewById(R.id.NewSeriesAddButton);
+        repsLayout = view.findViewById(R.id.NewSeriesRepsLayout);
+        weightLayout = view.findViewById(R.id.NewSeriesWeightLayout);
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(), R.layout.support_simple_spinner_dropdown_item);
 
@@ -86,12 +95,18 @@ public class NewSeriesFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedExercise = availableExercises.get(position);
                 exerciseDescription.setText(selectedExercise.getDescription());
+                repsLayout.setVisibility(View.VISIBLE);
+                weightLayout.setVisibility(View.VISIBLE);
+                exerciseDescription.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 selectedExercise = null;
                 exerciseDescription.setText("");
+                repsLayout.setVisibility(View.INVISIBLE);
+                weightLayout.setVisibility(View.INVISIBLE);
+                exerciseDescription.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -103,6 +118,15 @@ public class NewSeriesFragment extends Fragment {
                 Toast.makeText(getContext(), "Select an exercise first.", Toast.LENGTH_SHORT).show();
                 return;
             }
+
+            if(reps.getText().toString().isEmpty()) {
+                reps.setText("0");
+            }
+
+            if(weight.getText().toString().isEmpty()) {
+                weight.setText("0");
+            }
+
             Serie serie = new Serie();
             serie.setAuthorId(userId)
                     .setExerciseId(selectedExercise.getId())
@@ -111,9 +135,9 @@ public class NewSeriesFragment extends Fragment {
 
             serie.save().addOnSuccessListener(v -> {
                 // Seria is saved, redirect somewhere.
-
-                // TODO fragment nav
-                throw new UnsupportedOperationException("falta implementar");
+                Toast.makeText(getContext(), "Serie created.", Toast.LENGTH_SHORT).show();
+                NavController navController = Navigation.findNavController(view);
+                navController.popBackStack();
             });
         });
         return view;
