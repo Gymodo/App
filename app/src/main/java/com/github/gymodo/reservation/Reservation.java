@@ -14,13 +14,21 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Represent a reservation
+ * Represent a reservation in a specified span of time.
+ * With a list of users who requested this specific span of time.
  */
 public class Reservation {
     @DocumentId
     private String id;
+    /** The day and hour this reservation span starts.
     private Date date;
+    /**
+     * The duration of this reservation time. In hours.
+     */
     private int duration;
+    /**
+     * The list of users ids who reserved this time.
+     */
     private List<String> userIds;
 
     /**
