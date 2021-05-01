@@ -46,8 +46,6 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         holder.reserv_row_layout.setOnClickListener(v -> {
 
             Toast.makeText(mContext, "Reservation for: " + mReservations.get(position).getDate().toString(), Toast.LENGTH_SHORT).show();
-
-
             //Save reservation on BBDD
             /*
             mReservations.get(position).addUserId(firebaseAuth.getCurrentUser().getUid());

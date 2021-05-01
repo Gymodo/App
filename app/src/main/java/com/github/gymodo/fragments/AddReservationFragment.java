@@ -18,6 +18,7 @@ import com.github.gymodo.adapters.ReservationAdapter;
 import com.github.gymodo.reservation.Reservation;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -47,7 +48,6 @@ public class AddReservationFragment extends Fragment {
     private FirebaseFirestore db;
     private List<Reservation> reservationList;
     ReservationAdapter reservationAdapter;
-    RecyclerView recyclerView;
     NavController navController;
 
     public AddReservationFragment() {
@@ -119,7 +119,7 @@ public class AddReservationFragment extends Fragment {
 
 
         CalendarView calendarView = (CalendarView) view.findViewById(R.id.calendarView);
-        recyclerView = view.findViewById(R.id.reservationsRecyclerView);
+        RecyclerView recyclerView = view.findViewById(R.id.reservationsRecyclerView);
 
         db = FirebaseFirestore.getInstance();
 
@@ -144,10 +144,27 @@ public class AddReservationFragment extends Fragment {
             //db.collection("reservations").document().set(user);
 
             //Get reservations list
+            ArrayList<String> usersId = new ArrayList<>();
+            usersId.add(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            Reservation reservation = new Reservation(selectedDate, 60, usersId);
+            reservation.save().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Toast.makeText(getContext(), "Reserva guardada", Toast.LENGTH_SHORT).show();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getContext(), "Falla", Toast.LENGTH_SHORT).show();
+                }
+            });
+            /*
             Reservation.listPastDate(selectedDate).addOnSuccessListener(new OnSuccessListener<List<Reservation>>() {
                 @Override
                 public void onSuccess(List<Reservation> reservations) {
                     reservationList = reservations;
+                    reservationAdapter = new ReservationAdapter(getContext(), reservationList);
+                    recyclerView.setAdapter(reservationAdapter);
                     Toast.makeText(getContext(), "SIZE: " + reservationList.size(), Toast.LENGTH_SHORT).show();
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -155,10 +172,7 @@ public class AddReservationFragment extends Fragment {
                 public void onFailure(@NonNull Exception e) {
                     Toast.makeText(getContext(), "No reservations found", Toast.LENGTH_SHORT).show();
                 }
-            });
-
-            reservationAdapter = new ReservationAdapter(getContext(), reservationList);
-            recyclerView.setAdapter(reservationAdapter);
+            });*/
 
         });
 
