@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.view.View;
 import android.widget.Toast;
 
 import com.github.gymodo.sharedPreferences.MySharedPreferences;
@@ -55,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
 
     private Stack<Integer> backstack = new Stack<>();
 
-
     //CardViews
     private CardView cardViewDiet;
     private CardView cardViewWorkout;
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
     //TextView
     private TextView headerUsername;
-
+  
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,10 +74,6 @@ public class MainActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         navigationView = findViewById(R.id.nav_view);
         drawerLayout = findViewById(R.id.drawerLayout);
-
-        cardViewDiet = findViewById(R.id.home_diet_cardview);
-        cardViewWorkout = findViewById(R.id.home_workout_cardview);
-        cardViewReservation = findViewById(R.id.home_reservation_cardview);
 
         bottomNav = findViewById(R.id.bottomNav);
         viewPager = findViewById(R.id.viewPager);
@@ -97,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Makes this activity use our toolbar.
+
         setSupportActionBar(toolbar);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
@@ -216,6 +213,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void setHostFragment(int position){
 
+        if (position == 0) { //If is the home fragment, display the toolbar
+            toolbar.setVisibility(View.VISIBLE);
+        } else {
+            toolbar.setVisibility(View.GONE);
+        }
+
         viewPager.setCurrentItem(position, false);
         backstack.push(position);
 
@@ -238,25 +241,20 @@ public class MainActivity extends AppCompatActivity {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
 
-            //Toast.makeText(this, "Num stack " + navController.getBackStack().size(), Toast.LENGTH_SHORT).show();
             if (!navController.navigateUp()){//Si el fragment no puede ir atras pues se va
 
-                Toast.makeText(this, "BACKSTACK: " + backstack.size(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "BACKSTACK: " + backstack.size(), Toast.LENGTH_SHORT).show();
                 if (backstack.size() > 1){ //Si no es la home
                     //viewPager.setCurrentItem(previousHostFragment, false);
                     backstack.pop();
+                    if (backstack.peek() == 0){
+                        toolbar.setVisibility(View.VISIBLE);
+                    }
                     viewPager.setCurrentItem(backstack.peek(), false);
                 } else  {
                     super.onBackPressed();
                 }
             }
-            /*
-            if (navController.navigateUp()){
-
-                Toast.makeText(this, "can navigate up", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "CAN'T navigate up", Toast.LENGTH_SHORT).show();
-            }*/
         }
 
         //super.onBackPressed();
