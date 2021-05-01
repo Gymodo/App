@@ -7,6 +7,7 @@ import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.ToIntFunction;
@@ -156,6 +157,9 @@ public abstract class DatabaseUtil {
      */
     public static <T> Task<List<T>> getWhereIdIn(@NonNull String collection, @NonNull List<String> ids, @NonNull Class<T> valueType) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        if(ids.isEmpty())
+            return Tasks.forResult(new ArrayList<T>());
 
         return db.collection(collection)
                 .whereIn(FieldPath.documentId(), ids)

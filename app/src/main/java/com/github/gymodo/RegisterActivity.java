@@ -63,7 +63,7 @@ public class RegisterActivity extends AppCompatActivity {
     //Intent to AfterSignUpActivity
     public void data() {
         Intent intent = new Intent(this, AfterSignUp.class);
-        intent.putExtra("registerUserName", registerUserName.toString());
+        intent.putExtra("registerUserName", registerUserName.getText().toString());
         startActivity(intent);
         setResult(12345, null);
         finish();
