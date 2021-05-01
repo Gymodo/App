@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,12 +14,18 @@ import android.widget.CalendarView;
 import android.widget.Toast;
 
 import com.github.gymodo.R;
+import com.github.gymodo.adapters.ReservationAdapter;
+import com.github.gymodo.reservation.Reservation;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,6 +45,9 @@ public class AddReservationFragment extends Fragment {
     private String mParam2;
 
     private FirebaseFirestore db;
+    private List<Reservation> reservationList;
+    ReservationAdapter reservationAdapter;
+    RecyclerView recyclerView;
     NavController navController;
 
     public AddReservationFragment() {
@@ -109,6 +119,7 @@ public class AddReservationFragment extends Fragment {
 
 
         CalendarView calendarView = (CalendarView) view.findViewById(R.id.calendarView);
+        recyclerView = view.findViewById(R.id.reservationsRecyclerView);
 
         db = FirebaseFirestore.getInstance();
 
@@ -124,13 +135,31 @@ public class AddReservationFragment extends Fragment {
 
         calendarView.setOnDateChangeListener((view1, year1, month1, dayOfMonth) -> {
 
-            Date reservationDate = new GregorianCalendar(year1, month1, dayOfMonth).getTime();
+            Date selectedDate = new GregorianCalendar(year1, month1, dayOfMonth).getTime();
 
-            Toast.makeText(view1.getContext(), "Date: " + reservationDate, Toast.LENGTH_SHORT).show();
+            Toast.makeText(view1.getContext(), "Date: " + selectedDate, Toast.LENGTH_SHORT).show();
 
             Map<String, Object> user = new HashMap<>();
             user.put("date", dayOfMonth + "/" + (month1 +1)  + "/" + year1);
             //db.collection("reservations").document().set(user);
+
+            //Get reservations list
+            Reservation.listPastDate(selectedDate).addOnSuccessListener(new OnSuccessListener<List<Reservation>>() {
+                @Override
+                public void onSuccess(List<Reservation> reservations) {
+                    reservationList = reservations;
+                    Toast.makeText(getContext(), "SIZE: " + reservationList.size(), Toast.LENGTH_SHORT).show();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getContext(), "No reservations found", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            reservationAdapter = new ReservationAdapter(getContext(), reservationList);
+            recyclerView.setAdapter(reservationAdapter);
+
         });
 
 
