@@ -88,6 +88,7 @@ public class Serie {
      * Returns the calculated volume.
      * @return The volume.
      */
+    @Exclude
     public int getVolume() {
         return getWeight() * getReps();
     }

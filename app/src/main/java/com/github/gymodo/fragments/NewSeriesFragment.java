@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.github.gymodo.R;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
 /**
@@ -35,6 +36,8 @@ import com.google.firebase.auth.FirebaseAuth;
 public class NewSeriesFragment extends Fragment {
     Spinner exerciseSpinner;
     TextView exerciseDescription;
+    TextInputLayout repsLayout;
+    TextInputLayout weightLayout;
     TextInputEditText reps;
     TextInputEditText weight;
     FloatingActionButton addButton;
@@ -72,6 +75,8 @@ public class NewSeriesFragment extends Fragment {
         reps = view.findViewById(R.id.NewSeriesReps);
         weight = view.findViewById(R.id.NewSeriesWeight);
         addButton = view.findViewById(R.id.NewSeriesAddButton);
+        repsLayout = view.findViewById(R.id.NewSeriesRepsLayout);
+        weightLayout = view.findViewById(R.id.NewSeriesWeightLayout);
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getContext(), R.layout.support_simple_spinner_dropdown_item);
 
@@ -90,8 +95,8 @@ public class NewSeriesFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectedExercise = availableExercises.get(position);
                 exerciseDescription.setText(selectedExercise.getDescription());
-                reps.setVisibility(View.VISIBLE);
-                weight.setVisibility(View.VISIBLE);
+                repsLayout.setVisibility(View.VISIBLE);
+                weightLayout.setVisibility(View.VISIBLE);
                 exerciseDescription.setVisibility(View.VISIBLE);
             }
 
@@ -99,8 +104,8 @@ public class NewSeriesFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {
                 selectedExercise = null;
                 exerciseDescription.setText("");
-                reps.setVisibility(View.INVISIBLE);
-                weight.setVisibility(View.INVISIBLE);
+                repsLayout.setVisibility(View.INVISIBLE);
+                weightLayout.setVisibility(View.INVISIBLE);
                 exerciseDescription.setVisibility(View.INVISIBLE);
             }
         });
@@ -130,6 +135,7 @@ public class NewSeriesFragment extends Fragment {
 
             serie.save().addOnSuccessListener(v -> {
                 // Seria is saved, redirect somewhere.
+                Toast.makeText(getContext(), "Serie created.", Toast.LENGTH_SHORT).show();
                 NavController navController = Navigation.findNavController(view);
                 navController.popBackStack();
             });
