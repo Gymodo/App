@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="start"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    tools:openDrawer="start">
 
     <!--<include layout="@layout/fragment_home"/>-->
 
@@ -26,8 +27,8 @@
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="?attr/actionBarSize"
         android:layout_alignParentTop="true"
+        android:paddingBottom="?attr/actionBarSize"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <LinearLayout
@@ -41,7 +42,7 @@
             android:layout_height="56dp"
             android:layout_gravity="bottom"
             android:background="@drawable/bottom_nav_curved"
-            app:menu="@menu/bottom_nav_menu"/>
+            app:menu="@menu/bottom_nav_menu" />
 
     </LinearLayout>
 

@@ -18,6 +18,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.view.View;
 import android.widget.Toast;
 
@@ -27,9 +28,13 @@ import com.github.gymodo.fragments.base_fragments.HomeBaseFragment;
 import com.github.gymodo.fragments.base_fragments.ReservationBaseFragment;
 import com.github.gymodo.fragments.base_fragments.WorkoutBaseFragment;
 import com.github.gymodo.adapters.ViewPagerAdapter;
+import com.github.gymodo.user.User;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Stack;
 
@@ -51,6 +56,14 @@ public class MainActivity extends AppCompatActivity {
 
     private Stack<Integer> backstack = new Stack<>();
 
+    //CardViews
+    private CardView cardViewDiet;
+    private CardView cardViewWorkout;
+    private CardView cardViewReservation;
+
+    //TextView
+    private TextView headerUsername;
+  
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +77,15 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNav = findViewById(R.id.bottomNav);
         viewPager = findViewById(R.id.viewPager);
+
+        headerUsername = navigationView.getHeaderView(0).findViewById(R.id.textHeaderUsername);
+
+        //Set username
+        User.getByID(FirebaseAuth.getInstance().getUid()).addOnSuccessListener(user -> {
+            headerUsername.setText(user.getName());
+            //Toast.makeText(this, ""+user.getName(), Toast.LENGTH_SHORT).show();
+        });
+
 
         //Initialize backstack
         if (backstack.empty()){
