@@ -12,10 +12,12 @@
         tools:layout="@layout/fragment_workout_list" >
         <action
             android:id="@+id/workout_list_to_detail"
-            app:destination="@id/workoutDetailFragment" />
+            app:destination="@id/workoutDetailFragment"
+            app:popUpTo="@id/workoutListFragment" />
         <action
             android:id="@+id/action_workoutListFragment_to_addWorkoutFragment"
-            app:destination="@id/addWorkoutFragment" />
+            app:destination="@id/addWorkoutFragment"
+            app:popUpTo="@id/workoutListFragment" />
     </fragment>
     <fragment
         android:id="@+id/workoutDetailFragment"
@@ -24,11 +26,21 @@
         tools:layout="@layout/fragment_workout_detail" >
         <action
             android:id="@+id/action_workoutDetailFragment_to_addWorkoutFragment"
-            app:destination="@id/addWorkoutFragment" />
+            app:destination="@id/addWorkoutFragment"
+            app:popUpTo="@id/workoutDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/addWorkoutFragment"
-        android:name="com.github.gymodo.addWorkoutFragment"
+        android:name="com.github.gymodo.fragments.AddWorkoutFragment"
         android:label="fragment_add_workout"
-        tools:layout="@layout/fragment_add_workout" />
+        tools:layout="@layout/fragment_add_workout" >
+        <action
+            android:id="@+id/action_addWorkoutFragment_to_newSeriesFragment"
+            app:destination="@id/newSeriesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newSeriesFragment"
+        android:name="com.github.gymodo.fragments.NewSeriesFragment"
+        android:label="fragment_new_series"
+        tools:layout="@layout/fragment_new_series" />
 </navigation>

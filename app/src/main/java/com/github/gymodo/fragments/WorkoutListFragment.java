@@ -3,6 +3,8 @@ package com.github.gymodo.fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -74,8 +76,9 @@ public class WorkoutListFragment extends Fragment {
         });
 
         addBtn.setOnClickListener(btnView -> {
-            // TODO do something
-            throw new UnsupportedOperationException("falta implementar");
+            NavController navController = Navigation.findNavController(view);
+            navController.navigate(R.id.action_workoutListFragment_to_addWorkoutFragment);
+
         });
 
         return view;
