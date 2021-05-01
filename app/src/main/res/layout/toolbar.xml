@@ -3,7 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/design_default_color_primary"
+    android:background="@color/background"
     android:elevation="4dp"
     android:navigationIcon="@drawable/ic_menu"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+    <TextView
+        android:id="@+id/toolbarTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name_uppercase"
+        android:textColor="@color/primaryColor"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+</androidx.appcompat.widget.Toolbar>

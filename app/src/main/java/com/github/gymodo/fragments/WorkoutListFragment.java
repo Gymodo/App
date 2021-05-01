@@ -53,7 +53,6 @@ public class WorkoutListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        getActivity().setTitle("Workouts");
         View view = inflater.inflate(R.layout.fragment_workout_list, container, false);
 
         recyclerView = view.findViewById(R.id.WorkoutListRecycler);

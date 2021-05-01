@@ -2,6 +2,7 @@ package com.github.gymodo.fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 
@@ -9,10 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
+import android.widget.Toast;
 
 import com.github.gymodo.R;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,6 +37,7 @@ public class AddReservationFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private FirebaseFirestore db;
     NavController navController;
 
     public AddReservationFragment() {
@@ -99,13 +107,31 @@ public class AddReservationFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_reservation, container, false);
 
-        CalendarView calendarView = view.findViewById(R.id.calendarView);
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.DATE,Calendar.getInstance().getActualMinimum(Calendar.DATE));
-        long date = calendar.getTime().getTime();
+        CalendarView calendarView = (CalendarView) view.findViewById(R.id.calendarView);
 
-        calendarView.setMinDate(date);
+        db = FirebaseFirestore.getInstance();
+
+        Calendar cal = Calendar.getInstance();
+        int year  = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int date  = cal.get(Calendar.DATE);
+        cal.clear();
+        cal.set(year, month, date);
+        long todayMillis2 = cal.getTimeInMillis();
+
+        calendarView.setMinDate(todayMillis2);//Set min date in order to prevent the user to make a reservation for yesterday
+
+        calendarView.setOnDateChangeListener((view1, year1, month1, dayOfMonth) -> {
+
+            Date reservationDate = new GregorianCalendar(year1, month1, dayOfMonth).getTime();
+
+            Toast.makeText(view1.getContext(), "Date: " + reservationDate, Toast.LENGTH_SHORT).show();
+
+            Map<String, Object> user = new HashMap<>();
+            user.put("date", dayOfMonth + "/" + (month1 +1)  + "/" + year1);
+            //db.collection("reservations").document().set(user);
+        });
 
 
 
