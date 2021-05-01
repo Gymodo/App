@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     DrawerLayout drawerLayout;
     NavigationView navigationView;
-    public static final String PREF_FILE_NAME = "Authentication";
 
     //Bottom navigation
     BottomNavigationView bottomNav;
@@ -104,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
                 signOut();
                 MySharedPreferences.deleteSharedPref(this);
                 startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                finish();
             }
             drawerLayout.closeDrawer(GravityCompat.START);
             return true;
@@ -249,11 +249,4 @@ public class MainActivity extends AppCompatActivity {
         mainActivityFirebaseAuth.signOut();
         onBackPressed();
     }
-
-    /*
-    private void deleteSharedPref() {
-        SharedPreferences.Editor editor = getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE).edit();
-        editor.clear().apply();
-        Toast.makeText(getApplicationContext(), "Delete prefs", Toast.LENGTH_SHORT).show();
-    }*/
 }

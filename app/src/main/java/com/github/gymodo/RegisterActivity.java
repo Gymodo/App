@@ -1,24 +1,17 @@
 package com.github.gymodo;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.github.gymodo.sharedPreferences.MySharedPreferences;
-import com.github.gymodo.user.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -70,7 +63,7 @@ public class RegisterActivity extends AppCompatActivity {
     //Intent to AfterSignUpActivity
     public void data() {
         Intent intent = new Intent(this, AfterSignUp.class);
-        intent.putExtra("registerUserName", registerUserName.toString());
+        intent.putExtra("registerUserName", registerUserName.getText().toString());
         startActivity(intent);
         setResult(12345, null);
         finish();
@@ -78,8 +71,6 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     public void intentToLoginActivity(View view) {
-
-
         Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
         startActivity(intent);
     }

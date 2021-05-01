@@ -1,5 +1,6 @@
 package com.github.gymodo;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
@@ -7,17 +8,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.NumberPicker;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 
 import com.github.gymodo.user.User;
-import com.google.firebase.auth.FirebaseAuth;
+import com.github.gymodo.user.UserGoal;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,6 +36,12 @@ public class AfterSignUp extends AppCompatActivity {
     private NumberPicker numberPicker;
     private Button afterSignUpfinishBtn;
 
+    private RadioGroup afterSignupRadioGroup;
+    private RadioButton aftersignupBuildMuscleBtn;
+    private RadioButton aftersignupLoseFatBtn;
+    private RadioButton aftersignupGetHardyBtn;
+
+    private FirebaseFirestore afterSignupFireBase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +49,16 @@ public class AfterSignUp extends AppCompatActivity {
         setContentView(R.layout.activity_after_sign_up);
 
         //Hooks
+        afterSignupFireBase = FirebaseFirestore.getInstance();
+
         textDate = findViewById(R.id.aftersignupBirthdate);
         numberPicker = findViewById(R.id.aftersignupNumberPicker);
         afterSignUpfinishBtn = findViewById(R.id.aftersignupFinishButton);
 
+        afterSignupRadioGroup = findViewById(R.id.afterSignupRadioGroup);
+        aftersignupBuildMuscleBtn = findViewById(R.id.aftersignupBuildMuscle);
+        aftersignupLoseFatBtn = findViewById(R.id.aftersignupLoseFat);
+        aftersignupGetHardyBtn = findViewById(R.id.aftersignupGetHardy);
 
         //Create empty user
         User userTmp = new User();
@@ -52,7 +67,7 @@ public class AfterSignUp extends AppCompatActivity {
         //Set min and max value for numberpicker
         numberPicker.setMinValue(18);
         numberPicker.setMaxValue(250);
-
+        numberPicker.setValue(70);
 
         //Date picker
         textDate.setOnClickListener(v -> {
@@ -96,17 +111,71 @@ public class AfterSignUp extends AppCompatActivity {
         });
 
 
-        //Get intent
+        //Get user name from getIntent
         userTmp.setName(getIntent().getStringExtra("registerUserName"));
 
+        afterSignupRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            int radioSelected = afterSignupRadioGroup.getCheckedRadioButtonId();
+            switch (radioSelected){
+                case R.id.aftersignupBuildMuscle:
+                    Toast.makeText(AfterSignUp.this, "Build Muscle", Toast.LENGTH_SHORT).show();
+                    setRadioBtnBackgroundShadow(radioSelected);
+                    userTmp.setGoal(UserGoal.BUILD_MUSCLE);
+                    break;
+                case R.id.aftersignupLoseFat:
+                    Toast.makeText(AfterSignUp.this, "Lose Fat", Toast.LENGTH_SHORT).show();
+                    setRadioBtnBackgroundShadow(radioSelected);
+                    userTmp.setGoal(UserGoal.LOSE_FAT);
+                    break;
+                case R.id.aftersignupGetHardy:
+                    Toast.makeText(AfterSignUp.this, "Get hardy", Toast.LENGTH_SHORT).show();
+                    setRadioBtnBackgroundShadow(radioSelected);
+                    userTmp.setGoal(UserGoal.GET_HARDY);
+                    break;
+            }
+        });
 
         afterSignUpfinishBtn.setOnClickListener(v -> {
-            Toast.makeText(this, "Save user in database", Toast.LENGTH_SHORT).show();
+
+            userTmp.save();
+
+            /*
+            afterSignupFireBase.collection("users").document("user").set(userTmp).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Toast.makeText(AfterSignUp.this, "User saved in database", Toast.LENGTH_SHORT).show();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(AfterSignUp.this, "Error adding user", Toast.LENGTH_SHORT).show();
+                }
+            });*/
+
             startActivity(new Intent(this, MainActivity.class));
             finish();
         });
     }
 
+    private void setRadioBtnBackgroundShadow(int selectedRadio){
+        switch (selectedRadio){
+            case R.id.aftersignupBuildMuscle:
+                aftersignupBuildMuscleBtn.setBackgroundResource(R.drawable.radio_button_shadow);
+                aftersignupLoseFatBtn.setBackgroundResource(R.color.transparent);
+                aftersignupGetHardyBtn.setBackgroundResource(R.color.transparent);
+                break;
+            case R.id.aftersignupLoseFat:
+                aftersignupLoseFatBtn.setBackgroundResource(R.drawable.radio_button_shadow);
+                aftersignupBuildMuscleBtn.setBackgroundResource(R.color.transparent);
+                aftersignupGetHardyBtn.setBackgroundResource(R.color.transparent);
+                break;
+            case R.id.aftersignupGetHardy:
+                aftersignupGetHardyBtn.setBackgroundResource(R.drawable.radio_button_shadow);
+                aftersignupLoseFatBtn.setBackgroundResource(R.color.transparent);
+                aftersignupBuildMuscleBtn.setBackgroundResource(R.color.transparent);
+                break;
+        }
+    }
 
     /**
      * Convert string to date
