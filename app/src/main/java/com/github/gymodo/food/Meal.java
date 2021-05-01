@@ -11,6 +11,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -100,6 +101,7 @@ public class Meal {
      * @param mapper The method to map the values
      * @return The total value.
      */
+    @Exclude
     private Task<Integer> getTotalFoodProperty(ToIntFunction<Food> mapper) {
         return DatabaseUtil.getMappedSumWhereIn(Constants.COLLECTION_FOODS, foodListIds, mapper, Food.class);
     }
@@ -109,6 +111,7 @@ public class Meal {
      *
      * @return The total calories.
      */
+    @Exclude
     public Task<Integer> getTotalCalories() {
         return getTotalFoodProperty(Food::getCalories);
     }
@@ -118,6 +121,7 @@ public class Meal {
      *
      * @return The total fat.
      */
+    @Exclude
     public Task<Integer> getTotalFat() {
         return getTotalFoodProperty(Food::getTotalFat);
     }
@@ -127,6 +131,7 @@ public class Meal {
      *
      * @return The total sodium.
      */
+    @Exclude
     public Task<Integer> getTotalSodium() {
         return getTotalFoodProperty(Food::getSodium);
     }
@@ -136,6 +141,7 @@ public class Meal {
      *
      * @return The total carbohydrates.
      */
+    @Exclude
     public Task<Integer> getTotalCarboHydrates() {
         return getTotalFoodProperty(Food::getTotalCarboHydrate);
     }
@@ -145,6 +151,7 @@ public class Meal {
      *
      * @return The total cholesterol.
      */
+    @Exclude
     public Task<Integer> getTotalCholesterol() {
         return getTotalFoodProperty(Food::getCholesterol);
     }
@@ -154,6 +161,7 @@ public class Meal {
      *
      * @return The total protein.
      */
+    @Exclude
     public Task<Integer> getTotalProtein() {
         return getTotalFoodProperty(Food::getProtein);
     }
@@ -181,10 +189,12 @@ public class Meal {
      *
      * @return A task with a list of foods.
      */
+    @Exclude
     public Task<List<Food>> getFoods() {
         return DatabaseUtil.getWhereIdIn(Constants.COLLECTION_FOODS, foodListIds, Food.class);
     }
 
+    @Exclude
     public Task<User> getAuthor() {
         return User.getByID(authorId);
     }
@@ -194,6 +204,7 @@ public class Meal {
      *
      * @return A empty task.
      */
+    @Exclude
     public Task<Void> save() {
         return DatabaseUtil.saveObject(Constants.COLLECTION_MEALS, this, Meal.class);
     }
@@ -203,6 +214,7 @@ public class Meal {
      *
      * @return A empty task.
      */
+    @Exclude
     public Task<Void> update() {
         return DatabaseUtil.updateObject(Constants.COLLECTION_MEALS, id, this, Meal.class);
     }
@@ -213,6 +225,7 @@ public class Meal {
      * @param id The id of the Meal.
      * @return A task with the Meal as result.
      */
+    @Exclude
     public static Task<Meal> getByID(String id) {
         return DatabaseUtil.getByID(Constants.COLLECTION_MEALS, id, Meal.class);
     }
@@ -223,6 +236,7 @@ public class Meal {
      * @param ids The list of ids.
      * @return A task with a list of ids.
      */
+    @Exclude
     public static Task<List<Meal>> getWhereIdIn(List<String> ids) {
         return DatabaseUtil.getWhereIdIn(Constants.COLLECTION_MEALS, ids, Meal.class);
     }

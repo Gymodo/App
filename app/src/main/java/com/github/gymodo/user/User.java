@@ -7,6 +7,7 @@ import com.github.gymodo.food.Diet;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -207,10 +208,12 @@ public class User {
         return this;
     }
 
+    @Exclude
     public Task<List<Routine>> getSavedRoutines() {
         return Routine.getWhereIdIn(savedRoutinesIds);
     }
 
+    @Exclude
     public Task<List<Diet>> getSavedDiets() {
         return Diet.getWhereIdIn(savedDietsIds);
     }
@@ -220,6 +223,7 @@ public class User {
      *
      * @return A empty task.
      */
+    @Exclude
     public Task<Void> save() {
         return DatabaseUtil.saveObject(Constants.COLLECTION_USERS, this, User.class);
     }
@@ -229,6 +233,7 @@ public class User {
      *
      * @return A empty task.
      */
+    @Exclude
     public Task<Void> update() {
         return DatabaseUtil.updateObject(Constants.COLLECTION_USERS, id, this, User.class);
     }
@@ -239,6 +244,7 @@ public class User {
      * @param id The id of the user.
      * @return A task with the User as result.
      */
+    @Exclude
     public static Task<User> getByID(String id) {
         return DatabaseUtil.getByID(Constants.COLLECTION_USERS, id, User.class);
     }
@@ -249,6 +255,7 @@ public class User {
      * @param ids The list of ids.
      * @return A task with a list of ids.
      */
+    @Exclude
     public static Task<List<User>> getWhereIdIn(List<String> ids) {
         return DatabaseUtil.getWhereIdIn(Constants.COLLECTION_USERS, ids, User.class);
     }
@@ -258,6 +265,7 @@ public class User {
      *
      * @return all the User
      */
+    @Exclude
     public static Task<List<User>> listAll() {
         return DatabaseUtil.getAll(Constants.COLLECTION_USERS, User.class);
     }
