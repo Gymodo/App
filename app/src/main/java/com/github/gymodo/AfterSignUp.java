@@ -15,7 +15,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-
 import com.github.gymodo.user.User;
 import com.github.gymodo.user.UserGoal;
 import com.google.firebase.auth.FirebaseAuth;
@@ -112,7 +111,7 @@ public class AfterSignUp extends AppCompatActivity {
 
         afterSignupRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             int radioSelected = afterSignupRadioGroup.getCheckedRadioButtonId();
-            switch (radioSelected){
+            switch (radioSelected) {
                 case R.id.aftersignupBuildMuscle:
                     setRadioBtnBackgroundShadow(radioSelected);
                     userTmp.setGoal(UserGoal.BUILD_MUSCLE);
@@ -143,8 +142,8 @@ public class AfterSignUp extends AppCompatActivity {
         });
     }
 
-    private void setRadioBtnBackgroundShadow(int selectedRadio){
-        switch (selectedRadio){
+    private void setRadioBtnBackgroundShadow(int selectedRadio) {
+        switch (selectedRadio) {
             case R.id.aftersignupBuildMuscle:
                 aftersignupBuildMuscleBtn.setBackgroundResource(R.drawable.radio_button_shadow);
                 aftersignupLoseFatBtn.setBackgroundResource(R.color.transparent);
