@@ -1,6 +1,5 @@
 package com.github.gymodo;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
@@ -18,8 +17,6 @@ import android.widget.Toast;
 
 import com.github.gymodo.user.User;
 import com.github.gymodo.user.UserGoal;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.ParseException;
@@ -93,7 +90,6 @@ public class AfterSignUp extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //Toast.makeText(AfterSignUp.this, ""+textDate.getText(), Toast.LENGTH_SHORT).show();
                 userTmp.setBirthDate(stringToDate(textDate.getText().toString()));
             }
 
@@ -106,8 +102,6 @@ public class AfterSignUp extends AppCompatActivity {
         //Number picker
         numberPicker.setOnValueChangedListener((picker, oldVal, newVal) -> {
             userTmp.setWeight(numberPicker.getValue());
-            //Toast.makeText(AfterSignUp.this, userTmp.getWeight() + "", Toast.LENGTH_SHORT).show();
-            //Log.d("userWeight", userTmp.getWeight() + "");
         });
 
 
@@ -118,17 +112,14 @@ public class AfterSignUp extends AppCompatActivity {
             int radioSelected = afterSignupRadioGroup.getCheckedRadioButtonId();
             switch (radioSelected){
                 case R.id.aftersignupBuildMuscle:
-                    Toast.makeText(AfterSignUp.this, "Build Muscle", Toast.LENGTH_SHORT).show();
                     setRadioBtnBackgroundShadow(radioSelected);
                     userTmp.setGoal(UserGoal.BUILD_MUSCLE);
                     break;
                 case R.id.aftersignupLoseFat:
-                    Toast.makeText(AfterSignUp.this, "Lose Fat", Toast.LENGTH_SHORT).show();
                     setRadioBtnBackgroundShadow(radioSelected);
                     userTmp.setGoal(UserGoal.LOSE_FAT);
                     break;
                 case R.id.aftersignupGetHardy:
-                    Toast.makeText(AfterSignUp.this, "Get hardy", Toast.LENGTH_SHORT).show();
                     setRadioBtnBackgroundShadow(radioSelected);
                     userTmp.setGoal(UserGoal.GET_HARDY);
                     break;
