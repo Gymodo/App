@@ -60,6 +60,24 @@ public abstract class DatabaseUtil {
     }
 
     /**
+     * Saves (creates) an object on the database with the specified id.
+     *
+     * @param collection The database collection.
+     * @param id         The id.
+     * @param object     The object.
+     * @param valueType  The object class.
+     * @param <T>        The object type.
+     * @return A task.
+     */
+    public static <T> Task<Void> saveObjectWithId(String collection, String id, @NonNull T object, @NonNull Class<T> valueType) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        return db.collection(collection)
+                .document(id)
+                .set(object);
+    }
+
+    /**
      * Updates an object on the database.
      *
      * @param collection The database collection.
@@ -158,7 +176,7 @@ public abstract class DatabaseUtil {
     public static <T> Task<List<T>> getWhereIdIn(@NonNull String collection, @NonNull List<String> ids, @NonNull Class<T> valueType) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        if(ids.isEmpty())
+        if (ids.isEmpty())
             return Tasks.forResult(new ArrayList<T>());
 
         return db.collection(collection)

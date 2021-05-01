@@ -224,8 +224,8 @@ public class User {
      * @return A empty task.
      */
     @Exclude
-    public Task<Void> save() {
-        return DatabaseUtil.saveObject(Constants.COLLECTION_USERS, this, User.class);
+    public Task<Void> save(String uid) {
+        return DatabaseUtil.saveObjectWithId(Constants.COLLECTION_USERS, uid, this, User.class);
     }
 
     /**
