@@ -5,6 +5,7 @@ import com.github.gymodo.DatabaseUtil;
 import com.github.gymodo.user.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.Exclude;
 
 import java.util.List;
 
@@ -133,6 +134,7 @@ public class Serie {
      * Saves this object on the database
      * @return A empty task.
      */
+    @Exclude
     public Task<Void> save() {
         return DatabaseUtil.saveObject(Constants.COLLECTION_SERIES, this, Serie.class);
     }
@@ -141,6 +143,7 @@ public class Serie {
      * Updates this object on the database
      * @return A empty task.
      */
+    @Exclude
     public Task<Void> update() {
         return DatabaseUtil.updateObject(Constants.COLLECTION_SERIES, id, this, Serie.class);
     }
@@ -151,6 +154,7 @@ public class Serie {
      * @param id The id of the Serie.
      * @return A task with the Serie as result.
      */
+    @Exclude
     public static Task<Serie> get(String id) {
         return DatabaseUtil.getByID(Constants.COLLECTION_SERIES, id, Serie.class);
     }
@@ -160,6 +164,7 @@ public class Serie {
      * @param authorId The user id.
      * @return A list of series
      */
+    @Exclude
     public static Task<List<Serie>> listByAuthor(String authorId) {
         return DatabaseUtil.getWhereValueIs(Constants.COLLECTION_SERIES, "authorId", authorId, Serie.class);
     }
@@ -168,6 +173,7 @@ public class Serie {
      * Get all the series.
      * @return all the series
      */
+    @Exclude
     public static Task<List<Serie>> listAll() {
         return DatabaseUtil.getAll(Constants.COLLECTION_SERIES, Serie.class);
     }
@@ -178,6 +184,7 @@ public class Serie {
      * @param id The id of the Serie.
      * @return A task with the Serie as result.
      */
+    @Exclude
     public static Task<Serie> getByID(String id) {
         return DatabaseUtil.getByID(Constants.COLLECTION_SERIES, id, Serie.class);
     }
@@ -187,10 +194,12 @@ public class Serie {
      * @param ids The list of ids.
      * @return A task with a list of ids.
      */
+    @Exclude
     public static Task<List<Serie>> getWhereIdIn(List<String> ids) {
         return DatabaseUtil.getWhereIdIn(Constants.COLLECTION_SERIES, ids, Serie.class);
     }
 
+    @Exclude
     public Task<User> getAuthor() {
         return User.getByID(authorId);
     }

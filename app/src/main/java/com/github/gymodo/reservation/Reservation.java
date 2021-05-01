@@ -7,19 +7,30 @@ import com.github.gymodo.exercise.Routine;
 import com.github.gymodo.user.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.Exclude;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 /**
- * Represent a reservation
+ * Represent a reservation in a specified span of time.
+ * With a list of users who requested this specific span of time.
  */
 public class Reservation {
     @DocumentId
     private String id;
+    /** The day and hour this reservation span starts.
+     *
+     */
     private Date date;
+    /**
+     * The duration of this reservation time. In hours.
+     */
     private int duration;
+    /**
+     * The list of users ids who reserved this time.
+     */
     private List<String> userIds;
 
     /**
@@ -124,6 +135,7 @@ public class Reservation {
      * Gets the users that made this reservation
      * @return A task with a list of users.
      */
+    @Exclude
     public Task<List<User>> getUsers() {
         return User.getWhereIdIn(userIds);
     }
@@ -132,6 +144,7 @@ public class Reservation {
      * Saves this object on the database
      * @return A empty task.
      */
+    @Exclude
     public Task<Void> save() {
         return DatabaseUtil.saveObject(Constants.COLLECTION_RESERVATIONS, this, Reservation.class);
     }
@@ -140,6 +153,7 @@ public class Reservation {
      * Updates this object on the database
      * @return A empty task.
      */
+    @Exclude
     public Task<Void> update() {
         return DatabaseUtil.updateObject(Constants.COLLECTION_RESERVATIONS, id, this, Reservation.class);
     }
@@ -150,6 +164,7 @@ public class Reservation {
      * @param id The id of the Exercise.
      * @return A task with the Exercise as result.
      */
+    @Exclude
     public static Task<Reservation> getByID(String id) {
         return DatabaseUtil.getByID(Constants.COLLECTION_RESERVATIONS, id, Reservation.class);
     }
@@ -159,6 +174,7 @@ public class Reservation {
      * @param ids The list of ids.
      * @return A task with a list of ids.
      */
+    @Exclude
     public static Task<List<Reservation>> getWhereIdIn(List<String> ids) {
         return DatabaseUtil.getWhereIdIn(Constants.COLLECTION_RESERVATIONS, ids, Reservation.class);
     }
@@ -168,6 +184,7 @@ public class Reservation {
      *
      * @return all the Reservation
      */
+    @Exclude
     public static Task<List<Reservation>> listAll() {
         return DatabaseUtil.getAll(Constants.COLLECTION_RESERVATIONS, Reservation.class);
     }
@@ -177,6 +194,7 @@ public class Reservation {
      *
      * @return all the Reservation
      */
+    @Exclude
     public static Task<List<Reservation>> listPastDate(Date date) {
         return DatabaseUtil.getWhereValueIsGreatherOrEqual(Constants.COLLECTION_RESERVATIONS, "date", date, Reservation.class);
     }

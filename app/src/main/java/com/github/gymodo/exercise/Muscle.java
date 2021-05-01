@@ -6,6 +6,7 @@ import com.github.gymodo.DatabaseUtil;
 import com.github.gymodo.food.Food;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.Exclude;
 
 import java.util.List;
 
@@ -69,6 +70,7 @@ public class Muscle {
      * Saves this object on the database
      * @return A empty task.
      */
+    @Exclude
     public Task<Void> save() {
         return DatabaseUtil.saveObject(Constants.COLLECTION_MUSCLES, this, Muscle.class);
     }
@@ -77,6 +79,7 @@ public class Muscle {
      * Updates this object on the database
      * @return A empty task.
      */
+    @Exclude
     public Task<Void> update() {
         return DatabaseUtil.updateObject(Constants.COLLECTION_MUSCLES, id, this, Muscle.class);
     }
@@ -87,6 +90,7 @@ public class Muscle {
      * @param id The id of the Muscle.
      * @return A task with the Muscle as result.
      */
+    @Exclude
     public static Task<Muscle> getByID(String id) {
         return DatabaseUtil.getByID(Constants.COLLECTION_MUSCLES, id, Muscle.class);
     }
@@ -96,6 +100,7 @@ public class Muscle {
      * @param ids The list of ids.
      * @return A task with a list of ids.
      */
+    @Exclude
     public static Task<List<Muscle>> getWhereIdIn(List<String> ids) {
         return DatabaseUtil.getWhereIdIn(Constants.COLLECTION_MUSCLES, ids, Muscle.class);
     }

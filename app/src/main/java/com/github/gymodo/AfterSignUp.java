@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.NumberPicker;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 
 import com.github.gymodo.user.User;
 import com.github.gymodo.user.UserGoal;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.ParseException;
@@ -126,22 +128,15 @@ public class AfterSignUp extends AppCompatActivity {
             }
         });
 
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        String uid = auth.getUid();
+
         afterSignUpfinishBtn.setOnClickListener(v -> {
 
-            userTmp.save();
-
-            /*
-            afterSignupFireBase.collection("users").document("user").set(userTmp).addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    Toast.makeText(AfterSignUp.this, "User saved in database", Toast.LENGTH_SHORT).show();
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(AfterSignUp.this, "Error adding user", Toast.LENGTH_SHORT).show();
-                }
-            });*/
+            userTmp.save(uid).addOnFailureListener(fail -> {
+                Log.e("user-save", fail.getMessage());
+                Toast.makeText(AfterSignUp.this, "Error adding user", Toast.LENGTH_SHORT).show();
+            });
 
             startActivity(new Intent(this, MainActivity.class));
             finish();

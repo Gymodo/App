@@ -6,6 +6,7 @@ import com.github.gymodo.exercise.Routine;
 import com.github.gymodo.user.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
@@ -120,18 +121,22 @@ public class Diet {
         return this;
     }
 
+    @Exclude
     public Task<Meal> getLaunch() {
         return Meal.getByID(launchId);
     }
 
+    @Exclude
     public Task<Meal> getBreakfast() {
         return Meal.getByID(breakfastId);
     }
 
+    @Exclude
     public Task<Meal> getDinner() {
         return Meal.getByID(dinnerId);
     }
 
+    @Exclude
     public Task<Meal> getSnack() {
         return Meal.getByID(snackId);
     }
@@ -155,6 +160,7 @@ public class Diet {
         return this;
     }
 
+    @Exclude
     public Task<User> getAuthor() {
         return User.getByID(authorId);
     }
@@ -163,6 +169,7 @@ public class Diet {
      * Saves this object on the database
      * @return A empty task.
      */
+    @Exclude
     public Task<Void> save() {
         return DatabaseUtil.saveObject(Constants.COLLECTION_DIETS, this, Diet.class);
     }
@@ -171,6 +178,7 @@ public class Diet {
      * Updates this object on the database
      * @return A empty task.
      */
+    @Exclude
     public Task<Void> update() {
         return DatabaseUtil.updateObject(Constants.COLLECTION_DIETS, id, this, Diet.class);
     }
@@ -181,6 +189,7 @@ public class Diet {
      * @param id The id of the Diet.
      * @return A task with the Diet as result.
      */
+    @Exclude
     public static Task<Diet> getByID(String id) {
         return DatabaseUtil.getByID(Constants.COLLECTION_DIETS, id, Diet.class);
     }
@@ -190,6 +199,7 @@ public class Diet {
      * @param ids The list of ids.
      * @return A task with a list of ids.
      */
+    @Exclude
     public static Task<List<Diet>> getWhereIdIn(List<String> ids) {
         return DatabaseUtil.getWhereIdIn(Constants.COLLECTION_DIETS, ids, Diet.class);
     }

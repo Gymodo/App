@@ -7,6 +7,7 @@ import com.github.gymodo.user.User;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -112,6 +113,7 @@ public class Routine {
      *
      * @return totalVolumen
      */
+    @Exclude
     public Task<Integer> getTotalVolume() {
         return DatabaseUtil.getMappedSumWhereIn(Constants.COLLECTION_SERIES, seriesIds,
                 Serie::getVolume, Serie.class);
@@ -138,10 +140,12 @@ public class Routine {
         return this;
     }
 
+    @Exclude
     public Task<List<Serie>> getSeries() {
         return Serie.getWhereIdIn(seriesIds);
     }
 
+    @Exclude
     public Task<User> getAuthor() {
         return User.getByID(authorId);
     }
@@ -151,6 +155,7 @@ public class Routine {
      *
      * @return A empty task.
      */
+    @Exclude
     public Task<Void> save() {
         return DatabaseUtil.saveObject(Constants.COLLECTION_ROUTINES, this, Routine.class);
     }
@@ -160,6 +165,7 @@ public class Routine {
      *
      * @return A empty task.
      */
+    @Exclude
     public Task<Void> update() {
         return DatabaseUtil.updateObject(Constants.COLLECTION_ROUTINES, id, this, Routine.class);
     }
@@ -170,6 +176,7 @@ public class Routine {
      * @param id The id of the Routine.
      * @return A task with the Routine as result.
      */
+    @Exclude
     public static Task<Routine> getByID(String id) {
         return DatabaseUtil.getByID(Constants.COLLECTION_ROUTINES, id, Routine.class);
     }
@@ -180,6 +187,7 @@ public class Routine {
      * @param ids The list of ids.
      * @return A task with a list of ids.
      */
+    @Exclude
     public static Task<List<Routine>> getWhereIdIn(List<String> ids) {
         return DatabaseUtil.getWhereIdIn(Constants.COLLECTION_ROUTINES, ids, Routine.class);
     }
@@ -190,6 +198,7 @@ public class Routine {
      * @param authorId The user id.
      * @return A list of routines
      */
+    @Exclude
     public static Task<List<Routine>> listByAuthor(String authorId) {
         return DatabaseUtil.getWhereValueIs(Constants.COLLECTION_ROUTINES, "authorId", authorId, Routine.class);
     }
@@ -199,6 +208,7 @@ public class Routine {
      *
      * @return all the routines
      */
+    @Exclude
     public static Task<List<Routine>> listAll() {
         return DatabaseUtil.getAll(Constants.COLLECTION_ROUTINES, Routine.class);
     }
