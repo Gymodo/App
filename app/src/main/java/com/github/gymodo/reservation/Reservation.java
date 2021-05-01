@@ -21,6 +21,8 @@ public class Reservation {
     @DocumentId
     private String id;
     /** The day and hour this reservation span starts.
+     *
+     */
     private Date date;
     /**
      * The duration of this reservation time. In hours.
