@@ -13,8 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.gymodo.R;
 import com.github.gymodo.reservation.Reservation;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.MyViewHolder> {
@@ -38,18 +42,38 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         return new MyViewHolder(view);
     }
 
+    String displayMinutes(int m){
+        String min = m + "";
+
+        if (m < 10){
+            min = "0" + m;
+        }
+
+        return min;
+    }
+
     @Override
     public void onBindViewHolder(@NonNull ReservationAdapter.MyViewHolder holder, int position) {
 
-        //TODO arreglar para que se vea bien la fecha y hora
-        holder.reserv_row_start_time.setText(mReservations.get(position).getDuration());
+        Date date = mReservations.get(position).getDate();
+        Calendar calendar = GregorianCalendar.getInstance(); // creates a new calendar instance
+        calendar.setTime(date);   // assigns calendar to given date
+
+        holder.reserv_row_start_time.setText(calendar.get(Calendar.HOUR_OF_DAY) + ":" + displayMinutes(calendar.get(Calendar.MINUTE)));
+
+        long timeInSecs = calendar.getTimeInMillis();
+        Date endTimeDate = new Date(timeInSecs + (mReservations.get(position).getDuration() * 60 * 1000));
+        calendar.setTime(endTimeDate);
+
+        holder.reserv_row_end_time.setText( calendar.get(Calendar.HOUR_OF_DAY) + ":" + displayMinutes(calendar.get(Calendar.MINUTE)));
+
         holder.reserv_row_layout.setOnClickListener(v -> {
 
-            Toast.makeText(mContext, "Reservation for: " + mReservations.get(position).getDate().toString(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(mContext, "Reservation for: " + mReservations.get(position).getDate().toString(), Toast.LENGTH_SHORT).show();
             //Save reservation on BBDD
-            /*
+
             mReservations.get(position).addUserId(firebaseAuth.getCurrentUser().getUid());
-            mReservations.get(position).save();*/
+            //mReservations.get(position).save().addOnSuccessListener(aVoid -> Toast.makeText(mContext, "Saved", Toast.LENGTH_SHORT).show());
 
         });
     }
@@ -63,18 +87,16 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 
         TextView reserv_row_start_time;
         TextView reserv_row_end_time;
-        TextView reserv_row_date;
 
         ConstraintLayout reserv_row_layout;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            reserv_row_start_time = itemView.findViewById(R.id.reserv_row_start_time);
-            reserv_row_end_time = itemView.findViewById(R.id.reserv_row_end_time);
-            reserv_row_date = itemView.findViewById(R.id.reserv_row_date);
+            reserv_row_start_time = itemView.findViewById(R.id.textStartHour);
+            reserv_row_end_time = itemView.findViewById(R.id.textEndHour);
 
-            reserv_row_layout = itemView.findViewById(R.id.reserv_row_layout);
+            reserv_row_layout = itemView.findViewById(R.id.row_reservationConstraint);
         }
     }
 }
