@@ -5,7 +5,10 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +16,19 @@ import android.widget.CalendarView;
 import android.widget.Toast;
 
 import com.github.gymodo.R;
+import com.github.gymodo.adapters.ReservationAdapter;
+import com.github.gymodo.reservation.Reservation;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,6 +48,8 @@ public class AddReservationFragment extends Fragment {
     private String mParam2;
 
     private FirebaseFirestore db;
+    private List<Reservation> reservationList;
+    ReservationAdapter reservationAdapter;
     NavController navController;
 
     public AddReservationFragment() {
@@ -109,6 +121,7 @@ public class AddReservationFragment extends Fragment {
 
 
         CalendarView calendarView = (CalendarView) view.findViewById(R.id.calendarView);
+        RecyclerView recyclerView = view.findViewById(R.id.reservationsRecyclerView);
 
         db = FirebaseFirestore.getInstance();
 
@@ -124,13 +137,58 @@ public class AddReservationFragment extends Fragment {
 
         calendarView.setOnDateChangeListener((view1, year1, month1, dayOfMonth) -> {
 
-            Date reservationDate = new GregorianCalendar(year1, month1, dayOfMonth).getTime();
+            Date selectedDate = new GregorianCalendar(year1, (month1 + 1), dayOfMonth).getTime();
 
-            Toast.makeText(view1.getContext(), "Date: " + reservationDate, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(view1.getContext(), "Date: " + selectedDate, Toast.LENGTH_SHORT).show();
 
             Map<String, Object> user = new HashMap<>();
             user.put("date", dayOfMonth + "/" + (month1 +1)  + "/" + year1);
             //db.collection("reservations").document().set(user);
+
+            //Get reservations list
+
+            Reservation.listPastDate(selectedDate).addOnSuccessListener(new OnSuccessListener<List<Reservation>>() {
+                @Override
+                public void onSuccess(List<Reservation> reservations) {
+                    reservationList = reservations;
+                    if (reservationList.size() > 0){
+                        Toast.makeText(getContext(), "SIZE: " + reservationList.get(0).getDate().toString(), Toast.LENGTH_SHORT).show();
+                    } else {
+
+                        Calendar cal = Calendar.getInstance();
+                        cal.set(Calendar.YEAR, year1);
+                        cal.set(Calendar.MONTH, month1);
+                        cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                        cal.set(Calendar.MINUTE,0);
+                        cal.set(Calendar.SECOND,0);
+
+                        for (int i = 8; i <= 23 ;i++){
+                            Reservation r = new Reservation();
+
+                            cal.set(Calendar.HOUR_OF_DAY,i);
+                            Date d = cal.getTime();
+
+                            r.setDate(d);
+
+
+                            r.setDuration(60);
+                            Log.d("dates", selectedDate.toString());
+
+                            reservationList.add(r);
+                        }
+                    }
+
+                    recyclerView.setLayoutManager(new LinearLayoutManager((getContext())));
+                    reservationAdapter = new ReservationAdapter(getContext(), reservationList);
+                    recyclerView.setAdapter(reservationAdapter);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getContext(), "No reservations found", Toast.LENGTH_SHORT).show();
+                }
+            });
+
         });
 
 
