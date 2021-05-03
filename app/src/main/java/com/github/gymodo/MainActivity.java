@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
     //TextView
     private TextView headerUsername;
-  
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //Initialize backstack
-        if (backstack.empty()){
+        if (backstack.empty()) {
             backstack.push(0);
         }
 
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
             if (itemId == R.id.menu_home) {
                 Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
             } else if (itemId == R.id.menu_profile) {
-                Toast.makeText(this, "Profile", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, ProfileActivity.class));
             } else if (itemId == R.id.menu_settings) {
                 Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
             } else if (itemId == R.id.menu_logout) {
@@ -125,8 +125,6 @@ public class MainActivity extends AppCompatActivity {
         }));
 
 
-
-
         //Bottom navigation
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
@@ -136,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
 
                 previousHostFragment = viewPager.getCurrentItem();
 
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
 
                     case R.id.nav_home:
                         //viewPager.setCurrentItem(0, false);
@@ -195,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void setupViewPager(ViewPager viewPager){
+    private void setupViewPager(ViewPager viewPager) {
 
         HomeBaseFragment homeBaseFragment = new HomeBaseFragment();
         WorkoutBaseFragment workoutBaseFragment = new WorkoutBaseFragment();
@@ -212,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
         previousHostFragment = 0;
     }
 
-    public void setHostFragment(int position){
+    public void setHostFragment(int position) {
 
         if (position == 0) { //If is the home fragment, display the toolbar
             toolbar.setVisibility(View.VISIBLE);
@@ -233,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
 
         Fragment fragment = adapter.getItem(viewPager.getCurrentItem());
 
-        NavController navController =  NavHostFragment.findNavController(fragment.getChildFragmentManager().getPrimaryNavigationFragment());
+        NavController navController = NavHostFragment.findNavController(fragment.getChildFragmentManager().getPrimaryNavigationFragment());
 
         //Toast.makeText(this, "item: " + navController.getCurrentDestination(), Toast.LENGTH_SHORT).show();
 
@@ -242,17 +240,17 @@ public class MainActivity extends AppCompatActivity {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
 
-            if (!navController.navigateUp()){//Si el fragment no puede ir atras pues se va
+            if (!navController.navigateUp()) {//Si el fragment no puede ir atras pues se va
 
                 //Toast.makeText(this, "BACKSTACK: " + backstack.size(), Toast.LENGTH_SHORT).show();
-                if (backstack.size() > 1){ //Si no es la home
+                if (backstack.size() > 1) { //Si no es la home
                     //viewPager.setCurrentItem(previousHostFragment, false);
                     backstack.pop();
-                    if (backstack.peek() == 0){
+                    if (backstack.peek() == 0) {
                         toolbar.setVisibility(View.VISIBLE);
                     }
                     viewPager.setCurrentItem(backstack.peek(), false);
-                } else  {
+                } else {
                     super.onBackPressed();
                 }
             }

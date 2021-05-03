@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusable="false"
-    tools:context=".AfterSignUp">
+    tools:context=".ProfileActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,65 +25,44 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:gravity="center"
-            android:text="@string/tell_us_about_you"
+            android:text="@string/profile"
             android:textColor="@color/white"
             android:textSize="28sp" />
-
-        <EditText
-            android:id="@+id/aftersignupBirthdate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:autofillHints=""
-            android:clickable="true"
-            android:ems="10"
-            android:focusable="false"
-            android:hint="@string/birthdate"
-            android:inputType="date"
-            android:paddingLeft="10dp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
-            android:paddingLeft="10dp"
             android:text="@string/weight"
-            android:textSize="18sp" />
+            android:textAlignment="center"
+            android:textSize="24sp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <NumberPicker
+            android:id="@+id/profileNumberPicker"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <NumberPicker
-                android:id="@+id/aftersignupNumberPicker"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:gravity="center" />
-
-        </LinearLayout>
+            android:gravity="center" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:paddingLeft="10dp"
+            android:layout_marginTop="50dp"
             android:text="@string/what_is_your_goal"
-            android:textSize="18sp" />
+            android:textAlignment="center"
+            android:textSize="24sp" />
 
         <RadioGroup
-            android:id="@+id/afterSignupRadioGroup"
+            android:id="@+id/profileRadioGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingTop="20dp">
 
             <RadioButton
-                android:id="@+id/aftersignupBuildMuscle"
+                android:id="@+id/profileBuildMuscle"
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                android:layout_gravity="center"
                 android:layout_weight="1"
                 android:background="@color/transparent"
                 android:button="@color/transparent"
@@ -96,10 +74,10 @@
                 android:text="@string/build_muscle" />
 
             <RadioButton
-                android:id="@+id/aftersignupLoseFat"
+                android:id="@+id/profileLoseFat"
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                android:layout_gravity="center"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
@@ -112,10 +90,10 @@
                 android:text="@string/lose_fat" />
 
             <RadioButton
-                android:id="@+id/aftersignupGetHardy"
+                android:id="@+id/profileGetHardy"
                 android:layout_width="110dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                android:layout_gravity="center"
                 android:layout_weight="1"
                 android:background="@color/transparent"
                 android:button="@color/transparent"
@@ -128,12 +106,12 @@
         </RadioGroup>
 
         <Button
-            android:id="@+id/aftersignupFinishButton"
+            android:id="@+id/profileSaveButton"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="50dp"
             android:padding="10dp"
-            android:text="@string/finish"
+            android:text="@string/save"
             android:textColor="@color/white"
             android:textSize="24sp"
             android:textStyle="bold" />

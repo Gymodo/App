@@ -64,13 +64,14 @@
             android:layout_height="0dp"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/btnReserve"
             app:layout_constraintTop_toBottomOf="@+id/calendarView"
             tools:listitem="@layout/reservation_hours_row" />
 
+        <!--
         <Button
             android:id="@+id/btnReserve"
             android:layout_width="0dp"
@@ -82,7 +83,7 @@
             android:text="@string/reserve"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
