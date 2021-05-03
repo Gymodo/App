@@ -42,4 +42,7 @@
     <string name="sign_in">Sign in</string>
     <string name="finish">FINISH</string>
     <string name="create_workout">Create Workout</string>
+    <string name="available_series">Available Series</string>
+    <string name="selected_series">Selected Series</string>
+    <string name="create_serie">Create Serie</string>
 </resources>
