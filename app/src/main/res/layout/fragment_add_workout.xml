@@ -96,27 +96,6 @@
                     app:layout_constraintTop_toBottomOf="@id/AddWorkoutDescLayout" />
 
                 <TextView
-                    android:id="@+id/AddWorkoutTextSelected"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/selected_series"
-                    android:textSize="18sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/AddWorkoutCreateButton" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/AddWorkoutSelectedList"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/AddWorkoutTextSelected"
-                    tools:itemCount="2"
-                    tools:listitem="@layout/series_row">
-
-                </androidx.recyclerview.widget.RecyclerView>
-
-                <TextView
                     android:id="@+id/AddworkoutTextAvailable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -124,7 +103,7 @@
                     android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/AddWorkoutSelectedList" />
+                    app:layout_constraintTop_toBottomOf="@+id/AddWorkoutCreateButton" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/AddWorkoutAvailableList"
@@ -140,7 +119,7 @@
                     app:layout_constraintTop_toBottomOf="@id/AddworkoutTextAvailable"
                     app:layout_constraintVertical_bias="1.0"
                     tools:itemCount="4"
-                    tools:listitem="@layout/series_row">
+                    tools:listitem="@layout/series_select_row">
 
                 </androidx.recyclerview.widget.RecyclerView>
 

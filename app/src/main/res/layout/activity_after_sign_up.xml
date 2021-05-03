@@ -65,11 +65,12 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:text="@string/what_is_your_goal" />
+            android:gravity="center"
+            android:text="@string/what_is_your_goal"
+            android:textSize="24sp" />
 
         <RadioGroup
             android:id="@+id/afterSignupRadioGroup"
@@ -120,8 +121,7 @@
             android:id="@+id/aftersignupFinishButton"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:background="@color/primaryColor"
+            android:layout_marginTop="30dp"
             android:padding="10dp"
             android:text="@string/finish"
             android:textColor="@color/white"

@@ -68,6 +68,7 @@ public class WorkoutListFragment extends Fragment {
         String userId = auth.getCurrentUser().getUid();
 
         Routine.listByAuthor(userId).addOnSuccessListener(routines -> {
+            workouts.clear();
             workouts.addAll(routines);
             adapter.notifyDataSetChanged();
         }).addOnFailureListener(fail -> {
