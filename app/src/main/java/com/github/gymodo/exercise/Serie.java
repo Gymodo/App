@@ -8,6 +8,7 @@ import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.Exclude;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Represents a Exercise
@@ -203,5 +204,22 @@ public class Serie {
     @Exclude
     public Task<User> getAuthor() {
         return User.getByID(authorId);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Serie serie = (Serie) o;
+        return reps == serie.reps &&
+                weight == serie.weight &&
+                id.equals(serie.id) &&
+                exerciseId.equals(serie.exerciseId) &&
+                authorId.equals(serie.authorId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, reps, weight, exerciseId, authorId);
     }
 }

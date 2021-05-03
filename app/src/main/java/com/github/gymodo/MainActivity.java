@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.view.View;
 import android.widget.Toast;
 
+import com.github.gymodo.reservation.Reservation;
 import com.github.gymodo.sharedPreferences.MySharedPreferences;
 import com.github.gymodo.fragments.base_fragments.DietBaseFragment;
 import com.github.gymodo.fragments.base_fragments.HomeBaseFragment;

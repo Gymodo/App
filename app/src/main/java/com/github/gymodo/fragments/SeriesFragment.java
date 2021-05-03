@@ -32,12 +32,10 @@ public class SeriesFragment extends Fragment {
 
     RecyclerView recyclerView;
     SeriesAdapter adapter;
-    List<Serie> series;
     Button addButton;
 
     public SeriesFragment() {
         // Required empty public constructor
-        series = new ArrayList<>();
     }
 
     /**
@@ -70,14 +68,13 @@ public class SeriesFragment extends Fragment {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         String userId = auth.getCurrentUser().getUid();
 
-        adapter = new SeriesAdapter(series, getContext());
+        adapter = new SeriesAdapter();
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
 
         Serie.listByAuthor(userId).addOnSuccessListener(list -> {
             // don't use = here, need to have the same reference.
-            series.addAll(list);
-            adapter.notifyDataSetChanged();
+            adapter.submitList(list);
         }).addOnFailureListener(fail -> {
             Toast.makeText(getContext(), "Error loading series", Toast.LENGTH_SHORT).show();
         });

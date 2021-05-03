@@ -10,17 +10,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/AddSeriesToWorkoutBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:clickable="true"
+            android:focusable="true"
+            android:text="@string/create_serie"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textStyle="bold"
             app:backgroundTint="@color/primaryColor"
+            app:icon="@drawable/ic_add"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_add" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -42,36 +47,63 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/AddWorkoutTextSelected"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/AddWorkoutNameLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/AddWorkoutTitle">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/AddWorkoutNameInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/name" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/AddWorkoutDescLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    app:layout_constraintTop_toBottomOf="@id/AddWorkoutNameLayout"
+                    tools:layout_editor_absoluteX="8dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/AddWorkoutDescInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/description"
+                        android:inputType="textMultiLine" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/AddWorkoutCreateButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="Selected Series"
-                    android:textSize="18sp"
+                    android:backgroundTint="@color/primaryColor"
+                    android:text="Create Workout"
+                    android:textAlignment="center"
+                    android:textColor="@color/secondaryTextColor"
+                    android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/AddWorkoutTitle" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/AddWorkoutSelectedList"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/AddWorkoutTextSelected"
-                    tools:itemCount="2"
-                    tools:listitem="@layout/series_row">
-
-                </androidx.recyclerview.widget.RecyclerView>
+                    app:layout_constraintTop_toBottomOf="@id/AddWorkoutDescLayout" />
 
                 <TextView
                     android:id="@+id/AddworkoutTextAvailable"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Available Series"
+                    android:text="@string/available_series"
                     android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/AddWorkoutSelectedList" />
+                    app:layout_constraintTop_toBottomOf="@+id/AddWorkoutCreateButton" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/AddWorkoutAvailableList"
@@ -87,7 +119,7 @@
                     app:layout_constraintTop_toBottomOf="@id/AddworkoutTextAvailable"
                     app:layout_constraintVertical_bias="1.0"
                     tools:itemCount="4"
-                    tools:listitem="@layout/series_row">
+                    tools:listitem="@layout/series_select_row">
 
                 </androidx.recyclerview.widget.RecyclerView>
 

@@ -34,14 +34,11 @@ public class WorkoutDetailFragment extends Fragment {
     private String routineId;
     RecyclerView recyclerView;
     SeriesAdapter seriesAdapter;
-    List<Serie> series;
     TextView name;
     TextView description;
     FloatingActionButton addSerieButton;
 
     public WorkoutDetailFragment() {
-        // Required empty public constructor
-        series = new ArrayList<>();
     }
 
     public static WorkoutDetailFragment newInstance(String routineId) {
@@ -73,7 +70,7 @@ public class WorkoutDetailFragment extends Fragment {
             description = view.findViewById(R.id.WorkoutDetailDescription);
             addSerieButton = view.findViewById(R.id.WorkoutDetailAddSerieButton);
 
-            seriesAdapter = new SeriesAdapter(series, view.getContext());
+            seriesAdapter = new SeriesAdapter();
 
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             recyclerView.setAdapter(seriesAdapter);
@@ -83,8 +80,7 @@ public class WorkoutDetailFragment extends Fragment {
                 description.setText(routine.getDescription());
 
                 routine.getSeries().addOnSuccessListener(serieList -> {
-                    series.addAll(serieList);
-                    seriesAdapter.notifyDataSetChanged();
+                    seriesAdapter.submitList(serieList);
                 }).addOnFailureListener(fail -> {
                     Log.e("getSeries", fail.getLocalizedMessage());
                     Toast.makeText(view.getContext(), "Error al cargar las series.", Toast.LENGTH_SHORT).show();
