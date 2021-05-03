@@ -1,6 +1,8 @@
 package com.github.gymodo.adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,18 +16,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.github.gymodo.R;
 import com.github.gymodo.reservation.Reservation;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.TimeZone;
 
 public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.MyViewHolder> {
 
     private Context mContext;
     private List<Reservation> mReservations;
     FirebaseAuth firebaseAuth;
+
+    SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/YYYY-hh:mm");
 
     public ReservationAdapter(Context mContext, List<Reservation> mReservations) {
         this.mContext = mContext;
@@ -69,11 +77,70 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 
         holder.reserv_row_layout.setOnClickListener(v -> {
 
-            //Toast.makeText(mContext, "Reservation for: " + mReservations.get(position).getDate().toString(), Toast.LENGTH_SHORT).show();
-            //Save reservation on BBDD
 
-            //mReservations.get(position).addUserId(firebaseAuth.getCurrentUser().getUid());
-            //mReservations.get(position).save().addOnSuccessListener(aVoid -> Toast.makeText(mContext, "Saved", Toast.LENGTH_SHORT).show());
+            Reservation.listAll().addOnSuccessListener(reservations -> {
+
+                String myDateStr = sdf.format( mReservations.get(position).getDate());
+                final boolean[] added = {false};
+                boolean reservationDateExists = false;
+                for (Reservation r : reservations){
+
+                    Log.d("date" , "RESERVA: " + r);
+
+                    String fireDateStr = sdf.format(r.getDate());
+                    if(myDateStr.equals(fireDateStr)){ //If the date already exists
+
+                        reservationDateExists = true;
+
+                        Log.d("date" , "entra");
+
+                        Log.d("date" , "esta USER id: "+ Arrays.asList(r.getUserIds().contains(firebaseAuth.getCurrentUser().getUid())));
+
+                        if (!Arrays.asList(r.getUserIds().contains(firebaseAuth.getCurrentUser().getUid())).get(0)){ //Returns true if UserId is in array
+
+
+                            new MaterialAlertDialogBuilder(mContext)
+                                    .setTitle("Make reservation")
+                                    .setMessage("Want to make reservation for date?")
+                                    .setPositiveButton( "RESERVE", (dialog, which) -> {
+
+                                                r.addUserId(firebaseAuth.getCurrentUser().getUid());
+                                                r.update();
+
+                                                added[0] = true;
+                                            })
+
+                                    .setNegativeButton("CANCEL", (dialog, which) -> Toast.makeText(mContext, "Cancel", Toast.LENGTH_SHORT).show())
+
+                            .show();
+
+
+                        }
+
+                      break;
+                    }
+                }
+
+
+                if (!added[0] && !reservationDateExists){
+
+                    new MaterialAlertDialogBuilder(mContext)
+                            .setTitle("Make reservation")
+                            .setMessage("Want to make reservation for date?")
+                            .setPositiveButton( "RESERVE", (dialog, which) -> {
+
+                                mReservations.get(position).addUserId(firebaseAuth.getCurrentUser().getUid());
+                                mReservations.get(position).save().addOnSuccessListener(aVoid -> Toast.makeText(mContext, "Saved", Toast.LENGTH_SHORT).show());
+
+                                added[0] = true;
+                            })
+
+                            .setNegativeButton("CANCEL", (dialog, which) -> Toast.makeText(mContext, "Cancel", Toast.LENGTH_SHORT).show())
+
+                            .show();
+                }
+            });
+
 
         });
     }
