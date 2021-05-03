@@ -98,7 +98,7 @@ public class Reservation {
      *
      * @return userList
      */
-    public List<String> getUsersIds() {
+    public List<String> getUserIds() {
         return userIds;
     }
 
@@ -108,7 +108,7 @@ public class Reservation {
      * @param users userList
      * @return this
      */
-    public Reservation setUsersIds(List<String> users) {
+    public Reservation setUserIds(List<String> users) {
         this.userIds = users;
         return this;
     }
@@ -197,5 +197,15 @@ public class Reservation {
     @Exclude
     public static Task<List<Reservation>> listPastDate(Date date) {
         return DatabaseUtil.getWhereValueIsGreatherOrEqual(Constants.COLLECTION_RESERVATIONS, "date", date, Reservation.class);
+    }
+
+    @Override
+    public String toString() {
+        return "Reservation{" +
+                "id='" + id + '\'' +
+                ", date=" + date +
+                ", duration=" + duration +
+                ", userIds=" + userIds +
+                '}';
     }
 }
