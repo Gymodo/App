@@ -52,6 +52,9 @@ public class AddReservationFragment extends Fragment {
     ReservationAdapter reservationAdapter;
     NavController navController;
 
+    CalendarView calendarView;
+    RecyclerView recyclerView;
+
     public AddReservationFragment() {
         // Required empty public constructor
     }
@@ -112,6 +115,54 @@ public class AddReservationFragment extends Fragment {
     }
 
 
+    private void showHours(Date date, int year, int month, int day){
+
+        Log.d("hours", "entra");
+
+        Reservation.listPastDate(date).addOnSuccessListener(new OnSuccessListener<List<Reservation>>() {
+            @Override
+            public void onSuccess(List<Reservation> reservations) {
+                reservationList = reservations;
+                if (reservationList.size() > 0){
+                    Toast.makeText(getContext(), "SIZE: " + reservationList.get(0).getDate().toString(), Toast.LENGTH_SHORT).show();
+                } else {
+
+                    Calendar cal = Calendar.getInstance();
+                    cal.set(Calendar.YEAR, year);
+                    cal.set(Calendar.MONTH, month);
+                    cal.set(Calendar.DAY_OF_MONTH, day);
+                    cal.set(Calendar.MINUTE,0);
+                    cal.set(Calendar.SECOND,0);
+
+                    for (int i = 8; i <= 23 ;i++){
+                        Reservation r = new Reservation();
+
+                        cal.set(Calendar.HOUR_OF_DAY,i);
+                        Date d = cal.getTime();
+
+                        r.setDate(d);
+
+
+                        r.setDuration(60);
+                        Log.d("dates", date.toString());
+
+                        reservationList.add(r);
+                    }
+                }
+
+                recyclerView.setLayoutManager(new LinearLayoutManager((getContext())));
+                reservationAdapter = new ReservationAdapter(getContext(), reservationList);
+                recyclerView.setAdapter(reservationAdapter);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getContext(), "No reservations found", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -120,20 +171,22 @@ public class AddReservationFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_add_reservation, container, false);
 
 
-        CalendarView calendarView = (CalendarView) view.findViewById(R.id.calendarView);
-        RecyclerView recyclerView = view.findViewById(R.id.reservationsRecyclerView);
+        calendarView = (CalendarView) view.findViewById(R.id.calendarView);
+        recyclerView = view.findViewById(R.id.reservationsRecyclerView);
 
         db = FirebaseFirestore.getInstance();
 
         Calendar cal = Calendar.getInstance();
         int year  = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
         int date  = cal.get(Calendar.DATE);
         cal.clear();
         cal.set(year, month, date);
         long todayMillis2 = cal.getTimeInMillis();
 
         calendarView.setMinDate(todayMillis2);//Set min date in order to prevent the user to make a reservation for yesterday
+
 
         calendarView.setOnDateChangeListener((view1, year1, month1, dayOfMonth) -> {
 
@@ -145,52 +198,9 @@ public class AddReservationFragment extends Fragment {
             user.put("date", dayOfMonth + "/" + (month1 +1)  + "/" + year1);
             //db.collection("reservations").document().set(user);
 
-            //Get reservations list
-
-            Reservation.listPastDate(selectedDate).addOnSuccessListener(new OnSuccessListener<List<Reservation>>() {
-                @Override
-                public void onSuccess(List<Reservation> reservations) {
-                    reservationList = reservations;
-                    if (reservationList.size() > 0){
-                        Toast.makeText(getContext(), "SIZE: " + reservationList.get(0).getDate().toString(), Toast.LENGTH_SHORT).show();
-                    } else {
-
-                        Calendar cal = Calendar.getInstance();
-                        cal.set(Calendar.YEAR, year1);
-                        cal.set(Calendar.MONTH, month1);
-                        cal.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                        cal.set(Calendar.MINUTE,0);
-                        cal.set(Calendar.SECOND,0);
-
-                        for (int i = 8; i <= 23 ;i++){
-                            Reservation r = new Reservation();
-
-                            cal.set(Calendar.HOUR_OF_DAY,i);
-                            Date d = cal.getTime();
-
-                            r.setDate(d);
-
-
-                            r.setDuration(60);
-                            Log.d("dates", selectedDate.toString());
-
-                            reservationList.add(r);
-                        }
-                    }
-
-                    recyclerView.setLayoutManager(new LinearLayoutManager((getContext())));
-                    reservationAdapter = new ReservationAdapter(getContext(), reservationList);
-                    recyclerView.setAdapter(reservationAdapter);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getContext(), "No reservations found", Toast.LENGTH_SHORT).show();
-                }
-            });
+            //showHours(selectedDate, year1, month1, dayOfMonth);
 
         });
-
 
 
         return view;

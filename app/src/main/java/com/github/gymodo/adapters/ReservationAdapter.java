@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.github.gymodo.MainActivity;
 import com.github.gymodo.R;
 import com.github.gymodo.reservation.Reservation;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -34,6 +35,8 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
     FirebaseAuth firebaseAuth;
 
     SimpleDateFormat sdf=new SimpleDateFormat("dd/MM/YYYY-hh:mm");
+    SimpleDateFormat sdfDate=new SimpleDateFormat("dd/MM/YYYY");
+    SimpleDateFormat sdfTime=new SimpleDateFormat("hh:mm");
 
     public ReservationAdapter(Context mContext, List<Reservation> mReservations) {
         this.mContext = mContext;
@@ -101,13 +104,18 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 
                             new MaterialAlertDialogBuilder(mContext)
                                     .setTitle("Make reservation")
-                                    .setMessage("Want to make reservation for date?")
+                                    .setMessage("Want to make reservation for " + sdfDate.format(date) + " at " + sdfTime.format(date) + "?")
                                     .setPositiveButton( "RESERVE", (dialog, which) -> {
 
                                                 r.addUserId(firebaseAuth.getCurrentUser().getUid());
                                                 r.update();
 
                                                 added[0] = true;
+
+                                        MainActivity mainActivity = (MainActivity) mContext;
+
+                                        mainActivity.onBackPressed();
+
                                             })
 
                                     .setNegativeButton("CANCEL", (dialog, which) -> Toast.makeText(mContext, "Cancel", Toast.LENGTH_SHORT).show())
@@ -126,13 +134,17 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 
                     new MaterialAlertDialogBuilder(mContext)
                             .setTitle("Make reservation")
-                            .setMessage("Want to make reservation for date?")
+                            .setMessage("Want to make reservation for " + sdfDate.format(date) + " at " + sdfTime.format(date) + "?")
                             .setPositiveButton( "RESERVE", (dialog, which) -> {
 
                                 mReservations.get(position).addUserId(firebaseAuth.getCurrentUser().getUid());
                                 mReservations.get(position).save().addOnSuccessListener(aVoid -> Toast.makeText(mContext, "Saved", Toast.LENGTH_SHORT).show());
 
                                 added[0] = true;
+
+                                MainActivity mainActivity = (MainActivity) mContext;
+
+                                mainActivity.onBackPressed();
                             })
 
                             .setNegativeButton("CANCEL", (dialog, which) -> Toast.makeText(mContext, "Cancel", Toast.LENGTH_SHORT).show())
