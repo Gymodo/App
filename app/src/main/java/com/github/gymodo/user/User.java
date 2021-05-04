@@ -12,6 +12,8 @@ import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -96,6 +98,20 @@ public class User {
     public User setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
         return this;
+    }
+
+    @Exclude
+    public void setBirthDate(String dateString){
+        try {
+            this.setBirthDate(new SimpleDateFormat("dd/MM/yyyy").parse(dateString));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Exclude
+    public String getBirthDateString(){
+            return new SimpleDateFormat("dd/MM/yyyy").format(this.birthDate);
     }
 
     /**
@@ -269,4 +285,8 @@ public class User {
     public static Task<List<User>> listAll() {
         return DatabaseUtil.getAll(Constants.COLLECTION_USERS, User.class);
     }
+
+
+
+
 }
