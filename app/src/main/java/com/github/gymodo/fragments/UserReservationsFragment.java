@@ -5,13 +5,24 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.gymodo.R;
+import com.github.gymodo.adapters.ReservationAdapter;
+import com.github.gymodo.adapters.UserReservationsAdapter;
+import com.github.gymodo.reservation.Reservation;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,6 +39,9 @@ public class UserReservationsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    FirebaseAuth firebaseAuth;
+    UserReservationsAdapter reservationAdapter;
 
     public UserReservationsFragment() {
         // Required empty public constructor
@@ -66,8 +80,29 @@ public class UserReservationsFragment extends Fragment {
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user_reservations, container, false);
+        List<Reservation> userReservations = new ArrayList<>();
 
+        //hook
+        RecyclerView userReservationsRecyclerView = view.findViewById(R.id.userReservationsRecyclerView);
         FloatingActionButton floatingActionButton = view.findViewById(R.id.floatingActionButton);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        //TODO, query to get only user reservations directly
+
+        Reservation.listAll().addOnSuccessListener(reservations -> {
+            for (Reservation r : reservations){
+
+                if (r.getUserIds().contains(firebaseAuth.getCurrentUser().getUid())){
+                 userReservations.add(r);
+                }
+            }
+
+            userReservationsRecyclerView.setLayoutManager(new LinearLayoutManager((getContext())));
+            reservationAdapter = new UserReservationsAdapter(getContext(), userReservations);
+            userReservationsRecyclerView.setAdapter(reservationAdapter);
+
+        });
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
