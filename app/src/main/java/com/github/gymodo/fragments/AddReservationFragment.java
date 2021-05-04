@@ -198,7 +198,7 @@ public class AddReservationFragment extends Fragment {
             user.put("date", dayOfMonth + "/" + (month1 +1)  + "/" + year1);
             //db.collection("reservations").document().set(user);
 
-            //showHours(selectedDate, year1, month1, dayOfMonth);
+            showHours(selectedDate, year1, month1, dayOfMonth);
 
         });
 
