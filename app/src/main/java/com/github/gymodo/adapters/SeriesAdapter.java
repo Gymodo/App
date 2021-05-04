@@ -40,7 +40,7 @@ public class SeriesAdapter extends ListAdapter<Serie, SeriesAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Serie serie = getItem(position);
         holder.textReps.setText(String.format("Reps: %d", serie.getReps()));
-        holder.textWeight.setText(String.format("Reps: %d", serie.getWeight()));
+        holder.textWeight.setText(String.format("Weight: %d kg", serie.getWeight()));
         Exercise.getByID(serie.getExerciseId()).addOnSuccessListener(exercise -> holder.textName.setText(exercise.getName()));
     }
 
@@ -60,14 +60,12 @@ public class SeriesAdapter extends ListAdapter<Serie, SeriesAdapter.ViewHolder> 
         TextView textName;
         TextView textReps;
         TextView textWeight;
-        ImageView image;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             textName = itemView.findViewById(R.id.SeriesRowExerciseName);
             textReps = itemView.findViewById(R.id.SeriesRowReps);
             textWeight = itemView.findViewById(R.id.SeriesRowWeight);
-            image = itemView.findViewById(R.id.SeriesRowImage);
         }
     }
 }

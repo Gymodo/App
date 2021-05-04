@@ -54,7 +54,7 @@ public class SeriesSelectAdapter extends ListAdapter<Serie, SeriesSelectAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Serie serie = getItem(position);
         holder.textReps.setText(String.format("Reps: %d", serie.getReps()));
-        holder.textWeight.setText(String.format("Reps: %d", serie.getWeight()));
+        holder.textWeight.setText(String.format("Weight: %d kg", serie.getWeight()));
         Exercise.getByID(serie.getExerciseId()).addOnSuccessListener(exercise -> holder.textName.setText(exercise.getName()));
 
         holder.layout.setOnClickListener(v -> {

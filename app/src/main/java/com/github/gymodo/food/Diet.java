@@ -167,10 +167,10 @@ public class Diet {
 
     /**
      * Saves this object on the database
-     * @return A empty task.
+     * @return A task with the inserted id.
      */
     @Exclude
-    public Task<Void> save() {
+    public Task<String> save() {
         return DatabaseUtil.saveObject(Constants.COLLECTION_DIETS, this, Diet.class);
     }
 

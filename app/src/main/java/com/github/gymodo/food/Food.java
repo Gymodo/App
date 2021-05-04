@@ -189,9 +189,9 @@ public class Food {
 
     /**
      * Saves this object on the database
-     * @return A empty task.
+     * @return A task with the inserted id.
      */
-    public Task<Void> save() {
+    public Task<String> save() {
         return DatabaseUtil.saveObject(Constants.COLLECTION_FOODS, this, Food.class);
     }
 

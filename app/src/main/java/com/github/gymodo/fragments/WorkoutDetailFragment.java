@@ -2,7 +2,12 @@ package com.github.gymodo.fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,7 +34,7 @@ import java.util.List;
  */
 public class WorkoutDetailFragment extends Fragment {
 
-    private static final String ARG_ROUTINE_ID = "ARG_ROUTINE_ID";
+    public static final String ARG_ROUTINE_ID = "ARG_ROUTINE_ID";
 
     private String routineId;
     RecyclerView recyclerView;
@@ -37,6 +42,7 @@ public class WorkoutDetailFragment extends Fragment {
     TextView name;
     TextView description;
     FloatingActionButton addSerieButton;
+    Routine routine;
 
     public WorkoutDetailFragment() {
     }
@@ -76,6 +82,7 @@ public class WorkoutDetailFragment extends Fragment {
             recyclerView.setAdapter(seriesAdapter);
 
             Routine.getByID(routineId).addOnSuccessListener(routine -> {
+                this.routine = routine;
                 name.setText(routine.getName());
                 description.setText(routine.getDescription());
 
@@ -91,12 +98,43 @@ public class WorkoutDetailFragment extends Fragment {
             });
 
             addSerieButton.setOnClickListener(btnView -> {
-
-                // TODO do something
-                throw new UnsupportedOperationException("falta implementar");
+                NavController navController = Navigation.findNavController(view);
+                navController.navigate(R.id.action_workoutDetailFragment_to_newSeriesFragment);
             });
         }
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        NavController navController = Navigation.findNavController(view);
+        navController.getCurrentBackStackEntry()
+                .getSavedStateHandle()
+                .getLiveData("serieId", "")
+                .observe(getViewLifecycleOwner(), new Observer<String>() {
+                    @Override
+                    public void onChanged(String id) {
+                        Log.d("workoutdetail", "got serie id: " + id);
+                        if (id != null && !id.isEmpty()) {
+                            if (routine != null) {
+                                routine.getSeriesIds().add(id);
+
+                                // Update routine
+                                routine.update().addOnCompleteListener(v -> {
+                                    // Update the view with the added id.
+                                    routine.getSeries().addOnSuccessListener(serieList -> {
+                                        seriesAdapter.submitList(serieList);
+                                        Toast.makeText(view.getContext(), "serie añadida", Toast.LENGTH_SHORT).show();
+                                    }).addOnFailureListener(fail -> {
+                                        Log.e("getSeries", fail.getLocalizedMessage());
+                                        Toast.makeText(view.getContext(), "Error al cargar las series.", Toast.LENGTH_SHORT).show();
+                                    });
+                                });
+                            }
+                        }
+                    }
+                });
     }
 }

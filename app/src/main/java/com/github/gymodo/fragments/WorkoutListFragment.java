@@ -29,14 +29,11 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class WorkoutListFragment extends Fragment {
-    List<Routine> workouts;
     RecyclerView recyclerView;
     WorkoutAdapter adapter;
     FloatingActionButton addBtn;
 
     public WorkoutListFragment() {
-        // Required empty public constructor
-        workouts = new ArrayList<>();
     }
 
     public static WorkoutListFragment newInstance() {
@@ -60,7 +57,7 @@ public class WorkoutListFragment extends Fragment {
         recyclerView = view.findViewById(R.id.WorkoutListRecycler);
         addBtn = view.findViewById(R.id.WorkoutListAdd);
 
-        adapter = new WorkoutAdapter(workouts, view.getContext());
+        adapter = new WorkoutAdapter(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
 
@@ -68,9 +65,7 @@ public class WorkoutListFragment extends Fragment {
         String userId = auth.getCurrentUser().getUid();
 
         Routine.listByAuthor(userId).addOnSuccessListener(routines -> {
-            workouts.clear();
-            workouts.addAll(routines);
-            adapter.notifyDataSetChanged();
+            adapter.submitList(routines);
         }).addOnFailureListener(fail -> {
             Log.e("listByAuthor", fail.getLocalizedMessage());
             Toast.makeText(view.getContext(), "Error al cargar los workouts.", Toast.LENGTH_SHORT).show();

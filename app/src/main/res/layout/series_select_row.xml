@@ -15,8 +15,11 @@
         android:layout_marginStart="36dp"
         android:layout_marginTop="18dp"
         android:layout_marginBottom="18dp"
+        android:buttonTint="@color/primaryColor"
         android:clickable="false"
         android:focusable="auto"
+        android:scaleX="2"
+        android:scaleY="2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

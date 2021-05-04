@@ -13,6 +13,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -153,10 +154,10 @@ public class Routine {
     /**
      * Saves this object on the database
      *
-     * @return A empty task.
+     * @return A task with the inserted object id.
      */
     @Exclude
-    public Task<Void> save() {
+    public Task<String> save() {
         return DatabaseUtil.saveObject(Constants.COLLECTION_ROUTINES, this, Routine.class);
     }
 
@@ -211,5 +212,18 @@ public class Routine {
     @Exclude
     public static Task<List<Routine>> listAll() {
         return DatabaseUtil.getAll(Constants.COLLECTION_ROUTINES, Routine.class);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Routine routine = (Routine) o;
+        return Objects.equals(id, routine.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

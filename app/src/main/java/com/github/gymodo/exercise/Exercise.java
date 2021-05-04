@@ -122,9 +122,9 @@ public class Exercise {
 
     /**
      * Saves this object on the database
-     * @return A empty task.
+     * @return A task with the inserted object id.
      */
-    public Task<Void> save() {
+    public Task<String> save() {
         return DatabaseUtil.saveObject(Constants.COLLECTION_EXERCISES, this, Exercise.class);
     }
 

@@ -68,10 +68,10 @@ public class Muscle {
 
     /**
      * Saves this object on the database
-     * @return A empty task.
+     * @return A task with the inserted object id.
      */
     @Exclude
-    public Task<Void> save() {
+    public Task<String> save() {
         return DatabaseUtil.saveObject(Constants.COLLECTION_MUSCLES, this, Muscle.class);
     }
 
