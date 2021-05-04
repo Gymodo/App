@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,13 +46,12 @@ public class NewSeriesFragment extends Fragment {
 
     List<Exercise> availableExercises;
 
-
     public NewSeriesFragment() {
         // Required empty public constructor
         availableExercises = new ArrayList<>();
     }
 
-    public static NewSeriesFragment newInstance() {
+    public static NewSeriesFragment newInstance(String routineId) {
         NewSeriesFragment fragment = new NewSeriesFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -133,10 +133,11 @@ public class NewSeriesFragment extends Fragment {
                     .setReps(Integer.parseInt(reps.getText().toString()))
                     .setWeight(Integer.parseInt(weight.getText().toString()));
 
-            serie.save().addOnSuccessListener(v -> {
+            serie.save().addOnSuccessListener(id -> {
+                Log.d("newseries", "new id " + id);
                 // Seria is saved, redirect somewhere.
-                Toast.makeText(getContext(), "Serie created.", Toast.LENGTH_SHORT).show();
                 NavController navController = Navigation.findNavController(view);
+                navController.getPreviousBackStackEntry().getSavedStateHandle().getLiveData("serieId").postValue(id);
                 navController.popBackStack();
             });
         });

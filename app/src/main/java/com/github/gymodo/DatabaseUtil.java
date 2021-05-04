@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -49,14 +50,16 @@ public abstract class DatabaseUtil {
      * @param object     The object.
      * @param valueType  The object class.
      * @param <T>        The object type.
-     * @return A task.
+     * @return A task with the inserted object id.
      */
-    public static <T> Task<Void> saveObject(String collection, @NonNull T object, @NonNull Class<T> valueType) {
+    public static <T> Task<String> saveObject(String collection, @NonNull T object, @NonNull Class<T> valueType) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        return db.collection(collection)
-                .document()
-                .set(object);
+        DocumentReference reference = db.collection(collection).document();
+
+        String docId = reference.getId();
+
+        return reference.set(object).onSuccessTask(v -> Tasks.forResult(docId));
     }
 
     /**

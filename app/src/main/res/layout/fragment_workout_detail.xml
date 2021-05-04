@@ -33,18 +33,23 @@
             app:layout_constraintTop_toBottomOf="@+id/WorkoutDetailName"
             tools:text="Description here" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/WorkoutDetailReycler"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="32dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/WorkoutDetailDescription"
-            tools:listitem="@layout/workouts_row" />
+            app:layout_constraintTop_toBottomOf="@id/WorkoutDetailDescription">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/WorkoutDetailReycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                tools:listitem="@layout/workouts_row" />
+        </ScrollView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/WorkoutDetailAddSerieButton"

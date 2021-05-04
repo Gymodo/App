@@ -202,10 +202,10 @@ public class Meal {
     /**
      * Saves this object on the database
      *
-     * @return A empty task.
+     * @return A task with the inserted id.
      */
     @Exclude
-    public Task<Void> save() {
+    public Task<String> save() {
         return DatabaseUtil.saveObject(Constants.COLLECTION_MEALS, this, Meal.class);
     }
 

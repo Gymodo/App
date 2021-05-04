@@ -9,7 +9,7 @@
         android:id="@+id/workoutListFragment"
         android:name="com.github.gymodo.fragments.WorkoutListFragment"
         android:label="fragment_workout_list"
-        tools:layout="@layout/fragment_workout_list" >
+        tools:layout="@layout/fragment_workout_list">
         <action
             android:id="@+id/workout_list_to_detail"
             app:destination="@id/workoutDetailFragment"
@@ -23,17 +23,28 @@
         android:id="@+id/workoutDetailFragment"
         android:name="com.github.gymodo.fragments.WorkoutDetailFragment"
         android:label="fragment_workout_detail"
-        tools:layout="@layout/fragment_workout_detail" >
+        tools:layout="@layout/fragment_workout_detail">
         <action
             android:id="@+id/action_workoutDetailFragment_to_addWorkoutFragment"
             app:destination="@id/addWorkoutFragment"
+            app:popUpTo="@id/workoutDetailFragment" />
+        <action
+            android:id="@+id/action_workoutDetailFragment_to_serieDetailFragment"
+            app:destination="@id/serieDetailFragment"
+            app:popUpTo="@id/workoutDetailFragment" />
+        <argument
+            android:name="ARG_ROUTINE_ID"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_workoutDetailFragment_to_newSeriesFragment"
+            app:destination="@id/newSeriesFragment"
             app:popUpTo="@id/workoutDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/addWorkoutFragment"
         android:name="com.github.gymodo.fragments.AddWorkoutFragment"
         android:label="fragment_add_workout"
-        tools:layout="@layout/fragment_add_workout" >
+        tools:layout="@layout/fragment_add_workout">
         <action
             android:id="@+id/action_addWorkoutFragment_to_newSeriesFragment"
             app:destination="@id/newSeriesFragment" />
@@ -43,4 +54,9 @@
         android:name="com.github.gymodo.fragments.NewSeriesFragment"
         android:label="fragment_new_series"
         tools:layout="@layout/fragment_new_series" />
+    <fragment
+        android:id="@+id/serieDetailFragment"
+        android:name="com.github.gymodo.fragments.SerieDetailFragment"
+        android:label="fragment_serie_detail"
+        tools:layout="@layout/fragment_serie_detail" />
 </navigation>
