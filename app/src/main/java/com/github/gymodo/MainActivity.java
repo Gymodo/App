@@ -108,11 +108,11 @@ public class MainActivity extends AppCompatActivity {
 
             // Menu handlers.
             if (itemId == R.id.menu_home) {
-                Toast.makeText(this, "Home", Toast.LENGTH_SHORT).show();
+                setHostFragment(0);
             } else if (itemId == R.id.menu_profile) {
                 startActivity(new Intent(this, ProfileActivity.class));
             } else if (itemId == R.id.menu_settings) {
-                Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, SettingsActivity.class));
             } else if (itemId == R.id.menu_logout) {
                 Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show();
                 signOut();
