@@ -22,6 +22,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -97,6 +99,12 @@ public class UserReservationsFragment extends Fragment {
                  userReservations.add(r);
                 }
             }
+
+            Collections.sort(userReservations, new Comparator<Reservation>() {
+                public int compare(Reservation o1, Reservation o2) {
+                    return o1.getDate().compareTo(o2.getDate());
+                }
+            });
 
             userReservationsRecyclerView.setLayoutManager(new LinearLayoutManager((getContext())));
             reservationAdapter = new UserReservationsAdapter(getContext(), userReservations);
