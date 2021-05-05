@@ -4,6 +4,7 @@ import com.github.gymodo.Constants;
 import com.github.gymodo.DatabaseUtil;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -107,6 +108,7 @@ public class Exercise {
         return this;
     }
 
+    @Exclude
     public Task<List<Muscle>> getMuscles() {
         return Muscle.getWhereIdIn(muscleIds);
     }
@@ -124,6 +126,7 @@ public class Exercise {
      * Saves this object on the database
      * @return A task with the inserted object id.
      */
+    @Exclude
     public Task<String> save() {
         return DatabaseUtil.saveObject(Constants.COLLECTION_EXERCISES, this, Exercise.class);
     }
@@ -132,6 +135,7 @@ public class Exercise {
      * Updates this object on the database
      * @return A empty task.
      */
+    @Exclude
     public Task<Void> update() {
         return DatabaseUtil.updateObject(Constants.COLLECTION_EXERCISES, id, this, Exercise.class);
     }
@@ -142,6 +146,7 @@ public class Exercise {
      * @param id The id of the Exercise.
      * @return A task with the Exercise as result.
      */
+    @Exclude
     public static Task<Exercise> getByID(String id) {
         return DatabaseUtil.getByID(Constants.COLLECTION_EXERCISES, id, Exercise.class);
     }
@@ -151,6 +156,7 @@ public class Exercise {
      * @param ids The list of ids.
      * @return A task with a list of ids.
      */
+    @Exclude
     public static Task<List<Exercise>> getWhereIdIn(List<String> ids) {
         return DatabaseUtil.getWhereIdIn(Constants.COLLECTION_EXERCISES, ids, Exercise.class);
     }
@@ -159,6 +165,7 @@ public class Exercise {
      * Get all the Exercise.
      * @return all the Exercise
      */
+    @Exclude
     public static Task<List<Exercise>> listAll() {
         return DatabaseUtil.getAll(Constants.COLLECTION_EXERCISES, Exercise.class);
     }
