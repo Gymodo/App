@@ -50,4 +50,6 @@
     <string name="save">SAVE</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="settings">SETTINGS</string>
+    <string name="admin">Admin</string>
+    <string name="add_exercise">Add Exercise</string>
 </resources>
