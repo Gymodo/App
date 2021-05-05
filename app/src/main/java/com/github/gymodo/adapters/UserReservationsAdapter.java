@@ -2,12 +2,14 @@ package com.github.gymodo.adapters;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.gymodo.R;
 import com.github.gymodo.reservation.Reservation;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.SimpleDateFormat;
@@ -82,21 +85,27 @@ public class UserReservationsAdapter extends RecyclerView.Adapter<UserReservatio
             @Override
             public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
                 menu.setHeaderTitle("Choose an options");
-                menu.add(0, v.getId(), 1, "Share");
-
                 MenuItem menuItem = menu.add(0, v.getId(), 2, "Delete");
+                
                 menuItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        /*
+
                         String currentUserId =  FirebaseAuth.getInstance().getCurrentUser().getUid();
                         Iterator<String> userIds = reservationTmp.getUserIds().iterator();
                         while (userIds.hasNext()){
-                            userIds.next();
-                            if (currentUserId.equalsIgnoreCase(userIds.toString())){
-
+                            String userId = userIds.next();
+                            if (currentUserId.equalsIgnoreCase(userId)){
+                                userIds.remove();
                             }
-                        }*/
+                        }
+                        reservationTmp.update().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                mReservations.remove(reservationTmp);
+                                notifyDataSetChanged();
+                            }
+                        });
                         return true;
                     }
                 });

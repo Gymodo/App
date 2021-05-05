@@ -49,4 +49,5 @@
     <string name="save">SAVE</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="settings">SETTINGS</string>
+    <string name="your_reservation">YOUR RESERVATION</string>
 </resources>
