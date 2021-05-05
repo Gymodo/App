@@ -80,8 +80,10 @@ public class UserReservationsAdapter extends RecyclerView.Adapter<UserReservatio
         } else {
             objectAnimator = ObjectAnimator.ofFloat(holder.reserv_row_layout, "x", -1000f, 0f);
         }
-        objectAnimator.setDuration(1000);
+        objectAnimator.setDuration(500);
         objectAnimator.start();
+
+
 
     }
 
