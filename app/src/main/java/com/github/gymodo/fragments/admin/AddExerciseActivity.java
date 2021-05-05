@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,8 +47,9 @@ public class AddExerciseActivity extends AppCompatActivity {
             Exercise exercise = new Exercise();
             exercise.setName(exerciseName.getText().toString());
             exercise.setDescription(exerciseDesc.getText().toString());
-            exercise.setMuscleIds(adapter.getSelectedItems().parallelStream().map(f -> f.getId()).collect(Collectors.toList()));
-            exercise.save().addOnCompleteListener(id -> {
+            exercise.setMuscleIds(adapter.getSelectedItems().parallelStream().map(Muscle::getId).collect(Collectors.toList()));
+            Log.d("exercise", exercise.getMuscleIds().toString());
+            exercise.save().addOnSuccessListener(id -> {
                 // TODO: FIX THIS ASAP.
                 Toast.makeText(this, "Exercise Added: " + id, Toast.LENGTH_SHORT).show();
                 onBackPressed();
