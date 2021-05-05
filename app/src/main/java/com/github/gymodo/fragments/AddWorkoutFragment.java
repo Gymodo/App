@@ -100,14 +100,7 @@ public class AddWorkoutFragment extends Fragment {
         });
 
         createWorkout.setOnClickListener(v -> {
-            List<Serie> allSeries = adapterAvailable.getCurrentList();
-            List<Serie> selectedSeries = new ArrayList<>();
-
-            for (int i = 0; i < allSeries.size(); i++) {
-                if (adapterAvailable.isPositionSelected(i)) {
-                    selectedSeries.add(allSeries.get(i));
-                }
-            }
+            List<Serie> selectedSeries = adapterAvailable.getSelectedItems();
 
             Routine routine = new Routine();
             routine.setSeriesIds(selectedSeries.parallelStream().map(Serie::getId).collect(Collectors.toList()));

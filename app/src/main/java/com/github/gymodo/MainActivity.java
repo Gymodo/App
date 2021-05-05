@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.view.View;
 import android.widget.Toast;
 
+import com.github.gymodo.fragments.admin.AdminActivity;
 import com.github.gymodo.reservation.Reservation;
 import com.github.gymodo.sharedPreferences.MySharedPreferences;
 import com.github.gymodo.fragments.base_fragments.DietBaseFragment;
@@ -103,6 +104,16 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+        Log.d("ADMIN", "calling");
+        User.getByID(mainActivityFirebaseAuth.getUid()).addOnSuccessListener(user -> {
+            Log.d("ADMIN", "got user");
+            if (user.isAdmin()) {
+                Log.d("ADMIN", "user is admin");
+                MenuItem menuAdmin = navigationView.getMenu().findItem(R.id.menu_admin);
+                menuAdmin.setVisible(true);
+            }
+        });
+
         navigationView.setNavigationItemSelectedListener((item -> {
             int itemId = item.getItemId();
 
@@ -119,6 +130,8 @@ public class MainActivity extends AppCompatActivity {
                 MySharedPreferences.deleteSharedPref(this);
                 startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                 finish();
+            } else if (itemId == R.id.menu_admin) {
+                startActivity(new Intent(this, AdminActivity.class));
             }
             drawerLayout.closeDrawer(GravityCompat.START);
             return true;

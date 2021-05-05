@@ -10,6 +10,7 @@ import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.PropertyName;
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -139,6 +140,7 @@ public class User {
      *
      * @return true if user is admin
      */
+    @PropertyName("admin")
     public boolean isAdmin() {
         return isAdmin;
     }
@@ -149,9 +151,9 @@ public class User {
      * @param admin true if user is admin
      * @return this
      */
-    public User setAdmin(boolean admin) {
+    @PropertyName("admin")
+    public void setAdmin(boolean admin) {
         isAdmin = admin;
-        return this;
     }
 
     /**

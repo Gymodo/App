@@ -9,6 +9,7 @@ import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.Exclude;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Represents a muscle
@@ -103,5 +104,26 @@ public class Muscle {
     @Exclude
     public static Task<List<Muscle>> getWhereIdIn(List<String> ids) {
         return DatabaseUtil.getWhereIdIn(Constants.COLLECTION_MUSCLES, ids, Muscle.class);
+    }
+
+    /**
+     * Get all the Muscle.
+     * @return all the Muscle
+     */
+    public static Task<List<Muscle>> listAll() {
+        return DatabaseUtil.getAll(Constants.COLLECTION_MUSCLES, Muscle.class);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Muscle muscle = (Muscle) o;
+        return Objects.equals(id, muscle.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

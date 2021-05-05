@@ -20,5 +20,9 @@
             android:id="@+id/menu_logout"
             android:icon="@drawable/ic_exit"
             android:title="Logout" />
+        <item
+            android:id="@+id/menu_admin"
+            android:title="@string/admin"
+            android:visible="false" />
     </group>
 </menu>

@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.gymodo.R;
 import com.github.gymodo.exercise.Exercise;
+import com.github.gymodo.exercise.Muscle;
 import com.github.gymodo.exercise.Serie;
 
 import java.util.ArrayList;
@@ -31,6 +32,18 @@ public class SeriesSelectAdapter extends ListAdapter<Serie, SeriesSelectAdapter.
     public SeriesSelectAdapter() {
         super(DIFF_CALLBACK);
         selectedItems = new ArrayList<>();
+    }
+
+    public List<Serie> getSelectedItems() {
+        List<Serie> all = getCurrentList();
+        List<Serie> selected = new ArrayList<>();
+
+        for (int i = 0; i < all.size(); i++) {
+            if (isPositionSelected(i)) {
+                selected.add(all.get(i));
+            }
+        }
+        return selected;
     }
 
     public boolean isPositionSelected(int position) {
