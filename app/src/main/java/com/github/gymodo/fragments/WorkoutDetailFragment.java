@@ -76,7 +76,7 @@ public class WorkoutDetailFragment extends Fragment {
             description = view.findViewById(R.id.WorkoutDetailDescription);
             addSerieButton = view.findViewById(R.id.WorkoutDetailAddSerieButton);
 
-            seriesAdapter = new SeriesAdapter();
+            seriesAdapter = new SeriesAdapter(this.routineId);
 
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             recyclerView.setAdapter(seriesAdapter);
