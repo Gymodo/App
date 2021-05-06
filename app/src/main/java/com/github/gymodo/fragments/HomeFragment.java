@@ -75,12 +75,13 @@ public class HomeFragment extends Fragment {
         CardView cardViewDiets = view.findViewById(R.id.home_diet_cardview);
         CardView cardViewWorkouts = view.findViewById(R.id.home_workout_cardview);
 
+        MainActivity mainActivity = (MainActivity) getActivity();
+
         cardViewAddReservation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 //Select another host frgament
-                MainActivity mainActivity = (MainActivity) getActivity();
                 mainActivity.setHostFragment(2);
 
                 Fragment fragment = mainActivity.adapter.getItem(mainActivity.viewPager.getCurrentItem());
@@ -95,16 +96,27 @@ public class HomeFragment extends Fragment {
         cardViewDiets.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NavController navController = Navigation.findNavController(view);
-                navController.navigate(R.id.home_to_publicDiets);
+                //Select another host frgament
+                mainActivity.setHostFragment(3);
+
+                Fragment fragment = mainActivity.adapter.getItem(mainActivity.viewPager.getCurrentItem());
+
+                NavController myNavController =  NavHostFragment.findNavController(fragment.getChildFragmentManager().getPrimaryNavigationFragment());
+                myNavController.navigate(R.id.myDietsFragment);
+
+
             }
         });
 
         cardViewWorkouts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                NavController navController = Navigation.findNavController(view);
-                navController.navigate(R.id.home_to_publicWorkouts);
+                mainActivity.setHostFragment(1);
+
+                Fragment fragment = mainActivity.adapter.getItem(mainActivity.viewPager.getCurrentItem());
+
+                NavController myNavController =  NavHostFragment.findNavController(fragment.getChildFragmentManager().getPrimaryNavigationFragment());
+                myNavController.navigate(R.id.workoutListFragment);
             }
         });
 

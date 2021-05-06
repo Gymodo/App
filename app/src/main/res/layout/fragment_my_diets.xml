@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragments.PublicDietsFragment">
+    tools:context=".fragments.diet.MyDietsFragment">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -12,11 +12,11 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/MyDietsTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/my_diets"
+            android:text="@string/diets"
             android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -30,7 +30,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView4">
+            app:layout_constraintTop_toBottomOf="@+id/MyDietsTitle">
 
             <!--
             <com.google.android.material.chip.Chip
@@ -44,10 +44,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/my_diets" />-->
+            <com.google.android.material.chip.Chip
+                android:id="@+id/MyDietsButtonMy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/my_diets" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/MyDietsButtonExplore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/explore" />
         </com.google.android.material.chip.ChipGroup>
 
         <ImageButton
-            android:id="@+id/DietListSortButton"
+            android:id="@+id/MyDietsSortButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
@@ -58,7 +69,7 @@
             app:srcCompat="@drawable/ic_filter_list" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/DietListRecyclerView"
+            android:id="@+id/MyDietsListRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
@@ -70,6 +81,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/chipGroup"
             tools:listitem="@layout/diet_row" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/MyDietAddButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="24dp"
+            android:backgroundTint="@color/primaryColor"
+            android:clickable="true"
+            android:src="@drawable/ic_add"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

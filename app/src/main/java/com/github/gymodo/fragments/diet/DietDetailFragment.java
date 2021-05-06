@@ -1,4 +1,4 @@
-package com.github.gymodo.fragments;
+package com.github.gymodo.fragments.diet;
 
 import android.os.Bundle;
 
@@ -12,10 +12,10 @@ import com.github.gymodo.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link DietsFragment#newInstance} factory method to
+ * Use the {@link DietDetailFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DietsFragment extends Fragment {
+public class DietDetailFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class DietsFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public DietsFragment() {
+    public DietDetailFragment() {
         // Required empty public constructor
     }
 
@@ -36,11 +36,11 @@ public class DietsFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment DietsFragment.
+     * @return A new instance of fragment DietDetailFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static DietsFragment newInstance(String param1, String param2) {
-        DietsFragment fragment = new DietsFragment();
+    public static DietDetailFragment newInstance(String param1, String param2) {
+        DietDetailFragment fragment = new DietDetailFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,10 +61,6 @@ public class DietsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_diets, container, false);
-
-
-
-        return view;
+        return inflater.inflate(R.layout.fragment_diet_detail, container, false);
     }
 }

@@ -53,4 +53,6 @@
     <string name="your_reservation">YOUR RESERVATION</string>
     <string name="admin">Admin</string>
     <string name="add_exercise">Add Exercise</string>
+    <string name="carbohydrates">Carbohydrates</string>
+    <string name="sodium">Sodium</string>
 </resources>
