@@ -2,13 +2,23 @@ package com.github.gymodo.fragments.diet;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.github.gymodo.R;
+import com.github.gymodo.food.Food;
+import com.google.android.material.textfield.TextInputEditText;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +26,16 @@ import com.github.gymodo.R;
  * create an instance of this fragment.
  */
 public class AddFoodFragment extends Fragment {
+
+    TextInputEditText inputName;
+    TextInputEditText inputCalories;
+    TextInputEditText inputtotalFat;
+    TextInputEditText inputCholesterol;
+    TextInputEditText inputSodium;
+    TextInputEditText inputCarbs;
+    TextInputEditText inputProtein;
+    Button addButton;
+    Button scanButton;
 
     public AddFoodFragment() {
         // Required empty public constructor
@@ -46,6 +66,37 @@ public class AddFoodFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_food, container, false);
+        View view = inflater.inflate(R.layout.fragment_add_food, container, false);
+
+        inputName = view.findViewById(R.id.AddFoodInputName);
+        inputCalories = view.findViewById(R.id.AddFoodInputCalories);
+        inputtotalFat = view.findViewById(R.id.AddFoodInputFat);
+        inputCholesterol = view.findViewById(R.id.AddFoodInputCholesterol);
+        inputSodium = view.findViewById(R.id.AddFoodInputSodium);
+        inputCarbs = view.findViewById(R.id.AddFoodInputCarbs);
+        inputProtein = view.findViewById(R.id.AddFoodInputProtein);
+        addButton = view.findViewById(R.id.AddFoodAdd);
+        scanButton = view.findViewById(R.id.AddFoodScan);
+
+        scanButton.setOnClickListener(v -> {
+
+        });
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        NavController navController = Navigation.findNavController(view);
+        navController.getCurrentBackStackEntry()
+                .getSavedStateHandle()
+                .getLiveData("scanData", new Food())
+                .observe(getViewLifecycleOwner(), new Observer<Food>() {
+                    @Override
+                    public void onChanged(Food food) {
+                        Log.d("addfood", "got food:" + food.toString());
+                    }
+                });
     }
 }
