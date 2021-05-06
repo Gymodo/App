@@ -2,6 +2,7 @@ package com.github.gymodo.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.gymodo.MainActivity;
@@ -70,7 +72,9 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
         Calendar calendar = GregorianCalendar.getInstance(); // creates a new calendar instance
         calendar.setTime(date);   // assigns calendar to given date
 
-        holder.reserv_row_start_time.setText(calendar.get(Calendar.HOUR_OF_DAY) + ":" + displayMinutes(calendar.get(Calendar.MINUTE)));
+        int startHour = calendar.get(Calendar.HOUR_OF_DAY);
+
+        holder.reserv_row_start_time.setText( startHour + ":" + displayMinutes(calendar.get(Calendar.MINUTE)));
 
         long timeInSecs = calendar.getTimeInMillis();
         Date endTimeDate = new Date(timeInSecs + (mReservations.get(position).getDuration() * 60 * 1000));
@@ -78,83 +82,109 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 
         holder.reserv_row_end_time.setText( calendar.get(Calendar.HOUR_OF_DAY) + ":" + displayMinutes(calendar.get(Calendar.MINUTE)));
 
-        holder.reserv_row_layout.setOnClickListener(v -> {
+        Calendar cal = Calendar.getInstance();
+        int hour = cal.get(Calendar.HOUR_OF_DAY);
+
+        Log.d("time", "MY " + hour  + " fire_ " + calendar.get(Calendar.HOUR_OF_DAY));
+
+        holder.reserv_row_layout.setClickable(false);
+
+        if (hour < startHour){
+
+            holder.reserv_row_start_time.setTextColor(ContextCompat.getColor(mContext, R.color.secondaryTextColor));
+            holder.reserv_row_end_time.setTextColor(ContextCompat.getColor(mContext, R.color.secondaryTextColor));
+            holder.min_hour_separator.setTextColor(ContextCompat.getColor(mContext, R.color.secondaryTextColor));
+
+            holder.reserv_row_layout.setOnClickListener(v -> {
+
+                Reservation.listAll().addOnSuccessListener(reservations -> {
+
+                    String myDateStr = sdf.format( mReservations.get(position).getDate());
+                    final boolean[] added = {false};
+                    boolean reservationDateExists = false;
+                    for (Reservation r : reservations){
+
+                        Log.d("date" , "RESERVA: " + r);
+
+                        String fireDateStr = sdf.format(r.getDate());
+                        if(myDateStr.equals(fireDateStr)){ //If the date already exists
+
+                            reservationDateExists = true;
+
+                            Log.d("date" , "esta USER id: "+ Arrays.asList(r.getUserIds().contains(firebaseAuth.getCurrentUser().getUid())));
+
+                            if (!Arrays.asList(r.getUserIds().contains(firebaseAuth.getCurrentUser().getUid())).get(0)){ //Returns true if UserId is in array
 
 
-            Reservation.listAll().addOnSuccessListener(reservations -> {
+                                new MaterialAlertDialogBuilder(mContext)
+                                        .setTitle("Make reservation")
+                                        .setMessage("Want to make reservation for " + sdfDate.format(date) + " at " + sdfTime.format(date) + "?")
+                                        .setPositiveButton( "RESERVE", (dialog, which) -> {
 
-                String myDateStr = sdf.format( mReservations.get(position).getDate());
-                final boolean[] added = {false};
-                boolean reservationDateExists = false;
-                for (Reservation r : reservations){
+                                            r.addUserId(firebaseAuth.getCurrentUser().getUid());
+                                            r.update();
 
-                    Log.d("date" , "RESERVA: " + r);
+                                            added[0] = true;
 
-                    String fireDateStr = sdf.format(r.getDate());
-                    if(myDateStr.equals(fireDateStr)){ //If the date already exists
+                                            MainActivity mainActivity = (MainActivity) mContext;
 
-                        reservationDateExists = true;
+                                            mainActivity.onBackPressed();
 
-                        Log.d("date" , "entra");
+                                        })
 
-                        Log.d("date" , "esta USER id: "+ Arrays.asList(r.getUserIds().contains(firebaseAuth.getCurrentUser().getUid())));
+                                        .setNegativeButton("CANCEL", (dialog, which) -> Toast.makeText(mContext, "Cancel", Toast.LENGTH_SHORT).show())
 
-                        if (!Arrays.asList(r.getUserIds().contains(firebaseAuth.getCurrentUser().getUid())).get(0)){ //Returns true if UserId is in array
-
-
-                            new MaterialAlertDialogBuilder(mContext)
-                                    .setTitle("Make reservation")
-                                    .setMessage("Want to make reservation for " + sdfDate.format(date) + " at " + sdfTime.format(date) + "?")
-                                    .setPositiveButton( "RESERVE", (dialog, which) -> {
-
-                                                r.addUserId(firebaseAuth.getCurrentUser().getUid());
-                                                r.update();
-
-                                                added[0] = true;
-
-                                        MainActivity mainActivity = (MainActivity) mContext;
-
-                                        mainActivity.onBackPressed();
-
-                                            })
-
-                                    .setNegativeButton("CANCEL", (dialog, which) -> Toast.makeText(mContext, "Cancel", Toast.LENGTH_SHORT).show())
-
-                            .show();
+                                        .show();
 
 
+                            } else {
+                                holder.reserv_row_start_time.setTextColor(ContextCompat.getColor(mContext, R.color.secondaryLightColor));
+                                holder.reserv_row_end_time.setTextColor(ContextCompat.getColor(mContext, R.color.secondaryLightColor));
+                                holder.min_hour_separator.setTextColor(ContextCompat.getColor(mContext, R.color.secondaryLightColor));
+                            }
+
+                            break;
                         }
-
-                      break;
                     }
-                }
 
 
-                if (!added[0] && !reservationDateExists){
+                    if (!added[0] && !reservationDateExists){
 
-                    new MaterialAlertDialogBuilder(mContext)
-                            .setTitle("Make reservation")
-                            .setMessage("Want to make reservation for " + sdfDate.format(date) + " at " + sdfTime.format(date) + "?")
-                            .setPositiveButton( "RESERVE", (dialog, which) -> {
+                        new MaterialAlertDialogBuilder(mContext)
+                                .setTitle("Make reservation")
+                                .setMessage("Want to make reservation for " + sdfDate.format(date) + " at " + sdfTime.format(date) + "?")
+                                .setPositiveButton( "RESERVE", (dialog, which) -> {
 
-                                mReservations.get(position).addUserId(firebaseAuth.getCurrentUser().getUid());
-                                mReservations.get(position).save().addOnSuccessListener(aVoid -> Toast.makeText(mContext, "Saved", Toast.LENGTH_SHORT).show());
+                                    mReservations.get(position).addUserId(firebaseAuth.getCurrentUser().getUid());
+                                    mReservations.get(position).save().addOnSuccessListener(aVoid -> Toast.makeText(mContext, "Saved", Toast.LENGTH_SHORT).show());
 
-                                added[0] = true;
+                                    added[0] = true;
 
-                                MainActivity mainActivity = (MainActivity) mContext;
+                                    MainActivity mainActivity = (MainActivity) mContext;
 
-                                mainActivity.onBackPressed();
-                            })
+                                    mainActivity.onBackPressed();
+                                })
 
-                            .setNegativeButton("CANCEL", (dialog, which) -> Toast.makeText(mContext, "Cancel", Toast.LENGTH_SHORT).show())
+                                .setNegativeButton("CANCEL", (dialog, which) -> Toast.makeText(mContext, "Cancel", Toast.LENGTH_SHORT).show())
 
-                            .show();
-                }
+                                .show();
+                    }
+                });
+
+
             });
+        } else {
+            holder.reserv_row_start_time.setTextColor(ContextCompat.getColor(mContext, R.color.secondaryLightColor));
+            holder.reserv_row_end_time.setTextColor(ContextCompat.getColor(mContext, R.color.secondaryLightColor));
+            holder.min_hour_separator.setTextColor(ContextCompat.getColor(mContext, R.color.secondaryLightColor));
 
 
-        });
+        }
+
+    }
+
+    void createReservation(boolean reservationExists){
+
     }
 
     @Override
@@ -166,6 +196,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 
         TextView reserv_row_start_time;
         TextView reserv_row_end_time;
+        TextView min_hour_separator;
 
         ConstraintLayout reserv_row_layout;
 
@@ -174,6 +205,7 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 
             reserv_row_start_time = itemView.findViewById(R.id.textStartHour);
             reserv_row_end_time = itemView.findViewById(R.id.textEndHour);
+            min_hour_separator = itemView.findViewById(R.id.min_hour_separator);
 
             reserv_row_layout = itemView.findViewById(R.id.row_reservationConstraint);
         }
