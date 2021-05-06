@@ -183,6 +183,10 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 
     }
 
+    void createReservation(boolean reservationExists){
+
+    }
+
     @Override
     public int getItemCount() {
         return mReservations.size();
