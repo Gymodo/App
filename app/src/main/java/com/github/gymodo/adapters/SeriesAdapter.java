@@ -72,29 +72,20 @@ public class SeriesAdapter extends ListAdapter<Serie, SeriesAdapter.ViewHolder> 
                             while (seriesIds.hasNext()){
                                 String serieId = seriesIds.next();
                                 if (serie.getId().equalsIgnoreCase(serieId)) {
-                                    Log.d("SeriesRemove", "before remove serie");
                                     seriesIds.remove();
                                 }
                             }
-                            Log.d("SeriesRemove", "before update");
                             routine.update().addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     routine.getSeries().addOnSuccessListener(series -> {
                                        submitList(series);
-                                        Log.d("SeriesRemove", "removeSeries");
                                     });
                                 }
                             });
 
                         });
                     }
-                    /*
-                    serie.update().addOnSuccessListener(aVoid -> {
-                        ArrayList<Serie> series = new ArrayList<>(getCurrentList());
-                        series.remove(serie);
-
-                    });*/
                     return true;
                 });
             }
