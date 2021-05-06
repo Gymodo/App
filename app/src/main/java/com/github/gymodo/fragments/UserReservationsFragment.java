@@ -2,6 +2,8 @@ package com.github.gymodo.fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -9,9 +11,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Toast;
 
 import com.github.gymodo.R;
 import com.github.gymodo.adapters.ReservationAdapter;
@@ -93,10 +99,10 @@ public class UserReservationsFragment extends Fragment {
         //TODO, query to get only user reservations directly
 
         Reservation.listAll().addOnSuccessListener(reservations -> {
-            for (Reservation r : reservations){
+            for (Reservation r : reservations) {
 
-                if (r.getUserIds().contains(firebaseAuth.getCurrentUser().getUid())){
-                 userReservations.add(r);
+                if (r.getUserIds().contains(firebaseAuth.getCurrentUser().getUid())) {
+                    userReservations.add(r);
                 }
             }
 
@@ -123,5 +129,23 @@ public class UserReservationsFragment extends Fragment {
         });
 
         return view;
+    }
+
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case 1:
+                //Share
+                Log.d("ShareBtnPress", "Shares");
+                return true;
+            case 2:
+                //Delete
+                Log.d("DeleteBtnPress", "Delete");
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+
+        }
     }
 }
