@@ -2,7 +2,9 @@ package com.github.gymodo.adapters;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -19,7 +21,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.github.gymodo.R;
 import com.github.gymodo.exercise.Routine;
 import com.github.gymodo.fragments.WorkoutDetailFragment;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class WorkoutAdapter extends ListAdapter<Routine, WorkoutAdapter.ViewHolder> {
@@ -49,7 +54,20 @@ public class WorkoutAdapter extends ListAdapter<Routine, WorkoutAdapter.ViewHold
             navController.navigate(R.id.workout_list_to_detail, bundle);
         });
 
+        holder.layout.setOnCreateContextMenuListener((menu, v, menuInfo) -> {
+            menu.setHeaderTitle("Choose an options");
+            MenuItem menuItem = menu.add(0, v.getId(), 2, "Delete");
 
+            menuItem.setOnMenuItemClickListener(item -> {
+                workout.setAuthorId(null);
+                workout.update().addOnSuccessListener(aVoid -> {
+                    ArrayList<Routine> routines = new ArrayList<>(getCurrentList());
+                    routines.remove(workout);
+                    submitList(routines);
+                });
+                return true;
+            });
+        });
 
         /*
         holder.more.setOnClickListener(view -> {

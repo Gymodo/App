@@ -130,22 +130,4 @@ public class UserReservationsFragment extends Fragment {
 
         return view;
     }
-
-
-    @Override
-    public boolean onContextItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case 1:
-                //Share
-                Log.d("ShareBtnPress", "Shares");
-                return true;
-            case 2:
-                //Delete
-                Log.d("DeleteBtnPress", "Delete");
-                return true;
-            default:
-                return super.onContextItemSelected(item);
-
-        }
-    }
 }

@@ -81,6 +81,7 @@ public class UserReservationsAdapter extends RecyclerView.Adapter<UserReservatio
 
         holder.reserv_row_date.setText(sdf.format(date));
 
+
         holder.reserv_row_layout.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
             @Override
             public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
