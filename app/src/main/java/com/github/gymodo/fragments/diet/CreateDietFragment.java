@@ -3,12 +3,15 @@ package com.github.gymodo.fragments.diet;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.github.gymodo.R;
+import com.google.android.material.textfield.TextInputEditText;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +19,19 @@ import com.github.gymodo.R;
  * create an instance of this fragment.
  */
 public class CreateDietFragment extends Fragment {
+
+    TextInputEditText inputName;
+    TextInputEditText inputDesc;
+
+    RecyclerView listDinner;
+    RecyclerView listLaunch;
+    RecyclerView listBreakfast;
+    RecyclerView listSnack;
+
+    Button btnAddFoodBreakfast;
+    Button btnAddFoodLaunch;
+    Button btnAddFoodSnack;
+    Button btnAddFoodDinner;
 
 
 
@@ -49,6 +65,21 @@ public class CreateDietFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_create_diet, container, false);
+
+        inputName = view.findViewById(R.id.AddDietTextInputName);
+        inputDesc = view.findViewById(R.id.AddDietTextInputDescription);
+
+        listDinner = view.findViewById(R.id.AddDietDinnerRecyclerView);
+        listLaunch = view.findViewById(R.id.AddDietLaunchRecyclerView);
+        listBreakfast = view.findViewById(R.id.AddDietBreakFastRecyclerView);
+        listSnack = view.findViewById(R.id.AddDietSnackRecyclerView);
+
+        btnAddFoodBreakfast = view.findViewById(R.id.AddDietBreakfastButton);
+        btnAddFoodLaunch = view.findViewById(R.id.AddDietLaunchButton);
+        btnAddFoodSnack = view.findViewById(R.id.AddDietSnackButton);
+        btnAddFoodDinner = view.findViewById(R.id.AddDietDinnerButton);
+
+
         return view;
     }
 }

@@ -25,14 +25,15 @@
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent">
+            android:layout_marginBottom="8dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:hint="@string/name"
                 android:id="@+id/AddDietTextInputName"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_width="match_parent" />
+                android:hint="@string/name" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -75,8 +76,8 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/AddDietBreakFastRecyclerView"
-            android:layout_height="230dp"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:padding="10dp"
             android:scrollbars="horizontal"
             tools:itemCount="2"
@@ -120,15 +121,15 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/AddDietLaunchRecyclerView"
-            android:layout_height="230dp"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             tools:itemCount="3"
             tools:listitem="@layout/diet_food_row" />
 
         <Button
             style="@android:style/Widget.Material.Button.Colored"
             android:drawableLeft="@drawable/ic_add"
-            android:id="@+id/AddDietLunchButton"
+            android:id="@+id/AddDietLaunchButton"
             android:layout_gravity="center"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
@@ -161,8 +162,8 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/AddDietDinnerRecyclerView"
-            android:layout_height="230dp"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             tools:itemCount="3"
             tools:listitem="@layout/diet_food_row" />
 
@@ -202,8 +203,8 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/AddDietSnackRecyclerView"
-            android:layout_height="230dp"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             tools:itemCount="3"
             tools:listitem="@layout/diet_food_row" />
 
