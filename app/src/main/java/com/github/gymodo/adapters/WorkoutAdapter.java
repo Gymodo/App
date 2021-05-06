@@ -54,6 +54,7 @@ public class WorkoutAdapter extends ListAdapter<Routine, WorkoutAdapter.ViewHold
             navController.navigate(R.id.workout_list_to_detail, bundle);
         });
 
+        //Remove workout
         holder.layout.setOnCreateContextMenuListener((menu, v, menuInfo) -> {
             menu.setHeaderTitle("Choose an options");
             MenuItem menuItem = menu.add(0, v.getId(), 2, "Delete");

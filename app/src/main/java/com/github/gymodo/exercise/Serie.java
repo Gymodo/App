@@ -211,15 +211,11 @@ public class Serie {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Serie serie = (Serie) o;
-        return reps == serie.reps &&
-                weight == serie.weight &&
-                id.equals(serie.id) &&
-                exerciseId.equals(serie.exerciseId) &&
-                authorId.equals(serie.authorId);
+        return Objects.equals(id, serie.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, reps, weight, exerciseId, authorId);
+        return Objects.hash(id);
     }
 }
