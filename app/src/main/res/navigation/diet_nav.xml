@@ -3,10 +3,39 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/diet_nav"
-    app:startDestination="@id/publicDietsFragment">
+    app:startDestination="@id/myDietsFragment">
     <fragment
-        android:id="@+id/publicDietsFragment"
-        android:name="com.github.gymodo.fragments.PublicDietsFragment"
-        android:label="fragment_public_diets"
-        tools:layout="@layout/fragment_public_diets" />
+        android:id="@+id/myDietsFragment"
+        android:name="com.github.gymodo.fragments.diet.MyDietsFragment"
+        android:label="fragment_my_diets"
+        tools:layout="@layout/fragment_my_diets" >
+        <action
+            android:id="@+id/action_myDietsFragment_to_dietDetailFragment"
+            app:destination="@id/dietDetailFragment"
+            app:popUpTo="@id/myDietsFragment" />
+        <action
+            android:id="@+id/action_myDietsFragment_to_createDietFragment"
+            app:destination="@id/createDietFragment"
+            app:popUpTo="@id/myDietsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/dietDetailFragment"
+        android:name="com.github.gymodo.fragments.diet.DietDetailFragment"
+        android:label="fragment_diet_detail"
+        tools:layout="@layout/fragment_diet_detail" />
+    <fragment
+        android:id="@+id/scanFoodFragment"
+        android:name="com.github.gymodo.fragments.diet.ScanFoodFragment"
+        android:label="fragment_scan_food"
+        tools:layout="@layout/fragment_scan_food" />
+    <fragment
+        android:id="@+id/createDietFragment"
+        android:name="com.github.gymodo.fragments.diet.CreateDietFragment"
+        android:label="fragment_create_diet"
+        tools:layout="@layout/fragment_create_diet" >
+        <action
+            android:id="@+id/action_createDietFragment_to_scanFoodFragment"
+            app:destination="@id/scanFoodFragment"
+            app:popUpTo="@id/createDietFragment" />
+    </fragment>
 </navigation>
