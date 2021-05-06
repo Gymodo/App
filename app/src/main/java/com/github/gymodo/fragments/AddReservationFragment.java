@@ -192,12 +192,6 @@ public class AddReservationFragment extends Fragment {
 
             Date selectedDate = new GregorianCalendar(year1, (month1 + 1), dayOfMonth).getTime();
 
-            //Toast.makeText(view1.getContext(), "Date: " + selectedDate, Toast.LENGTH_SHORT).show();
-
-            Map<String, Object> user = new HashMap<>();
-            user.put("date", dayOfMonth + "/" + (month1 +1)  + "/" + year1);
-            //db.collection("reservations").document().set(user);
-
             showHours(selectedDate, year1, month1, dayOfMonth);
 
         });
