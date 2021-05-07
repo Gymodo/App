@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 
 import com.github.gymodo.R;
 import com.github.gymodo.food.Food;
+import com.google.mlkit.vision.barcode.Barcode;
+import com.google.mlkit.vision.barcode.BarcodeScannerOptions;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,6 +40,10 @@ public class ScanFoodFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_scan_food, container, false);
+
+        BarcodeScannerOptions options =
+                new BarcodeScannerOptions.Builder()
+                        .build();
 
         /*
         NavController navController = Navigation.findNavController(view);
