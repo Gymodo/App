@@ -125,6 +125,8 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
                         }
 
                         break;
+                    } else {
+                        reservationToAdd = mReservations.get(position);
                     }
                 }
             });
