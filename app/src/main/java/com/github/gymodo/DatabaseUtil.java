@@ -62,6 +62,12 @@ public abstract class DatabaseUtil {
         return reference.set(object).onSuccessTask(v -> Tasks.forResult(docId));
     }
 
+    public static <T> Task<Void> deleteObject(String collection, @NonNull String id, @NonNull Class<T> valueType) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        return db.collection(collection).document(id).delete();
+    }
+
     /**
      * Saves (creates) an object on the database with the specified id.
      *
