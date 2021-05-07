@@ -11,7 +11,17 @@
         android:roundIcon="@mipmap/ic_gymodo_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Gymodo">
-        <activity android:name=".fragments.admin.AddExerciseActivity"></activity>
+        <activity android:name=".NewPostActivity"
+            android:windowSoftInputMode="adjustResize">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+        <activity android:name=".fragments.admin.AddExerciseActivity" />
         <activity android:name=".fragments.admin.AdminActivity" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".ProfileActivity" />
@@ -20,11 +30,12 @@
             android:name=".RegisterActivity"
             android:parentActivityName=".LoginActivity" />
         <activity android:name=".LoginActivity">
+            <!--
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
         <activity android:name=".AfterSignUp" />
         <activity android:name=".NewSeries" />
