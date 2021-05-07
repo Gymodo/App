@@ -38,8 +38,6 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
     SimpleDateFormat sdfDate=new SimpleDateFormat("dd/MM/YYYY");
     SimpleDateFormat sdfTime=new SimpleDateFormat("HH:mm");
 
-    Reservation reservationToAdd = null;
-
     public ReservationAdapter(Context mContext, List<Reservation> mReservations) {
         this.mContext = mContext;
         this.mReservations = mReservations;
@@ -113,14 +111,13 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 
                         if (!alreadyReserved && r.getUserIds().size() < Constants.MAX_USERS_AT_RESERVATION){
 
-                            reservationToAdd = r;
+                            mReservations.set(position, r);
                             added.set(true);
 
                         } else {
                             holder.reserv_row_start_time.setTextColor(ContextCompat.getColor(mContext, R.color.secondaryLightColor));
                             holder.reserv_row_end_time.setTextColor(ContextCompat.getColor(mContext, R.color.secondaryLightColor));
                             holder.min_hour_separator.setTextColor(ContextCompat.getColor(mContext, R.color.secondaryLightColor));
-                            reservationToAdd = mReservations.get(position);
                             correctHour.set(false);
                         }
 
@@ -147,11 +144,11 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
 
                 if (!added.get() && !reservationDateExists.get()){
 
-                    makeReservation(reservationToAdd, date, false);
+                    makeReservation(mReservations.get(position), date, false);
 
                 } else {
 
-                    makeReservation(reservationToAdd, date, true);
+                    makeReservation(mReservations.get(position), date, true);
                 }
 
             }
