@@ -3,6 +3,8 @@ package com.github.gymodo.fragments.diet;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -32,7 +34,6 @@ public class CreateDietFragment extends Fragment {
     Button btnAddFoodLaunch;
     Button btnAddFoodSnack;
     Button btnAddFoodDinner;
-
 
 
     public CreateDietFragment() {
@@ -78,6 +79,26 @@ public class CreateDietFragment extends Fragment {
         btnAddFoodLaunch = view.findViewById(R.id.AddDietLaunchButton);
         btnAddFoodSnack = view.findViewById(R.id.AddDietSnackButton);
         btnAddFoodDinner = view.findViewById(R.id.AddDietDinnerButton);
+
+        btnAddFoodBreakfast.setOnClickListener(v -> {
+            NavController navController = Navigation.findNavController(view);
+            navController.navigate(R.id.action_createDietFragment_to_scanFoodFragment);
+        });
+
+        btnAddFoodLaunch.setOnClickListener(v -> {
+            NavController navController = Navigation.findNavController(view);
+            navController.navigate(R.id.action_createDietFragment_to_scanFoodFragment);
+        });
+
+        btnAddFoodSnack.setOnClickListener(v -> {
+            NavController navController = Navigation.findNavController(view);
+            navController.navigate(R.id.action_createDietFragment_to_scanFoodFragment);
+        });
+
+        btnAddFoodDinner.setOnClickListener(v -> {
+            NavController navController = Navigation.findNavController(view);
+            navController.navigate(R.id.action_createDietFragment_to_scanFoodFragment);
+        });
 
 
         return view;
