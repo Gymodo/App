@@ -17,4 +17,6 @@ public abstract class Constants {
     public static final String COLLECTION_COMMENTS = "comments";
 
     public static final int MAX_USERS_AT_RESERVATION = 10;
+
+    public static String XML_URL = "https://www.runtastic.com/blog/en/feed/";
 }

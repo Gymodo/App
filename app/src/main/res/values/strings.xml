@@ -55,4 +55,6 @@
     <string name="add_exercise">Add Exercise</string>
     <string name="carbohydrates">Carbohydrates</string>
     <string name="sodium">Sodium</string>
+    <string name="visit_web">VISIT WEB</string>
+    <string name="news">NEWS</string>
 </resources>

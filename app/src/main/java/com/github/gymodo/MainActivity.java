@@ -122,6 +122,8 @@ public class MainActivity extends AppCompatActivity {
                 setHostFragment(0);
             } else if (itemId == R.id.menu_profile) {
                 startActivity(new Intent(this, ProfileActivity.class));
+            } else if (itemId == R.id.menu_news) {
+                startActivity(new Intent(this, NewsActivity.class));
             } else if (itemId == R.id.menu_settings) {
                 startActivity(new Intent(this, SettingsActivity.class));
             } else if (itemId == R.id.menu_logout) {
