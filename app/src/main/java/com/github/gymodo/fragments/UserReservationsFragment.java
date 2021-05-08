@@ -122,9 +122,12 @@ public class UserReservationsFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+                Toast.makeText(getContext(), "HERE", Toast.LENGTH_SHORT).show();
+
                 NavController navController = Navigation.findNavController(view);
 
-                navController.navigate(R.id.user_reservations_to_addReservation);
+                //navController.navigate(R.id.user_reservations_to_addReservation);
+                navController.navigate(R.id.to_see_posts);
             }
         });
 

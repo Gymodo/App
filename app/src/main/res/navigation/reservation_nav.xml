@@ -10,13 +10,24 @@
         android:name="com.github.gymodo.fragments.UserReservationsFragment"
         android:label="fragment_user_reservations"
         tools:layout="@layout/fragment_user_reservations" >
+        <!--
         <action
             android:id="@+id/user_reservations_to_addReservation"
-            app:destination="@id/addReservationFragment2" />
+            app:destination="@id/addReservationFragment2" />-->
+
+
+        <action
+            android:id="@+id/to_see_posts"
+            app:destination="@id/postsFragment" />
     </fragment>
     <fragment
         android:id="@+id/addReservationFragment2"
         android:name="com.github.gymodo.fragments.AddReservationFragment"
         android:label="fragment_add_reservation"
         tools:layout="@layout/fragment_add_reservation" />
+    <fragment
+        android:id="@+id/postsFragment"
+        android:name="com.github.gymodo.fragments.PostsFragment"
+        android:label="fragment_posts"
+        tools:layout="@layout/fragment_posts" />
 </navigation>

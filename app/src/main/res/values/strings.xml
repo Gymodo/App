@@ -56,4 +56,6 @@
     <string name="carbohydrates">Carbohydrates</string>
     <string name="sodium">Sodium</string>
     <string name="new_post">NEW POST</string>
+    <string name="post">POST</string>
+    <string name="comments">COMMENTS</string>
 </resources>

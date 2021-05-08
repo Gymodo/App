@@ -3,12 +3,24 @@ package com.github.gymodo.fragments;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.gymodo.R;
+import com.github.gymodo.adapters.PostsAdapter;
+import com.github.gymodo.adapters.UserReservationsAdapter;
+import com.github.gymodo.social.Post;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +37,10 @@ public class PostsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    List<Post> postsList = new ArrayList<>();
+    PostsAdapter postsAdapter;
+    FirebaseAuth firebaseAuth;
 
     public PostsFragment() {
         // Required empty public constructor
@@ -61,6 +77,23 @@ public class PostsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_posts, container, false);
+        View view = inflater.inflate(R.layout.fragment_posts, container, false);
+
+        FloatingActionButton btnAddNewPost = (FloatingActionButton) view.findViewById(R.id.btnAddNewPost);
+        RecyclerView recyclerViewPosts = (RecyclerView) view.findViewById(R.id.recyclerViewPosts);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        Post.listAll().addOnSuccessListener(posts -> postsList = posts);
+
+        Log.d("post", "NUmPosts: " + postsList.size() );
+
+        recyclerViewPosts.setLayoutManager(new LinearLayoutManager((getContext())));
+
+        postsAdapter = new PostsAdapter(getContext(), postsList);
+
+        recyclerViewPosts.setAdapter(postsAdapter);
+
+        return view;
     }
 }
