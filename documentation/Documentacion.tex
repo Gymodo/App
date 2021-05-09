@@ -7,10 +7,26 @@
 \usepackage{makeidx}
 \usepackage{hyperref}
 \usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{placeins}
+\usepackage{afterpage}
 \usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
 \graphicspath{ {./images/} }
 
 \title{Gymodo}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Gymodo}
+\lhead{M13 Proyecto Desarrollo de aplicaciones multiplataforma}
+\fancyfoot[C,CO]{\leftmark}
+\fancyfoot[L,RO]{\thepage}
+
+\renewcommand{\headrulewidth}{2pt}
+\renewcommand{\footrulewidth}{1pt}
+
 \begin{document}
 
 \begin{titlepage}
@@ -22,7 +38,9 @@
             
         \vspace{0.5cm}
         \LARGE
-        La mejor App para tu gym.
+        La mejor App para tu gym
+        
+        \includegraphics[width=\textwidth]{gymodo_logo}
         
         \vfill
         
@@ -52,6 +70,70 @@ Este documento explica el desarrollo de esta aplicación, su funcionalidad y la 
 \newpage
 
 \tableofcontents
+
+\newpage
+
+\section{Presentación del proyecto}
+Este proyecto se basa en el desarrollo de una aplicación para Android, esta aplicación tiene como objetivo principal cubrir las necesidades digitales que puede tener un gimnasio como:
+
+\begin{itemize}
+\item Crear rutinas y ejercicios.
+\item Reservar una hora para ir al gimnasio.
+\item Crear tus propias dietas y escanear el código de barras de los productos para ver su nutrientes.
+\item Ver noticias relacionadas con el mundo del ejercicio.
+\end{itemize}
+
+\newpage
+
+\section{Estructura y Organización}
+TODO EXPLICAR ORGANIZACION AQUI
+
+\newpage
+
+\section{Tecnología usada}
+
+\subsection{Organización}
+
+\begin{wrapfigure}{R}{0.25\textwidth}
+  \centering
+    \includegraphics[width=\linewidth]{asana}
+  	\bigskip\par
+  	 \includegraphics[width=\linewidth]{toggl}
+  	\bigskip\par
+   \includegraphics[width=\linewidth]{git}
+   \bigskip\par
+    \includegraphics[width=\linewidth]{androidstudio}
+   \bigskip\par
+\end{wrapfigure}
+
+\subsubsection{Asana}
+
+Para organizar las tareas que tenemos que hacer hemos empleado Asana, una aplicación web que permite organizar el trabajo.
+
+
+Con Asana podemos crear tareas, sub-tareas y asignarlas a cada uno, también permite poner un tiempo limite. 
+
+\subsubsection{Toggl}
+Para saber el tiempo empleado en cada tarea usamos la herramienta toggl tracker.
+
+\subsection{Desarrollo}
+
+\subsubsection{Control de Versiones}
+
+El sistema de control de versiones que hemos usado es git, gracias a esta herramienta podemos mantener el proyecto de forma eficiente, este es nuestra forma de trabajar:
+
+\begin{enumerate}
+\item Actualizar la branca rama principal
+\item Crear una rama donde guardaras tu nuevo trabajo.
+\item Hacer el trabajo y subirlo.
+\item Otro miembro revisa el código y si esta bien se hace un merge a la rama principal.
+\item Repetir el paso 1.
+\end{enumerate}
+
+\subsubsection{Android Studio}
+Para desarrollar la aplicación hemos usado el IDE Android Studio.
+EXPLICAR MAS AQUI
+
 
 \newpage
 
@@ -86,6 +168,8 @@ Este documento explica el desarrollo de esta aplicación, su funcionalidad y la 
 	\caption{Diagrama de Casos de Uso}
 \end{figure}
 
+TODO: Explicar casos de uso paso a paso. e.g: 1. seleccionar boton x, hacer x, etc
+
 \newpage
 
 \subsection{Diagrama Relacional (bases de datos)}
@@ -98,7 +182,28 @@ Este documento explica el desarrollo de esta aplicación, su funcionalidad y la 
 
 \newpage
 
+\section{Diseño}
+TODO: Explicar la idea principal del diseño
+
+\subsection{Colores}
+TODO: explicar los colores utilizados
+
+
 \subsection{Mockup}
 \href{https://mockittapp.wondershare.com/app/3398ef738f7ac4f35fae5df4eb77004473612d19?simulator_type=device&sticky}{Link al mockup}
+
+todo: poner foto
+
+\newpage
+
+\section{Estadísticas sobre el proyecto}
+TODO: Alomejor no hace falta esta seccion pero: poner stats de git, lineas codigo etc
+
+\newpage
+
+\section{Conclusión}
+
+\subsection{Posibles ampliaciones}
+Todo: hacer
 
 \end{document}
