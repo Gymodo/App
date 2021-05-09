@@ -11,7 +11,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+import java.util.function.ToDoubleFunction;
 import java.util.function.ToIntFunction;
+import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -255,6 +257,24 @@ public abstract class DatabaseUtil {
                 });
     }
 
+    public static <T> Task<DoubleStream> getDoubleMappedWhereIn(@NonNull String collection,
+                                                                @NonNull List<String> ids,
+                                                                ToDoubleFunction<T> mapper,
+                                                                @NonNull Class<T> valueType) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        return db.collection(collection).whereIn(FieldPath.documentId(), ids)
+                .get()
+                .onSuccessTask(query -> {
+                    if (query != null) {
+                        List<T> list = query.toObjects(valueType);
+                        return Tasks.forResult(list.parallelStream().mapToDouble(mapper));
+                    }
+
+                    return Tasks.forCanceled();
+                });
+    }
+
     /**
      * Gets the sum of ints mapped from a list of objects.
      *
@@ -270,6 +290,18 @@ public abstract class DatabaseUtil {
                                                         ToIntFunction<T> mapper,
                                                         @NonNull Class<T> valueType) {
         return getIntMappedWhereIn(collection, ids, mapper, valueType).onSuccessTask(result -> {
+            if (result != null) {
+                return Tasks.forResult(result.sum());
+            }
+            return Tasks.forCanceled();
+        });
+    }
+
+    public static <T> Task<Double> getMappedDoubleSumWhereIn(@NonNull String collection,
+                                                        @NonNull List<String> ids,
+                                                        ToDoubleFunction<T> mapper,
+                                                        @NonNull Class<T> valueType) {
+        return getDoubleMappedWhereIn(collection, ids, mapper, valueType).onSuccessTask(result -> {
             if (result != null) {
                 return Tasks.forResult(result.sum());
             }

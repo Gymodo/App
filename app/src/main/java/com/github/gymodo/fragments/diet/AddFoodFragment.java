@@ -79,7 +79,8 @@ public class AddFoodFragment extends Fragment {
         scanButton = view.findViewById(R.id.AddFoodScan);
 
         scanButton.setOnClickListener(v -> {
-
+            NavController navController = Navigation.findNavController(view);
+            navController.navigate(R.id.action_addFoodFragment_to_scanFoodFragment);
         });
 
         return view;
@@ -96,6 +97,14 @@ public class AddFoodFragment extends Fragment {
                     @Override
                     public void onChanged(Food food) {
                         Log.d("addfood", "got food:" + food.toString());
+                        Toast.makeText(getContext(), "Got food: " + food.getName(), Toast.LENGTH_SHORT).show();
+                        inputName.setText(food.getName());
+                        inputCalories.setText(String.format("%.03f", food.getCalories()));
+                        inputtotalFat.setText(String.format("%.03f", food.getTotalFat()));
+                        inputCholesterol.setText(String.format("%.03f", food.getCholesterol()));
+                        inputSodium.setText(String.format("%.03f", food.getSodium()));
+                        inputCarbs.setText(String.format("%.03f", food.getTotalCarboHydrate()));
+                        inputProtein.setText(String.format("%.03f", food.getProtein()));
                     }
                 });
     }

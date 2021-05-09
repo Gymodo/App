@@ -16,11 +16,12 @@
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
-        <activity android:name=".NewsActivity"></activity>
-        <activity android:name=".CommentsActivity"></activity>
+
+        <activity android:name=".NewsActivity" />
+        <activity android:name=".CommentsActivity" />
         <activity
             android:name=".NewPostActivity"
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".fragments.admin.AddExerciseActivity" />
         <activity android:name=".fragments.admin.AdminActivity" />
         <activity android:name=".SettingsActivity" />
@@ -37,15 +38,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".AfterSignUp" />
-        <activity android:name=".NewSeries" />
-        <activity
-            android:name=".SeriesActivity"
-            android:parentActivityName=".NewSeries" />
         <activity android:name=".DietListActivity" />
-        <activity android:name=".DietDetailActivity" />
-        <activity
-            android:name=".AddDietActivity"
-            android:parentActivityName=".MainActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

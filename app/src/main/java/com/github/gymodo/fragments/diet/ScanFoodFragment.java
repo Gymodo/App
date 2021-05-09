@@ -8,6 +8,7 @@ import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
@@ -29,6 +30,9 @@ import androidx.camera.view.PreviewView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -38,6 +42,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.github.gymodo.R;
+import com.github.gymodo.food.Food;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.mlkit.vision.barcode.Barcode;
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions;
@@ -207,7 +212,7 @@ public class ScanFoodFragment extends Fragment {
             imageAnalysis.setAnalyzer(ContextCompat.getMainExecutor(getContext()), new BarcodeAnalyzer(new BarcodeListener() {
                 @Override
                 public void onBarcodeFound(Barcode barcode) {
-                    if(found)
+                    if (found)
                         return;
                     debugText.setText("Found barcode:" + barcode.getRawValue());
 
@@ -216,10 +221,37 @@ public class ScanFoodFragment extends Fragment {
                                 @Override
                                 public void onResponse(JSONObject response) {
                                     try {
+                                        Log.d("BARCODE","BARCODE FOUND: " + barcode.getRawValue());
+                                        Toast.makeText(getContext(), "GOT RESPONSE", Toast.LENGTH_SHORT).show();
                                         JSONObject product = response.getJSONObject("product");
                                         String name = product.getString("product_name");
                                         Toast.makeText(getContext(), "Found product: " + name, Toast.LENGTH_SHORT).show();
                                         debugText.setText("Product found: " + name);
+
+                                        Food food = new Food();
+                                        food.setName(product.getString("product_name"));
+
+                                        JSONObject nutriments = product.getJSONObject("nutriments");
+
+                                        if(nutriments.has("energy-kcal"))
+                                            food.setCalories(nutriments.getDouble("energy-kcal"));
+                                        if(nutriments.has("cholesterol"))
+                                            food.setCholesterol(nutriments.getDouble("cholesterol"));
+                                        if(nutriments.has("carbohydrates"))
+                                            food.setTotalCarboHydrate(nutriments.getDouble("carbohydrates"));
+                                        if(nutriments.has("proteins"))
+                                            food.setProtein(nutriments.getDouble("proteins"));
+                                        if(nutriments.has("sodium"))
+                                            food.setSodium(nutriments.getDouble("sodium"));
+                                        if(nutriments.has("fat"))
+                                            food.setTotalFat(nutriments.getDouble("fat"));
+
+                                        NavController navController = Navigation.findNavController(getView());
+                                        navController.getPreviousBackStackEntry()
+                                                .getSavedStateHandle()
+                                                .getLiveData("scanData", new Food())
+                                                .postValue(food);
+                                        navController.popBackStack();
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -235,9 +267,9 @@ public class ScanFoodFragment extends Fragment {
                     ) {
                         @Override
                         public Map<String, String> getHeaders() throws AuthFailureError {
-                            Map<String, String> headers = new HashMap<String, String>();
+                            Map<String, String> headers = new HashMap<>();
                             headers.put("User-agent", "Gymodo - Android - Version 1.0 - https://github.com/Gymodo/App");
-                            return super.getHeaders();
+                            return headers;
                         }
                     };
 

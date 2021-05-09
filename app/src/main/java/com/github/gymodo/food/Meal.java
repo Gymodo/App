@@ -18,6 +18,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.ToDoubleFunction;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
 
@@ -102,8 +103,8 @@ public class Meal {
      * @return The total value.
      */
     @Exclude
-    private Task<Integer> getTotalFoodProperty(ToIntFunction<Food> mapper) {
-        return DatabaseUtil.getMappedSumWhereIn(Constants.COLLECTION_FOODS, foodListIds, mapper, Food.class);
+    private Task<Double> getTotalFoodProperty(ToDoubleFunction<Food> mapper) {
+        return DatabaseUtil.getMappedDoubleSumWhereIn(Constants.COLLECTION_FOODS, foodListIds, mapper, Food.class);
     }
 
     /**
@@ -112,7 +113,7 @@ public class Meal {
      * @return The total calories.
      */
     @Exclude
-    public Task<Integer> getTotalCalories() {
+    public Task<Double> getTotalCalories() {
         return getTotalFoodProperty(Food::getCalories);
     }
 
@@ -122,7 +123,7 @@ public class Meal {
      * @return The total fat.
      */
     @Exclude
-    public Task<Integer> getTotalFat() {
+    public Task<Double> getTotalFat() {
         return getTotalFoodProperty(Food::getTotalFat);
     }
 
@@ -132,7 +133,7 @@ public class Meal {
      * @return The total sodium.
      */
     @Exclude
-    public Task<Integer> getTotalSodium() {
+    public Task<Double> getTotalSodium() {
         return getTotalFoodProperty(Food::getSodium);
     }
 
@@ -142,7 +143,7 @@ public class Meal {
      * @return The total carbohydrates.
      */
     @Exclude
-    public Task<Integer> getTotalCarboHydrates() {
+    public Task<Double> getTotalCarboHydrates() {
         return getTotalFoodProperty(Food::getTotalCarboHydrate);
     }
 
@@ -152,7 +153,7 @@ public class Meal {
      * @return The total cholesterol.
      */
     @Exclude
-    public Task<Integer> getTotalCholesterol() {
+    public Task<Double> getTotalCholesterol() {
         return getTotalFoodProperty(Food::getCholesterol);
     }
 
@@ -162,7 +163,7 @@ public class Meal {
      * @return The total protein.
      */
     @Exclude
-    public Task<Integer> getTotalProtein() {
+    public Task<Double> getTotalProtein() {
         return getTotalFoodProperty(Food::getProtein);
     }
 
