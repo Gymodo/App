@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.github.gymodo.adapters.CommentsAdapter;
 import com.github.gymodo.adapters.PostsAdapter;
+import com.github.gymodo.reservation.Reservation;
 import com.github.gymodo.social.Comment;
 import com.github.gymodo.social.Post;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -26,6 +27,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -67,17 +70,32 @@ public class CommentsActivity extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(List<Comment> comments) {
                                         commentList = comments;
+                                        Collections.sort(commentList, new Comparator<Comment>() {
+                                            public int compare(Comment o1, Comment o2) {
+                                                return o2.getCreatedAt().compareTo(o1.getCreatedAt());
+                                            }
+                                        });
+                                        showComments();
+                                        /*
                                         recyclerViewComments.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
                                         commentsAdapter = new CommentsAdapter(getApplicationContext(), commentList);
 
-                                        recyclerViewComments.setAdapter(commentsAdapter);
+                                        recyclerViewComments.setAdapter(commentsAdapter);*/
                                     }
                                 });
                             }
                         }
                     }
                 });
+    }
+
+    private void showComments() {
+        recyclerViewComments.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+
+        commentsAdapter = new CommentsAdapter(getApplicationContext(), commentList);
+
+        recyclerViewComments.setAdapter(commentsAdapter);
     }
 
     @Override
@@ -121,14 +139,12 @@ public class CommentsActivity extends AppCompatActivity {
                             post.update().addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    Toast.makeText(CommentsActivity.this, "Comment added", Toast.LENGTH_SHORT).show();
+                                    commentInput.setText("");
                                 }
                             });
                         }
                     });
 
-                } else {
-                    Toast.makeText(CommentsActivity.this, "INPUT VACIO", Toast.LENGTH_SHORT).show();
                 }
             }
         });

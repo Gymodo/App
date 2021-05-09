@@ -124,8 +124,7 @@ public class UserReservationsFragment extends Fragment {
 
                 NavController navController = Navigation.findNavController(view);
 
-                //navController.navigate(R.id.user_reservations_to_addReservation);
-                navController.navigate(R.id.to_see_posts);
+                navController.navigate(R.id.user_reservations_to_addReservation);
             }
         });
 

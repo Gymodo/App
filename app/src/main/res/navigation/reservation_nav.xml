@@ -10,15 +10,9 @@
         android:name="com.github.gymodo.fragments.UserReservationsFragment"
         android:label="fragment_user_reservations"
         tools:layout="@layout/fragment_user_reservations" >
-        <!--
         <action
             android:id="@+id/user_reservations_to_addReservation"
-            app:destination="@id/addReservationFragment2" />-->
-
-
-        <action
-            android:id="@+id/to_see_posts"
-            app:destination="@id/postsFragment" />
+            app:destination="@id/addReservationFragment2" />
     </fragment>
     <fragment
         android:id="@+id/addReservationFragment2"

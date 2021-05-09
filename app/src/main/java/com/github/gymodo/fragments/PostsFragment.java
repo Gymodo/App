@@ -1,5 +1,6 @@
 package com.github.gymodo.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.github.gymodo.NewPostActivity;
 import com.github.gymodo.R;
 import com.github.gymodo.adapters.PostsAdapter;
 import com.github.gymodo.adapters.UserReservationsAdapter;
@@ -93,6 +95,14 @@ public class PostsFragment extends Fragment {
 
             recyclerViewPosts.setAdapter(postsAdapter);
 
+        });
+
+        btnAddNewPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), NewPostActivity.class);
+                startActivity(intent);
+            }
         });
 
         return view;

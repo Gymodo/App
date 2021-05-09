@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.github.gymodo.R;
 import com.github.gymodo.social.Comment;
 import com.github.gymodo.social.Post;
+import com.github.gymodo.user.User;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.List;
 
@@ -38,6 +40,14 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
 
     @Override
     public void onBindViewHolder(@NonNull CommentsAdapter.MyViewHolder holder, int position) {
+
+        mComments.get(position).getAuthor().addOnSuccessListener(new OnSuccessListener<User>() {
+            @Override
+            public void onSuccess(User user) {
+                holder.commentsRowUserName.setText(user.getName());
+            }
+        });
+        holder.commentsRowComment.setText(mComments.get(position).getText());
 
     }
 
