@@ -19,4 +19,9 @@
         android:name="com.github.gymodo.fragments.AddReservationFragment"
         android:label="fragment_add_reservation"
         tools:layout="@layout/fragment_add_reservation" />
+    <fragment
+        android:id="@+id/postsFragment"
+        android:name="com.github.gymodo.fragments.PostsFragment"
+        android:label="fragment_posts"
+        tools:layout="@layout/fragment_posts" />
 </navigation>

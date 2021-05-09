@@ -87,7 +87,7 @@ public class HomeFragment extends Fragment {
                 Fragment fragment = mainActivity.adapter.getItem(mainActivity.viewPager.getCurrentItem());
 
                 NavController myNavController =  NavHostFragment.findNavController(fragment.getChildFragmentManager().getPrimaryNavigationFragment());
-                myNavController.navigate(R.id.user_reservations_to_addReservation);
+                //myNavController.navigate(R.id.user_reservations_to_addReservation);
 
 
             }

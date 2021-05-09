@@ -57,4 +57,7 @@
     <string name="sodium">Sodium</string>
     <string name="visit_web">VISIT WEB</string>
     <string name="news">NEWS</string>
+    <string name="new_post">NEW POST</string>
+    <string name="post">POST</string>
+    <string name="comments">COMMENTS</string>
 </resources>
