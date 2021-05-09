@@ -1,5 +1,6 @@
 package com.github.gymodo.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
@@ -7,13 +8,23 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.gymodo.MainActivity;
+import com.github.gymodo.NewPostActivity;
 import com.github.gymodo.R;
+import com.github.gymodo.adapters.PostsAdapter;
+import com.github.gymodo.social.Post;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,6 +41,9 @@ public class HomeFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    List<Post> postsList = new ArrayList<>();
+    PostsAdapter postsAdapter;
+    FirebaseAuth firebaseAuth;
 
     AddReservationFragment addReservationFragment = new AddReservationFragment();
 
@@ -71,11 +85,39 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+
         CardView cardViewAddReservation = view.findViewById(R.id.home_reservation_cardview);
         CardView cardViewDiets = view.findViewById(R.id.home_diet_cardview);
         CardView cardViewWorkouts = view.findViewById(R.id.home_workout_cardview);
 
         MainActivity mainActivity = (MainActivity) getActivity();
+
+
+        FloatingActionButton btnAddNewPost = (FloatingActionButton) view.findViewById(R.id.btnAddNewPost);
+        RecyclerView recyclerViewPosts = (RecyclerView) view.findViewById(R.id.recyclerViewPosts);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        Post.listAll().addOnSuccessListener(posts -> {
+            postsList = posts;
+            recyclerViewPosts.setLayoutManager(new LinearLayoutManager((getContext())));
+            recyclerViewPosts.suppressLayout(true);
+
+            postsAdapter = new PostsAdapter(getContext(), postsList);
+
+            recyclerViewPosts.setAdapter(postsAdapter);
+
+        });
+
+        btnAddNewPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), NewPostActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
 
         cardViewAddReservation.setOnClickListener(new View.OnClickListener() {
             @Override
