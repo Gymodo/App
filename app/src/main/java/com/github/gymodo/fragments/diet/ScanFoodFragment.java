@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,11 +30,23 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.github.gymodo.R;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.mlkit.vision.barcode.Barcode;
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import static android.content.Context.CAMERA_SERVICE;
@@ -47,7 +60,10 @@ public class ScanFoodFragment extends Fragment {
     private static final int PERMISSION_REQUEST_CAMERA = 0;
     private PreviewView previewView;
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
+    Button scanAgain;
     TextView debugText;
+    boolean found;
+    RequestQueue queue;
 
     public static ScanFoodFragment newInstance() {
         ScanFoodFragment fragment = new ScanFoodFragment();
@@ -68,8 +84,11 @@ public class ScanFoodFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_scan_food, container, false);
 
         debugText = view.findViewById(R.id.ScanFoodDebugText);
-
+        scanAgain = view.findViewWithTag(R.id.ScanFoodAgain);
         previewView = view.findViewById(R.id.ScanFoodPreview);
+        found = false;
+        queue = Volley.newRequestQueue(view.getContext());
+        queue.start();
 
         /*
         BarcodeScannerOptions options =
@@ -85,7 +104,7 @@ public class ScanFoodFragment extends Fragment {
 
          */
 
-        cameraProviderFuture = ProcessCameraProvider.getInstance(getContext());
+        cameraProviderFuture = ProcessCameraProvider.getInstance(view.getContext());
         requestCamera();
 
         return view;
@@ -155,12 +174,15 @@ public class ScanFoodFragment extends Fragment {
         cameraProviderFuture.addListener(() -> {
             try {
                 ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
-                Toast.makeText(getContext(), "BINDING CAMERA PREVIEW", Toast.LENGTH_SHORT).show();
                 bindCameraPreview(cameraProvider);
             } catch (ExecutionException | InterruptedException e) {
                 Toast.makeText(getContext(), "Error starting camera " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }, ContextCompat.getMainExecutor(getContext()));
+    }
+
+    private String getFoodUrl(String id) {
+        return String.format("https://world.openfoodfacts.org/api/v0/product/%s.json", id);
     }
 
     private void bindCameraPreview(@NonNull ProcessCameraProvider cameraProvider) {
@@ -185,8 +207,43 @@ public class ScanFoodFragment extends Fragment {
             imageAnalysis.setAnalyzer(ContextCompat.getMainExecutor(getContext()), new BarcodeAnalyzer(new BarcodeListener() {
                 @Override
                 public void onBarcodeFound(Barcode barcode) {
-                    Toast.makeText(getContext(), "Found barcode: " + barcode.getDisplayValue(), Toast.LENGTH_SHORT).show();
-                    debugText.setText(barcode.getRawValue());
+                    if(found)
+                        return;
+                    debugText.setText("Found barcode:" + barcode.getRawValue());
+
+                    JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, getFoodUrl(barcode.getRawValue()),
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    try {
+                                        JSONObject product = response.getJSONObject("product");
+                                        String name = product.getString("product_name");
+                                        Toast.makeText(getContext(), "Found product: " + name, Toast.LENGTH_SHORT).show();
+                                        debugText.setText("Product found: " + name);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+
+                                }
+                            }
+                    ) {
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            Map<String, String> headers = new HashMap<String, String>();
+                            headers.put("User-agent", "Gymodo - Android - Version 1.0 - https://github.com/Gymodo/App");
+                            return super.getHeaders();
+                        }
+                    };
+
+                    queue.add(request);
+
+                    found = true;
                 }
 
                 @Override
@@ -196,8 +253,6 @@ public class ScanFoodFragment extends Fragment {
             }));
 
             Camera camera = cameraProvider.bindToLifecycle(getViewLifecycleOwner(), cameraSelector, imageAnalysis, preview);
-        } else {
-            Toast.makeText(getContext(), "PREVIEW IS NULL", Toast.LENGTH_SHORT).show();
         }
 
     }
