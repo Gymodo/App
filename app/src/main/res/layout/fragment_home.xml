@@ -38,8 +38,7 @@
                 android:id="@+id/home_diet_cardview"
                 android:layout_width="0dp"
                 android:layout_height="20dp"
-                android:layout_marginTop="24dp"
-                android:hapticFeedbackEnabled="false"
+                android:layout_weight="1"
                 app:cardCornerRadius="20dp">
 
 
@@ -66,8 +65,9 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/home_workout_cardview"
-                android:layout_width="180dp"
+                android:layout_width="0dp"
                 android:layout_height="20dp"
+                android:layout_weight="1"
                 app:cardCornerRadius="20dp">
 
                 <ImageView
@@ -80,7 +80,7 @@
 
                 <TextView
                     android:id="@+id/home_workout_text"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="@string/explore_workouts"
@@ -91,7 +91,8 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/home_reservation_cardview"
-                android:layout_width="180dp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="20dp"
                 app:cardCornerRadius="20dp">
 
