@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.github.gymodo.R;
 import com.github.gymodo.adapters.PostsAdapter;
@@ -84,15 +85,15 @@ public class PostsFragment extends Fragment {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        Post.listAll().addOnSuccessListener(posts -> postsList = posts);
+        Post.listAll().addOnSuccessListener(posts -> {
+            postsList = posts;
+            recyclerViewPosts.setLayoutManager(new LinearLayoutManager((getContext())));
 
-        Log.d("post", "NUmPosts: " + postsList.size() );
+            postsAdapter = new PostsAdapter(getContext(), postsList);
 
-        recyclerViewPosts.setLayoutManager(new LinearLayoutManager((getContext())));
+            recyclerViewPosts.setAdapter(postsAdapter);
 
-        postsAdapter = new PostsAdapter(getContext(), postsList);
-
-        recyclerViewPosts.setAdapter(postsAdapter);
+        });
 
         return view;
     }

@@ -7,6 +7,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.Exclude;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,8 +20,8 @@ public class Post {
     /**
      * List of user ids whom liked this post.
      */
-    private List<String> likedByIds;
-    private List<String> commentIds;
+    private List<String> likedByIds = new ArrayList<>();
+    private List<String> commentIds = new ArrayList<>();
     private String imageUrl;
     // Routine = Workout
     private String routineId;
@@ -170,6 +171,7 @@ public class Post {
      *
      * @return all the Post
      */
+
     @Exclude
     public Task<List<Comment>> getComments() {
         return Comment.getWhereIdIn(commentIds);
