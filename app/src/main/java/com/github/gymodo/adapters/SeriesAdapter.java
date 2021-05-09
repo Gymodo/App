@@ -69,7 +69,7 @@ public class SeriesAdapter extends ListAdapter<Serie, SeriesAdapter.ViewHolder> 
                     if (rutineId != null) {
                         Routine.getByID(rutineId).addOnSuccessListener(routine -> {
                             Iterator<String> seriesIds = routine.getSeriesIds().iterator();
-                            while (seriesIds.hasNext()){
+                            while (seriesIds.hasNext()) {
                                 String serieId = seriesIds.next();
                                 if (serie.getId().equalsIgnoreCase(serieId)) {
                                     seriesIds.remove();
@@ -79,7 +79,7 @@ public class SeriesAdapter extends ListAdapter<Serie, SeriesAdapter.ViewHolder> 
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     routine.getSeries().addOnSuccessListener(series -> {
-                                       submitList(series);
+                                        submitList(series);
                                     });
                                 }
                             });
@@ -100,7 +100,8 @@ public class SeriesAdapter extends ListAdapter<Serie, SeriesAdapter.ViewHolder> 
 
         @Override
         public boolean areContentsTheSame(@NonNull Serie oldItem, @NonNull Serie newItem) {
-            return oldItem.equals(newItem);
+            return oldItem.getId().equals(newItem.getId()) && oldItem.getReps() == newItem.getReps()
+                    && oldItem.getWeight() == newItem.getWeight();
         }
     };
 
