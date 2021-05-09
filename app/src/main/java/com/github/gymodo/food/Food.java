@@ -18,17 +18,17 @@ public class Food {
     @DocumentId
     private String id;
     private String name;
-    private int calories;
-    private int totalFat;
-    private int cholesterol;
-    private int sodium;
-    private int totalCarboHydrate;
-    private int protein;
+    private double calories;
+    private double totalFat;
+    private double cholesterol;
+    private double sodium;
+    private double totalCarboHydrate;
+    private double protein;
 
     public Food() {
     }
 
-    public Food(String name, int calories, int totalFat, int cholesterol, int sodium, int totalCarboHydrate, int protein) {
+    public Food(String name, double calories, double totalFat, double cholesterol, double sodium, double totalCarboHydrate, double protein) {
         this.name = name;
         this.calories = calories;
         this.totalFat = totalFat;
@@ -63,7 +63,7 @@ public class Food {
      *
      * @return The calories.
      */
-    public int getCalories() {
+    public double getCalories() {
         return calories;
     }
 
@@ -71,11 +71,9 @@ public class Food {
      * Set the calories of this food.
      *
      * @param calories The calories.
-     * @return this
      */
-    public Food setCalories(int calories) {
+    public void setCalories(double calories) {
         this.calories = calories;
-        return this;
     }
 
     /**
@@ -83,7 +81,7 @@ public class Food {
      *
      * @return The total fat.
      */
-    public int getTotalFat() {
+    public double getTotalFat() {
         return totalFat;
     }
 
@@ -91,11 +89,9 @@ public class Food {
      * Set the total fat.
      *
      * @param totalFat The total fat.
-     * @return this
      */
-    public Food setTotalFat(int totalFat) {
+    public void setTotalFat(double totalFat) {
         this.totalFat = totalFat;
-        return this;
     }
 
     /**
@@ -103,7 +99,7 @@ public class Food {
      *
      * @return The cholesterol.
      */
-    public int getCholesterol() {
+    public double getCholesterol() {
         return cholesterol;
     }
 
@@ -111,11 +107,9 @@ public class Food {
      * Set the cholesterol of this food.
      *
      * @param cholesterol The cholesterol
-     * @return this
      */
-    public Food setCholesterol(int cholesterol) {
+    public void setCholesterol(double cholesterol) {
         this.cholesterol = cholesterol;
-        return this;
     }
 
     /**
@@ -123,7 +117,7 @@ public class Food {
      *
      * @return this
      */
-    public int getSodium() {
+    public double getSodium() {
         return sodium;
     }
 
@@ -133,7 +127,7 @@ public class Food {
      * @param sodium The sodium.
      * @return this
      */
-    public Food setSodium(int sodium) {
+    public Food setSodium(double sodium) {
         this.sodium = sodium;
         return this;
     }
@@ -143,7 +137,7 @@ public class Food {
      *
      * @return the total carbohydrates.
      */
-    public int getTotalCarboHydrate() {
+    public double getTotalCarboHydrate() {
         return totalCarboHydrate;
     }
 
@@ -151,11 +145,9 @@ public class Food {
      * Set the total carbohydrates.
      *
      * @param totalCarboHydrate The total carbohydrates.
-     * @return this
      */
-    public Food setTotalCarboHydrate(int totalCarboHydrate) {
+    public void setTotalCarboHydrate(double totalCarboHydrate) {
         this.totalCarboHydrate = totalCarboHydrate;
-        return this;
     }
 
     /**
@@ -163,7 +155,7 @@ public class Food {
      *
      * @return The protein quantity.
      */
-    public int getProtein() {
+    public double getProtein() {
         return protein;
     }
 
@@ -171,20 +163,17 @@ public class Food {
      * Set the protein quantity of this food.
      *
      * @param protein The protein quantity.
-     * @return this
      */
-    public Food setProtein(int protein) {
+    public void setProtein(double protein) {
         this.protein = protein;
-        return this;
     }
 
     public String getId() {
         return id;
     }
 
-    public Food setId(String id) {
+    public void setId(String id) {
         this.id = id;
-        return this;
     }
 
     /**

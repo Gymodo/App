@@ -36,13 +36,10 @@ public class BarcodeAnalyzer implements ImageAnalysis.Analyzer {
 
             BarcodeScanner scanner = BarcodeScanning.getClient();
 
-            Log.d("BARCODE", "analyzing");
-
             scanner.process(image)
                     .addOnSuccessListener(new OnSuccessListener<List<Barcode>>() {
                         @Override
                         public void onSuccess(List<Barcode> barcodes) {
-                            Log.d("BARCODE", "SUCCESS");
                             for (Barcode barcode : barcodes) {
                                 listener.onBarcodeFound(barcode);
                             }

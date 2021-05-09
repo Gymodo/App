@@ -82,22 +82,22 @@ public class CreateDietFragment extends Fragment {
 
         btnAddFoodBreakfast.setOnClickListener(v -> {
             NavController navController = Navigation.findNavController(view);
-            navController.navigate(R.id.action_createDietFragment_to_scanFoodFragment);
+            navController.navigate(R.id.action_createDietFragment_to_addFoodFragment);
         });
 
         btnAddFoodLaunch.setOnClickListener(v -> {
             NavController navController = Navigation.findNavController(view);
-            navController.navigate(R.id.action_createDietFragment_to_scanFoodFragment);
+            navController.navigate(R.id.action_createDietFragment_to_addFoodFragment);
         });
 
         btnAddFoodSnack.setOnClickListener(v -> {
             NavController navController = Navigation.findNavController(view);
-            navController.navigate(R.id.action_createDietFragment_to_scanFoodFragment);
+            navController.navigate(R.id.action_createDietFragment_to_addFoodFragment);
         });
 
         btnAddFoodDinner.setOnClickListener(v -> {
             NavController navController = Navigation.findNavController(view);
-            navController.navigate(R.id.action_createDietFragment_to_scanFoodFragment);
+            navController.navigate(R.id.action_createDietFragment_to_addFoodFragment);
         });
 
 
