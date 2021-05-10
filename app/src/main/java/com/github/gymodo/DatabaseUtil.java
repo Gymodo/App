@@ -209,9 +209,14 @@ public abstract class DatabaseUtil {
             );
         }
 
-        return Tasks.whenAllSuccess(tasks).onSuccessTask(objects ->
-                Tasks.forResult(objects.parallelStream().map(x -> (List<T>) x).flatMap(List::stream).collect(Collectors.toList()))
-        );
+        return Tasks.whenAllSuccess(tasks)
+                .onSuccessTask(new SuccessContinuation<List<Object>, List<T>>() {
+                    @NonNull
+                    @Override
+                    public Task<List<T>> then(List<Object> objects) throws Exception {
+                        return Tasks.forResult(objects.parallelStream().map(x -> (List<T>) x).flatMap(List::stream).collect(Collectors.toList()));
+                    }
+                });
     }
 
     /**

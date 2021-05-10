@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.camera.core.Camera;
 import androidx.camera.core.CameraSelector;
@@ -31,6 +32,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -43,6 +45,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.github.gymodo.R;
 import com.github.gymodo.food.Food;
+import com.github.gymodo.viewmodels.FoodViewModel;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.mlkit.vision.barcode.Barcode;
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions;
@@ -70,6 +73,8 @@ public class ScanFoodFragment extends Fragment {
     boolean found;
     RequestQueue queue;
 
+    FoodViewModel foodViewModel;
+
     public static ScanFoodFragment newInstance() {
         ScanFoodFragment fragment = new ScanFoodFragment();
         Bundle args = new Bundle();
@@ -86,7 +91,15 @@ public class ScanFoodFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_scan_food, container, false);
+
+        return inflater.inflate(R.layout.fragment_scan_food, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        foodViewModel = new ViewModelProvider(requireActivity()).get("ScannedFood", FoodViewModel.class);
 
         debugText = view.findViewById(R.id.ScanFoodDebugText);
         scanAgain = view.findViewWithTag(R.id.ScanFoodAgain);
@@ -95,60 +108,8 @@ public class ScanFoodFragment extends Fragment {
         queue = Volley.newRequestQueue(view.getContext());
         queue.start();
 
-        /*
-        BarcodeScannerOptions options =
-                new BarcodeScannerOptions.Builder()
-                        .build();
-
-         */
-
-        /*
-        NavController navController = Navigation.findNavController(view);
-        navController.getPreviousBackStackEntry().getSavedStateHandle().getLiveData("scanData").postValue(new Food());
-        navController.popBackStack();
-
-         */
-
         cameraProviderFuture = ProcessCameraProvider.getInstance(view.getContext());
         requestCamera();
-
-        return view;
-    }
-
-    private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
-
-    static {
-        ORIENTATIONS.append(Surface.ROTATION_0, 0);
-        ORIENTATIONS.append(Surface.ROTATION_90, 90);
-        ORIENTATIONS.append(Surface.ROTATION_180, 180);
-        ORIENTATIONS.append(Surface.ROTATION_270, 270);
-    }
-
-    /**
-     * Get the angle by which an image must be rotated given the device's current
-     * orientation.
-     */
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private int getRotationCompensation(String cameraId, Activity activity, boolean isFrontFacing)
-            throws CameraAccessException {
-        // Get the device's current rotation relative to its "native" orientation.
-        // Then, from the ORIENTATIONS table, look up the angle the image must be
-        // rotated to compensate for the device's rotation.
-        int deviceRotation = activity.getWindowManager().getDefaultDisplay().getRotation();
-        int rotationCompensation = ORIENTATIONS.get(deviceRotation);
-
-        // Get the device's sensor orientation.
-        CameraManager cameraManager = (CameraManager) activity.getSystemService(CAMERA_SERVICE);
-        int sensorOrientation = cameraManager
-                .getCameraCharacteristics(cameraId)
-                .get(CameraCharacteristics.SENSOR_ORIENTATION);
-
-        if (isFrontFacing) {
-            rotationCompensation = (sensorOrientation + rotationCompensation) % 360;
-        } else { // back-facing
-            rotationCompensation = (sensorOrientation - rotationCompensation + 360) % 360;
-        }
-        return rotationCompensation;
     }
 
     private void requestCamera() {
@@ -175,7 +136,6 @@ public class ScanFoodFragment extends Fragment {
     }
 
     private void startCamera() {
-
         cameraProviderFuture.addListener(() -> {
             try {
                 ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
@@ -222,14 +182,16 @@ public class ScanFoodFragment extends Fragment {
                                 public void onResponse(JSONObject response) {
                                     try {
                                         Log.d("BARCODE","BARCODE FOUND: " + barcode.getRawValue());
-                                        Toast.makeText(getContext(), "GOT RESPONSE", Toast.LENGTH_SHORT).show();
                                         JSONObject product = response.getJSONObject("product");
                                         String name = product.getString("product_name");
-                                        Toast.makeText(getContext(), "Found product: " + name, Toast.LENGTH_SHORT).show();
                                         debugText.setText("Product found: " + name);
 
                                         Food food = new Food();
                                         food.setName(product.getString("product_name"));
+                                        food.setBarcode(barcode.getRawValue());
+
+                                        if(product.has("image_url"))
+                                            food.setImageUrl(product.getString("image_url"));
 
                                         JSONObject nutriments = product.getJSONObject("nutriments");
 
@@ -246,11 +208,9 @@ public class ScanFoodFragment extends Fragment {
                                         if(nutriments.has("fat"))
                                             food.setTotalFat(nutriments.getDouble("fat"));
 
+                                        foodViewModel.setFood(food);
+
                                         NavController navController = Navigation.findNavController(getView());
-                                        navController.getPreviousBackStackEntry()
-                                                .getSavedStateHandle()
-                                                .getLiveData("scanData", new Food())
-                                                .postValue(food);
                                         navController.popBackStack();
                                     } catch (JSONException e) {
                                         e.printStackTrace();
@@ -261,7 +221,7 @@ public class ScanFoodFragment extends Fragment {
                             new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-
+                                    debugText.setText("Error finding product: " + error.getLocalizedMessage());
                                 }
                             }
                     ) {
