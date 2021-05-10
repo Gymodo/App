@@ -66,6 +66,15 @@ public class MainActivity extends AppCompatActivity {
     //TextView
     private TextView headerUsername;
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        backstack.pop();
+        bottomNav.setSelectedItemId(bottomNav.getSelectedItemId());
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -143,6 +152,9 @@ public class MainActivity extends AppCompatActivity {
         //Bottom navigation
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
+        //Disable visual check from new post option, it will still working
+        bottomNav.getMenu().getItem(2).setCheckable(false);
+
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -160,6 +172,12 @@ public class MainActivity extends AppCompatActivity {
                         //viewPager.setCurrentItem(1, false);
                         setHostFragment(1);
 
+                        return true;
+
+                    case R.id.nav_new_post:
+                        //viewPager.setCurrentItem(2, false);
+                        Intent intent = new Intent(MainActivity.this, NewPostActivity.class);
+                        startActivity(intent);
                         return true;
 
                     case R.id.nav_reservations:
