@@ -76,7 +76,7 @@ public class CommentsActivity extends AppCompatActivity {
                                             }
                                         });
                                         showComments();
-                                        /*
+                                        /*/
                                         recyclerViewComments.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
                                         commentsAdapter = new CommentsAdapter(getApplicationContext(), commentList);
