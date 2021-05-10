@@ -1,5 +1,7 @@
 package com.github.gymodo.food;
 
+import java.io.Serializable;
+
 /**
  * The meal type.
  *
@@ -7,7 +9,7 @@ package com.github.gymodo.food;
  * @see Meal
  * @see Diet
  */
-public enum MealType {
+public enum MealType implements Serializable {
     BREAKFAST,
     LAUNCH,
     DINNER,

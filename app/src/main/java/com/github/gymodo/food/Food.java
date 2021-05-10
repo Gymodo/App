@@ -1,9 +1,15 @@
 package com.github.gymodo.food;
 
+import android.widget.ImageView;
+
+import androidx.databinding.BindingAdapter;
+
 import com.github.gymodo.Constants;
 import com.github.gymodo.DatabaseUtil;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentId;
+import com.google.firebase.firestore.Exclude;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -18,6 +24,8 @@ public class Food {
     @DocumentId
     private String id;
     private String name;
+    private String barcode;
+    private String imageUrl;
     private double calories;
     private double totalFat;
     private double cholesterol;
@@ -56,6 +64,22 @@ public class Food {
     public Food setName(String name) {
         this.name = name;
         return this;
+    }
+
+    public String getBarcode() {
+        return barcode;
+    }
+
+    public void setBarcode(String barcode) {
+        this.barcode = barcode;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     /**
@@ -209,5 +233,11 @@ public class Food {
      */
     public static Task<List<Food>> getWhereIdIn(List<String> ids) {
         return DatabaseUtil.getWhereIdIn(Constants.COLLECTION_FOODS, ids, Food.class);
+    }
+
+    @BindingAdapter("imageUrl")
+    @Exclude
+    public static void loadImage(ImageView imageView, String url) {
+        Picasso.get().load(url).fit().centerCrop().into(imageView);
     }
 }

@@ -4,8 +4,11 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
@@ -17,7 +20,11 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.github.gymodo.R;
+import com.github.gymodo.databinding.FragmentAddFoodBinding;
 import com.github.gymodo.food.Food;
+import com.github.gymodo.food.MealType;
+import com.github.gymodo.viewmodels.AddDietViewModel;
+import com.github.gymodo.viewmodels.FoodViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 
 /**
@@ -26,33 +33,26 @@ import com.google.android.material.textfield.TextInputEditText;
  * create an instance of this fragment.
  */
 public class AddFoodFragment extends Fragment {
+    public static final String ARG_MEALTYPE = "ARG_MEALTYPE";
 
-    TextInputEditText inputName;
-    TextInputEditText inputCalories;
-    TextInputEditText inputtotalFat;
-    TextInputEditText inputCholesterol;
-    TextInputEditText inputSodium;
-    TextInputEditText inputCarbs;
-    TextInputEditText inputProtein;
     Button addButton;
     Button scanButton;
+
+    MealType mealType;
+
+    FragmentAddFoodBinding binding;
+
+    FoodViewModel foodViewModel;
+    AddDietViewModel addDietViewModel;
 
     public AddFoodFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AddFoodFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static AddFoodFragment newInstance(String param1, String param2) {
+    public static AddFoodFragment newInstance(MealType mealType) {
         AddFoodFragment fragment = new AddFoodFragment();
         Bundle args = new Bundle();
+        args.putSerializable(ARG_MEALTYPE, mealType.ordinal());
         fragment.setArguments(args);
         return fragment;
     }
@@ -60,21 +60,29 @@ public class AddFoodFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (getArguments() != null) {
+            mealType = (MealType) getArguments().getSerializable(ARG_MEALTYPE);
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_add_food, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_food, container, false);
+        return binding.getRoot();
+        //return inflater.inflate(R.layout.fragment_add_food, container, false);
+    }
 
-        inputName = view.findViewById(R.id.AddFoodInputName);
-        inputCalories = view.findViewById(R.id.AddFoodInputCalories);
-        inputtotalFat = view.findViewById(R.id.AddFoodInputFat);
-        inputCholesterol = view.findViewById(R.id.AddFoodInputCholesterol);
-        inputSodium = view.findViewById(R.id.AddFoodInputSodium);
-        inputCarbs = view.findViewById(R.id.AddFoodInputCarbs);
-        inputProtein = view.findViewById(R.id.AddFoodInputProtein);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        addDietViewModel = new ViewModelProvider(requireActivity()).get("AddDietViewModel", AddDietViewModel.class);
+        foodViewModel = new ViewModelProvider(requireActivity()).get("ScannedFood", FoodViewModel.class);
+        binding.setViewmodel(foodViewModel);
+
         addButton = view.findViewById(R.id.AddFoodAdd);
         scanButton = view.findViewById(R.id.AddFoodScan);
 
@@ -83,29 +91,30 @@ public class AddFoodFragment extends Fragment {
             navController.navigate(R.id.action_addFoodFragment_to_scanFoodFragment);
         });
 
-        return view;
-    }
+        addButton.setOnClickListener(v -> {
+            if(binding.getViewmodel().getFood().getValue().getName().isEmpty())
+                return;
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        NavController navController = Navigation.findNavController(view);
-        navController.getCurrentBackStackEntry()
-                .getSavedStateHandle()
-                .getLiveData("scanData", new Food())
-                .observe(getViewLifecycleOwner(), new Observer<Food>() {
-                    @Override
-                    public void onChanged(Food food) {
-                        Log.d("addfood", "got food:" + food.toString());
-                        Toast.makeText(getContext(), "Got food: " + food.getName(), Toast.LENGTH_SHORT).show();
-                        inputName.setText(food.getName());
-                        inputCalories.setText(String.format("%.03f", food.getCalories()));
-                        inputtotalFat.setText(String.format("%.03f", food.getTotalFat()));
-                        inputCholesterol.setText(String.format("%.03f", food.getCholesterol()));
-                        inputSodium.setText(String.format("%.03f", food.getSodium()));
-                        inputCarbs.setText(String.format("%.03f", food.getTotalCarboHydrate()));
-                        inputProtein.setText(String.format("%.03f", food.getProtein()));
-                    }
-                });
+            NavController navController = Navigation.findNavController(view);
+
+            switch (mealType) {
+                case BREAKFAST:
+                    addDietViewModel.getBreakfast().setValue(binding.getViewmodel().getFood().getValue());
+                    break;
+                case LAUNCH:
+                    addDietViewModel.getLaunch().setValue(binding.getViewmodel().getFood().getValue());
+                    break;
+                case DINNER:
+                    addDietViewModel.getDinner().setValue(binding.getViewmodel().getFood().getValue());
+                    break;
+                case SNACK:
+                    addDietViewModel.getSnack().setValue(binding.getViewmodel().getFood().getValue());
+                    break;
+            }
+
+            foodViewModel.setFood(new Food());
+
+            navController.popBackStack();
+        });
     }
 }
