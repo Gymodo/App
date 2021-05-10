@@ -2,8 +2,10 @@ package com.github.gymodo;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.SuccessContinuation;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
+import com.google.common.collect.Lists;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -13,6 +15,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.ToDoubleFunction;
 import java.util.function.ToIntFunction;
+import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -190,15 +193,25 @@ public abstract class DatabaseUtil {
         if (ids.isEmpty())
             return Tasks.forResult(new ArrayList<T>());
 
-        return db.collection(collection)
-                .whereIn(FieldPath.documentId(), ids)
-                .get()
-                .onSuccessTask(query -> {
-                    if (query != null) {
-                        return Tasks.forResult(query.toObjects(valueType));
-                    }
-                    return Tasks.forCanceled();
-                });
+        List<Task<List<T>>> tasks = new ArrayList<>();
+
+        for (List<String> idGroup : Lists.partition(ids, 10)) {
+            tasks.add(
+                    db.collection(collection)
+                            .whereIn(FieldPath.documentId(), idGroup)
+                            .get()
+                            .onSuccessTask(query -> {
+                                if (query != null) {
+                                    return Tasks.forResult(query.toObjects(valueType));
+                                }
+                                return Tasks.forCanceled();
+                            })
+            );
+        }
+
+        return Tasks.whenAllSuccess(tasks).onSuccessTask(objects ->
+                Tasks.forResult(objects.parallelStream().map(x -> (List<T>) x).flatMap(List::stream).collect(Collectors.toList()))
+        );
     }
 
     /**
@@ -216,17 +229,8 @@ public abstract class DatabaseUtil {
                                                                     @NonNull List<String> ids,
                                                                     Function<T, Result> mapper,
                                                                     @NonNull Class<T> valueType) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        return db.collection(collection).whereIn(FieldPath.documentId(), ids)
-                .get()
-                .onSuccessTask(query -> {
-                    if (query != null) {
-                        List<T> list = query.toObjects(valueType);
-                        return Tasks.forResult(list.parallelStream().map(mapper));
-                    }
-                    return Tasks.forCanceled();
-                });
+        return DatabaseUtil.getWhereIdIn(collection, ids, valueType).onSuccessTask(list -> Tasks.forResult(list.parallelStream().map(mapper)));
     }
 
     /**
@@ -243,36 +247,14 @@ public abstract class DatabaseUtil {
                                                           @NonNull List<String> ids,
                                                           ToIntFunction<T> mapper,
                                                           @NonNull Class<T> valueType) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        return db.collection(collection).whereIn(FieldPath.documentId(), ids)
-                .get()
-                .onSuccessTask(query -> {
-                    if (query != null) {
-                        List<T> list = query.toObjects(valueType);
-                        return Tasks.forResult(list.parallelStream().mapToInt(mapper));
-                    }
-
-                    return Tasks.forCanceled();
-                });
+        return DatabaseUtil.getWhereIdIn(collection, ids, valueType).onSuccessTask(list -> Tasks.forResult(list.parallelStream().mapToInt(mapper)));
     }
 
     public static <T> Task<DoubleStream> getDoubleMappedWhereIn(@NonNull String collection,
                                                                 @NonNull List<String> ids,
                                                                 ToDoubleFunction<T> mapper,
                                                                 @NonNull Class<T> valueType) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        return db.collection(collection).whereIn(FieldPath.documentId(), ids)
-                .get()
-                .onSuccessTask(query -> {
-                    if (query != null) {
-                        List<T> list = query.toObjects(valueType);
-                        return Tasks.forResult(list.parallelStream().mapToDouble(mapper));
-                    }
-
-                    return Tasks.forCanceled();
-                });
+        return DatabaseUtil.getWhereIdIn(collection, ids, valueType).onSuccessTask(list -> Tasks.forResult(list.parallelStream().mapToDouble(mapper)));
     }
 
     /**
@@ -298,9 +280,9 @@ public abstract class DatabaseUtil {
     }
 
     public static <T> Task<Double> getMappedDoubleSumWhereIn(@NonNull String collection,
-                                                        @NonNull List<String> ids,
-                                                        ToDoubleFunction<T> mapper,
-                                                        @NonNull Class<T> valueType) {
+                                                             @NonNull List<String> ids,
+                                                             ToDoubleFunction<T> mapper,
+                                                             @NonNull Class<T> valueType) {
         return getDoubleMappedWhereIn(collection, ids, mapper, valueType).onSuccessTask(result -> {
             if (result != null) {
                 return Tasks.forResult(result.sum());
