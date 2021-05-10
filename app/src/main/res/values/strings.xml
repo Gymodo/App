@@ -58,7 +58,9 @@
     <string name="visit_web">VISIT WEB</string>
     <string name="news">NEWS</string>
     <string name="new_post">NEW POST</string>
+    <string name="new_post_lowercase">New post</string>
     <string name="post">POST</string>
     <string name="comments">COMMENTS</string>
+    <string name="comment_hint">Add a comment</string>
     <string name="scan_again">Scan again</string>
 </resources>

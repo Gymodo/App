@@ -11,6 +11,11 @@
         android:title="@string/workouts"/>
 
     <item
+        android:id="@+id/nav_new_post"
+        android:icon="@drawable/add"
+        android:title="@string/new_post_lowercase"/>
+
+    <item
         android:id="@+id/nav_reservations"
         android:icon="@drawable/ic_calendar"
         android:title="@string/reservations"/>

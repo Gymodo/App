@@ -23,6 +23,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp">
 
@@ -39,7 +40,8 @@
                 android:layout_width="0dp"
                 android:layout_height="20dp"
                 android:layout_weight="1"
-                app:cardCornerRadius="20dp">
+                android:layout_margin="5dp"
+                app:cardCornerRadius="5dp">
 
 
                 <ImageView
@@ -58,7 +60,7 @@
                     android:text="@string/explore_diets"
                     android:textAlignment="center"
                     android:textColor="@color/white"
-                    android:textSize="8sp"
+                    android:textSize="10sp"
                     android:textStyle="bold" />
             </androidx.cardview.widget.CardView>
 
@@ -68,7 +70,8 @@
                 android:layout_width="0dp"
                 android:layout_height="20dp"
                 android:layout_weight="1"
-                app:cardCornerRadius="20dp">
+                android:layout_margin="5dp"
+                app:cardCornerRadius="5dp">
 
                 <ImageView
                     android:id="@+id/home_workout_image"
@@ -85,7 +88,7 @@
                     android:gravity="center"
                     android:text="@string/explore_workouts"
                     android:textColor="@color/white"
-                    android:textSize="8sp"
+                    android:textSize="10sp"
                     android:textStyle="bold" />
             </androidx.cardview.widget.CardView>
 
@@ -94,7 +97,8 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="20dp"
-                app:cardCornerRadius="20dp">
+                android:layout_margin="5dp"
+                app:cardCornerRadius="5dp">
 
                 <ImageView
                     android:id="@+id/home_reservation_image"
@@ -111,14 +115,11 @@
                     android:gravity="center"
                     android:text="@string/make_reservations"
                     android:textColor="@color/white"
-                    android:textSize="8sp"
+                    android:textSize="10sp"
                     android:textStyle="bold" />
             </androidx.cardview.widget.CardView>
 
-
         </LinearLayout>
-
-
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -130,18 +131,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/upItems"
             tools:listitem="@layout/post_row" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btnAddNewPost"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
-            android:layout_marginBottom="24dp"
-            android:backgroundTint="@color/primaryColor"
-            android:clickable="true"
-            android:src="@drawable/ic_add"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

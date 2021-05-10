@@ -92,8 +92,6 @@ public class HomeFragment extends Fragment {
 
         MainActivity mainActivity = (MainActivity) getActivity();
 
-
-        FloatingActionButton btnAddNewPost = (FloatingActionButton) view.findViewById(R.id.btnAddNewPost);
         RecyclerView recyclerViewPosts = (RecyclerView) view.findViewById(R.id.recyclerViewPosts);
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -108,15 +106,6 @@ public class HomeFragment extends Fragment {
             recyclerViewPosts.setAdapter(postsAdapter);
 
         });
-
-        btnAddNewPost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), NewPostActivity.class);
-                startActivity(intent);
-            }
-        });
-
 
 
         cardViewAddReservation.setOnClickListener(new View.OnClickListener() {

@@ -35,6 +35,7 @@
         android:id="@+id/linearLayout2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -42,6 +43,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.Design.TextInputLayout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3">
@@ -49,16 +51,22 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/commentsNewCommentInput"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="hint" />
+                android:layout_height="match_parent"
+                android:layout_margin="0dp"
+                android:hint="@string/comment_hint"
+                android:textSize="12sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/commentsNewCommentBtn"
+            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Button" />
+            android:padding="0sp"
+            android:text="PUBLISH"
+            android:textColor="@color/primaryColor"
+            android:textSize="12sp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

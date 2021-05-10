@@ -74,28 +74,39 @@
         app:layout_constraintStart_toEndOf="@+id/postRowLike"
         app:layout_constraintTop_toBottomOf="@+id/postRowImage" />
 
-    <ImageView
-        android:id="@+id/postRowComment"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp"
-        android:clickable="true"
+    <LinearLayout
+        android:id="@+id/commentsContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/postRowLikeNum"
-        app:layout_constraintTop_toBottomOf="@+id/postRowImage"
-        app:srcCompat="@drawable/ic_comment_outline" />
+        app:layout_constraintTop_toBottomOf="@+id/postRowImage">
 
-    <TextView
-        android:id="@+id/postRowCommentNum"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="10dp"
-        android:text=""
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/postRowComment"
-        app:layout_constraintTop_toBottomOf="@+id/postRowImage" />
+        <ImageView
+            android:id="@+id/postRowComment"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:clickable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/postRowLikeNum"
+            app:layout_constraintTop_toBottomOf="@+id/postRowImage"
+            app:srcCompat="@drawable/ic_comment_outline" />
+
+        <TextView
+            android:id="@+id/postRowCommentNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/postRowComment"
+            app:layout_constraintTop_toBottomOf="@+id/postRowImage" />
+    </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
