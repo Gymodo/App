@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import android.Manifest;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -16,6 +17,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -37,22 +39,29 @@ import java.util.Date;
 
 public class NewPostActivity extends AppCompatActivity {
 
+    static final int GALLERY_REQUEST_CODE = 103;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    static final int REQUEST_TAKE_PHOTO = 1;
+    static final int CAMERA_PERM_CODE = 101;
+
+    //ImageView
+    private ImageView postImage;
+
+    //Images on Listener
+    private ImageView addNewImage;
+    private ImageView addExistingImage;
+
     private EditText newPostContent;
     private Button newPostPublishBtn;
-    private ImageView addNewImage;
-    private ImageView postImage;
-    private Button addExistingImage;
 
+    //Post publish info
     private String description;
     private String author;
     private Date date;
     private boolean canPublish = true;
+
+    //Firebase
     FirebaseAuth firebaseAuth;
-
-
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-    static final int REQUEST_TAKE_PHOTO = 1;
-    public static final int CAMERA_PERM_CODE = 101;
     String currentPhotoPath;
     private StorageReference mStorageRef;
 
@@ -65,10 +74,13 @@ public class NewPostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_post);
 
+        //Hooks
         newPostContent = findViewById(R.id.newPostContent);
         newPostPublishBtn = findViewById(R.id.newPostPublishBtn);
         addNewImage = findViewById(R.id.addNewImagePost);
+        addExistingImage = findViewById(R.id.addExisteImagePost);
         postImage = findViewById(R.id.newPostImageView);
+
 
         firebaseAuth = FirebaseAuth.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
@@ -77,7 +89,7 @@ public class NewPostActivity extends AppCompatActivity {
 
         newPostPublishBtn.setOnClickListener(v -> {
 
-            if (canPublish){
+            if (canPublish) {
                 date = Calendar.getInstance().getTime();
                 author = firebaseAuth.getCurrentUser().getUid();
 
@@ -99,6 +111,17 @@ public class NewPostActivity extends AppCompatActivity {
             }
         });
 
+        //Add existing image
+        addExistingImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Choose an image"), GALLERY_REQUEST_CODE);
+            }
+        });
+
     }
 
     private void askCameraPermission() {
@@ -116,21 +139,43 @@ public class NewPostActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         //Set taken image into imageview
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+
+            //galleryAddPic
             File f = new File(currentPhotoPath);
             Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
             Uri contentUri = Uri.fromFile(f);
             mediaScanIntent.setData(contentUri);
             this.sendBroadcast(mediaScanIntent);
 
+            //Save file path and content uri in local variable
             filePathTmp = f.getName();
             contentUriTmp = contentUri;
 
+            //Show image in imageview
             postImage.setImageURI(contentUriTmp);
-            //uploadImageToFirebase(f.getName(), contentUri);
+
+        }
+
+        //Show selected image in imageview
+        if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+
+            //Crear un nom per la imatge
+            Uri contentURI = data.getData();
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+
+            //Extension
+            ContentResolver contentResolver = getContentResolver();
+            MimeTypeMap mime = MimeTypeMap.getSingleton();
+            String ext = mime.getExtensionFromMimeType(contentResolver.getType(contentURI));
+
+            //Set image
+            postImage.setImageURI(contentURI);
         }
     }
+
 
     private File createImageFile() throws IOException {
         // Create an image file name
