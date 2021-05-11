@@ -39,7 +39,6 @@ public class NewPostActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
 
         //TODO make sure there is content to publish to prevent an empty post
-
         newPostPublishBtn.setOnClickListener(v -> {
 
             if (canPublish){
