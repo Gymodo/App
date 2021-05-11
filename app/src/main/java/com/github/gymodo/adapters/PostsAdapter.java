@@ -1,5 +1,7 @@
 package com.github.gymodo.adapters;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -87,8 +89,13 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
                                 holder.commentNum.setText(p.getCommentIds().size() + "");
                             }
 
-                            if (p.getLikedByIds() != null && p.getLikedByIds().size() > 0){
-                                holder.likeNum.setText(p.getLikedByIds().size() + "");
+                            if (p.getLikedByIds() != null){
+
+                                if (p.getLikedByIds().size() > 0){
+                                    holder.likeNum.setText(p.getLikedByIds().size() + "");
+                                } else {
+                                    holder.likeNum.setText("");
+                                }
                             }
 
                             if (p.getImageUrl() != null){
@@ -163,21 +170,53 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
                    }
                });
            }
+            animateLikeIcon(holder.postRowLike);
         });
 
-        holder.commentsContainer.setOnClickListener(v -> {
+        //Can open comments by clicking icon or num of comments
+        holder.commentIcon.setOnClickListener(v -> {
 
-            Intent intent = new Intent(mContext, CommentsActivity.class);
-            intent.putExtra("postID", mPosts.get(position).getId());
+            opencomments(mPosts.get(position).getId());
+        });
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P){
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            }
+        holder.commentNum.setOnClickListener(v -> {
 
-            mContext.startActivity(intent);
+            opencomments(mPosts.get(position).getId());
         });
 
 
+    }
+
+    private void opencomments(String postId) {
+
+        Intent intent = new Intent(mContext, CommentsActivity.class);
+        intent.putExtra("postID", postId);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P){
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        }
+
+        mContext.startActivity(intent);
+    }
+
+    void animateLikeIcon(ImageView icon){
+
+        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(icon, "scaleX", 0f, 1.5f);
+        ObjectAnimator objectAnimator2 = ObjectAnimator.ofFloat(icon, "scaleY", 0f, 1.5f);
+        ObjectAnimator objectAnimator3 = ObjectAnimator.ofFloat(icon, "scaleX", 1.5f, 1f);
+        ObjectAnimator objectAnimator4 = ObjectAnimator.ofFloat(icon, "scaleY", 1.5f, 1f);
+
+        objectAnimator.setDuration(100);
+        objectAnimator2.setDuration(100);
+
+
+        objectAnimator3.setDuration(100);
+        objectAnimator4.setDuration(100);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(objectAnimator, objectAnimator2, objectAnimator3, objectAnimator4);
+
+        animatorSet.start();
     }
 
 
@@ -193,8 +232,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
         TextView postContent;
         TextView likeNum;
         TextView commentNum;
-
-        LinearLayout commentsContainer;
 
         ImageView image;
         ImageView userAvatar;
@@ -213,7 +250,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
             commentIcon = itemView.findViewById(R.id.postRowComment);
             postRowLike = itemView.findViewById(R.id.postRowLike);
 
-            commentsContainer = itemView.findViewById(R.id.commentsContainer);
         }
     }
 }
