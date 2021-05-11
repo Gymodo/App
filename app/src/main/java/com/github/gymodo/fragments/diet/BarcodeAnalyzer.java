@@ -40,9 +40,7 @@ public class BarcodeAnalyzer implements ImageAnalysis.Analyzer {
                     .addOnSuccessListener(new OnSuccessListener<List<Barcode>>() {
                         @Override
                         public void onSuccess(List<Barcode> barcodes) {
-                            for (Barcode barcode : barcodes) {
-                                listener.onBarcodeFound(barcode);
-                            }
+                            listener.onBarcodeFound(barcodes);
                             imageProxy.close();
                         }
                     })

@@ -147,8 +147,13 @@ public class CreateDietFragment extends Fragment {
             if(food == null)
                 return;
             // add food to list
+            Toast.makeText(getContext(), "received food", Toast.LENGTH_SHORT).show();
+            Log.d("LLISTA", "---");
+            Log.d("LLISTA", breakfastAdapter.getCurrentList().toString());
             List<Food> list = new ArrayList<>(breakfastAdapter.getCurrentList());
+            Log.d("LLISTA", list.toString());
             list.add(food);
+            Log.d("LLISTA", list.toString());
             breakfastAdapter.submitList(list);
         });
         addDietViewModel.getDinner().observe(getViewLifecycleOwner(), food -> {

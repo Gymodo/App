@@ -41,7 +41,7 @@ public class FoodAdapter extends ListAdapter<Food, FoodAdapter.ViewHolder> {
     private static final DiffUtil.ItemCallback<Food> DIFF_CALLBACK = new DiffUtil.ItemCallback<Food>() {
         @Override
         public boolean areItemsTheSame(@NonNull Food oldItem, @NonNull Food newItem) {
-            return oldItem.equals(newItem);
+            return oldItem == newItem;
         }
 
         @Override

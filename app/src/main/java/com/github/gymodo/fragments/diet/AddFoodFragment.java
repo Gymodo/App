@@ -92,23 +92,24 @@ public class AddFoodFragment extends Fragment {
         });
 
         addButton.setOnClickListener(v -> {
-            if(binding.getViewmodel().getFood().getValue().getName().isEmpty())
+            if(binding.getViewmodel().getFood().getValue().getName() != null &&
+                    binding.getViewmodel().getFood().getValue().getName().isEmpty())
                 return;
 
             NavController navController = Navigation.findNavController(view);
 
             switch (mealType) {
                 case BREAKFAST:
-                    addDietViewModel.getBreakfast().setValue(binding.getViewmodel().getFood().getValue());
+                    addDietViewModel.getBreakfast().setValue(foodViewModel.getFood().getValue());
                     break;
                 case LAUNCH:
-                    addDietViewModel.getLaunch().setValue(binding.getViewmodel().getFood().getValue());
+                    addDietViewModel.getLaunch().setValue(foodViewModel.getFood().getValue());
                     break;
                 case DINNER:
-                    addDietViewModel.getDinner().setValue(binding.getViewmodel().getFood().getValue());
+                    addDietViewModel.getDinner().setValue(foodViewModel.getFood().getValue());
                     break;
                 case SNACK:
-                    addDietViewModel.getSnack().setValue(binding.getViewmodel().getFood().getValue());
+                    addDietViewModel.getSnack().setValue(foodViewModel.getFood().getValue());
                     break;
             }
 

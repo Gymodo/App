@@ -54,6 +54,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -171,71 +172,78 @@ public class ScanFoodFragment extends Fragment {
 
             imageAnalysis.setAnalyzer(ContextCompat.getMainExecutor(getContext()), new BarcodeAnalyzer(new BarcodeListener() {
                 @Override
-                public void onBarcodeFound(Barcode barcode) {
+                public void onBarcodeFound(List<Barcode> barcodes) {
                     if (found)
                         return;
-                    debugText.setText("Found barcode:" + barcode.getRawValue());
 
-                    JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, getFoodUrl(barcode.getRawValue()),
-                            new Response.Listener<JSONObject>() {
-                                @Override
-                                public void onResponse(JSONObject response) {
-                                    try {
-                                        Log.d("BARCODE","BARCODE FOUND: " + barcode.getRawValue());
-                                        JSONObject product = response.getJSONObject("product");
-                                        String name = product.getString("product_name");
-                                        debugText.setText("Product found: " + name);
+                    for (Barcode barcode : barcodes) {
+                        debugText.setText("Found barcode:" + barcode.getRawValue());
 
-                                        Food food = new Food();
-                                        food.setName(product.getString("product_name"));
-                                        food.setBarcode(barcode.getRawValue());
+                        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, getFoodUrl(barcode.getRawValue()),
+                                new Response.Listener<JSONObject>() {
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        try {
+                                            Log.d("BARCODE", "BARCODE FOUND: " + barcode.getRawValue());
+                                            JSONObject product = response.getJSONObject("product");
+                                            String name = product.getString("product_name");
+                                            debugText.setText("Product found: " + name);
 
-                                        if(product.has("image_url"))
-                                            food.setImageUrl(product.getString("image_url"));
+                                            Food food = new Food();
+                                            food.setName(product.getString("product_name"));
+                                            food.setBarcode(barcode.getRawValue());
 
-                                        JSONObject nutriments = product.getJSONObject("nutriments");
+                                            if (product.has("image_url"))
+                                                food.setImageUrl(product.getString("image_url"));
 
-                                        if(nutriments.has("energy-kcal"))
-                                            food.setCalories(nutriments.getDouble("energy-kcal"));
-                                        if(nutriments.has("cholesterol"))
-                                            food.setCholesterol(nutriments.getDouble("cholesterol"));
-                                        if(nutriments.has("carbohydrates"))
-                                            food.setTotalCarboHydrate(nutriments.getDouble("carbohydrates"));
-                                        if(nutriments.has("proteins"))
-                                            food.setProtein(nutriments.getDouble("proteins"));
-                                        if(nutriments.has("sodium"))
-                                            food.setSodium(nutriments.getDouble("sodium"));
-                                        if(nutriments.has("fat"))
-                                            food.setTotalFat(nutriments.getDouble("fat"));
+                                            JSONObject nutriments = product.getJSONObject("nutriments");
 
-                                        foodViewModel.setFood(food);
+                                            if (nutriments.has("energy-kcal"))
+                                                food.setCalories(nutriments.getDouble("energy-kcal"));
+                                            if (nutriments.has("cholesterol"))
+                                                food.setCholesterol(nutriments.getDouble("cholesterol"));
+                                            if (nutriments.has("carbohydrates"))
+                                                food.setTotalCarboHydrate(nutriments.getDouble("carbohydrates"));
+                                            if (nutriments.has("proteins"))
+                                                food.setProtein(nutriments.getDouble("proteins"));
+                                            if (nutriments.has("sodium"))
+                                                food.setSodium(nutriments.getDouble("sodium"));
+                                            if (nutriments.has("fat"))
+                                                food.setTotalFat(nutriments.getDouble("fat"));
 
-                                        NavController navController = Navigation.findNavController(getView());
-                                        navController.popBackStack();
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
+                                            foodViewModel.setFood(food);
+
+                                            NavController navController = Navigation.findNavController(getView());
+                                            navController.popBackStack();
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                            found = false;
+                                        }
+
                                     }
-
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        debugText.setText("Error finding product: " + error.getLocalizedMessage());
+                                        found = false;
+                                    }
                                 }
-                            },
-                            new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    debugText.setText("Error finding product: " + error.getLocalizedMessage());
-                                }
+                        ) {
+                            @Override
+                            public Map<String, String> getHeaders() throws AuthFailureError {
+                                Map<String, String> headers = new HashMap<>();
+                                headers.put("User-agent", "Gymodo - Android - Version 1.0 - https://github.com/Gymodo/App");
+                                return headers;
                             }
-                    ) {
-                        @Override
-                        public Map<String, String> getHeaders() throws AuthFailureError {
-                            Map<String, String> headers = new HashMap<>();
-                            headers.put("User-agent", "Gymodo - Android - Version 1.0 - https://github.com/Gymodo/App");
-                            return headers;
-                        }
-                    };
+                        };
 
-                    queue.add(request);
+                        queue.add(request);
 
-                    found = true;
+                        found = true;
+
+                        break;
+                    }
                 }
 
                 @Override
