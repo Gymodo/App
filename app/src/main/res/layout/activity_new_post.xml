@@ -20,6 +20,8 @@
 
     <com.google.android.material.textfield.TextInputLayout
 
+        android:id="@+id/textInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -33,10 +35,21 @@
             android:id="@+id/newPostContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
 
-            android:hint="hint" />
+            android:hint="Name"
+            android:inputType="textMultiLine" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <ImageView
+        android:id="@+id/newPostImageView"
+        android:layout_width="370dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="24dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
+        tools:srcCompat="@tools:sample/avatars" />
 
     <Button
         android:id="@+id/newPostPublishBtn"
@@ -49,7 +62,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageView
-        android:id="@+id/newPostCamera"
+        android:id="@+id/addNewImagePost"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="16dp"
@@ -60,14 +73,14 @@
         app:srcCompat="@drawable/ic_camera" />
 
     <ImageView
-        android:id="@+id/newPostGallery"
+        android:id="@+id/addExisteImagePost"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="16dp"
         app:tint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/newPostCamera"
+        app:layout_constraintStart_toEndOf="@+id/addNewImagePost"
         app:srcCompat="@drawable/ic_gallery" />
 
     <ImageView
@@ -77,6 +90,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/newPostGallery"
+        app:layout_constraintStart_toEndOf="@+id/addExisteImagePost"
         app:srcCompat="@drawable/ic_fitness" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
