@@ -1,6 +1,7 @@
 package com.github.gymodo.adapters;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -32,6 +33,9 @@ public class FoodAdapter extends ListAdapter<Food, FoodAdapter.ViewHolder> {
         final Food food = getItem(position);
         holder.binding.setFood(food);
         holder.binding.executePendingBindings();
+        if(food.getImageUrl() == null || food.getImageUrl().isEmpty()) {
+            holder.binding.DietFoodRowImage.setVisibility(View.GONE);
+        }
     }
 
     private static final DiffUtil.ItemCallback<Food> DIFF_CALLBACK = new DiffUtil.ItemCallback<Food>() {

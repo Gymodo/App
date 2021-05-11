@@ -12,6 +12,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/row_background"
         android:padding="8dp">
 
         <ImageView
@@ -19,21 +20,23 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:scaleType="centerCrop"
+            app:imageUrl="@{food.imageUrl}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:imageUrl="@{food.imageUrl}"
             tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
             android:id="@+id/DietFoodRowTextName"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
+            android:layout_marginEnd="16dp"
+            android:text="@{food.name}"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/DietFoodRowTextCalories"
             app:layout_constraintStart_toEndOf="@+id/DietFoodRowImage"
             app:layout_constraintTop_toTopOf="parent"
-            android:text="@{food.name}"
             tools:text="Food Name" />
 
         <TextView
@@ -41,10 +44,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
+            android:text='@{String.format("%.02f", food.calories)}'
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:text='@{String.format("%.02f", food.calories)}'
             tools:text="50kcal" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
