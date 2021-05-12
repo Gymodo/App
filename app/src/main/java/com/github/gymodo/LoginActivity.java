@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
         if (credential != null) {
             loadingIcon.setVisibility(View.VISIBLE);
             loginLogoSplashScreen.setVisibility(View.VISIBLE);
-            loginLogoSplashScreen.setVisibility(View.VISIBLE);
+            imgLoginLogoSplashScreen.setVisibility(View.VISIBLE);
             loginMainContainer.setVisibility(View.GONE);
             email = credential[0];
             password = credential[1];
