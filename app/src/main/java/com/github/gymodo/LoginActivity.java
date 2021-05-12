@@ -7,6 +7,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -37,6 +41,10 @@ public class LoginActivity extends AppCompatActivity {
     private Button googleLoginBtn;
     private String email;
     private String password;
+    private ProgressBar loadingIcon;
+    private LinearLayout loginMainContainer;
+    private TextView loginLogoSplashScreen;
+    private ImageView imgLoginLogoSplashScreen;
 
     //public static final String PREF_FILE_NAME = "Authentication";
     public static final int REQUEST_EXIT = 12345;
@@ -48,6 +56,10 @@ public class LoginActivity extends AppCompatActivity {
 
         String[] credential = MySharedPreferences.readSharedPref(this);
         if (credential != null) {
+            loadingIcon.setVisibility(View.VISIBLE);
+            loginLogoSplashScreen.setVisibility(View.VISIBLE);
+            imgLoginLogoSplashScreen.setVisibility(View.VISIBLE);
+            loginMainContainer.setVisibility(View.GONE);
             email = credential[0];
             password = credential[1];
 
@@ -100,6 +112,12 @@ public class LoginActivity extends AppCompatActivity {
         loginPassword = findViewById(R.id.registerInputTextPassword);
         loginLoginBtn = findViewById(R.id.loginBtn);
         googleLoginBtn = findViewById(R.id.googleLoginBtn);
+        loadingIcon = findViewById(R.id.loadingIcon);
+        loginMainContainer = findViewById(R.id.loginMainContainer);
+        loginMainContainer = findViewById(R.id.loginMainContainer);
+        imgLoginLogoSplashScreen = findViewById(R.id.imgLoginLogoSplashScreen);
+        loginLogoSplashScreen = findViewById(R.id.loginLogoSplashScreen);
+
 
         loginLoginBtn.setOnClickListener(v -> {
             if ((!loginUseremail.getText().toString().isEmpty()) && (!loginPassword.getText().toString().isEmpty())) {

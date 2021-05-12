@@ -87,7 +87,6 @@ public class NewPostActivity extends AppCompatActivity {
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
         //TODO make sure there is content to publish to prevent an empty post
-
         newPostPublishBtn.setOnClickListener(v -> {
 
             if ((newPostContent.getText().toString().isEmpty()) && (postImage.getDrawable() == null)) {

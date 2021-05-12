@@ -82,35 +82,43 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
                             Log.d("errorFirestore", error.toString());
                         }
 
-                        if (value.exists()) {
+                        try {
 
-                            Post p = value.toObject(Post.class);
+                            if (value.exists()){
 
-                            if (p.getDescription() != null) {
-                                holder.postContent.setText(p.getDescription());
-                            }
+                                Post p = value.toObject(Post.class);
+                                if (p.getDescription() != null){
 
-                            if (p.getCommentIds() != null && p.getCommentIds().size() > 0) {
-                                holder.commentNum.setText(p.getCommentIds().size() + "");
-                            }
-
-
-                            if (p.getLikedByIds() != null && p.getLikedByIds().size() > 0) {
-                                holder.likeNum.setText(p.getLikedByIds().size() + "");
-
-                            if (p.getLikedByIds() != null){
-
-                                if (p.getLikedByIds().size() > 0){
-                                    holder.likeNum.setText(p.getLikedByIds().size() + "");
-                                } else {
-                                    holder.likeNum.setText("");
+                                    holder.postContent.setText(p.getDescription());
                                 }
 
+                                if (p.getCommentIds() != null && p.getCommentIds().size() > 0){
+                                    holder.commentNum.setText(p.getCommentIds().size() + "");
+                                }
+
+                                if (p.getLikedByIds() != null){
+
+                                    if (p.getLikedByIds().size() > 0){
+                                        holder.likeNum.setText(p.getLikedByIds().size() + "");
+                                    } else {
+                                        holder.likeNum.setText("");
+                                    }
+                                }
+
+                                if (p.getImageUrl() != null){
+
+                                } else {
+                                    holder.image.setVisibility(View.GONE);
+                                }
+
+                                if (p.getLikedByIds().contains(userID)){
+                                    holder.postRowLike.setImageResource(R.drawable.ic_like_icon);
+                                }
+                            }else {
                             }
 
-                            if (p.getLikedByIds().contains(userID)) {
-                                holder.postRowLike.setImageResource(R.drawable.ic_like_icon);
-                            }
+                        } catch (Exception e){
+                            Log.d("error", "Exception: " + e);
                         }
                     }
                 });
