@@ -223,6 +223,7 @@ public class ScanFoodFragment extends Fragment {
                                         navController.popBackStack();
                                     } catch (JSONException e) {
                                         e.printStackTrace();
+                                        found = false;
                                     }
 
                                 }
@@ -231,6 +232,7 @@ public class ScanFoodFragment extends Fragment {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
                                     debugText.setText("Error finding product: " + error.getLocalizedMessage());
+                                    found = false;
                                 }
                             }
                     ) {
