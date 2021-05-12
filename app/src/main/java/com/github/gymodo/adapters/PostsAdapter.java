@@ -4,6 +4,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,12 +26,16 @@ import com.github.gymodo.reservation.Reservation;
 import com.github.gymodo.social.Comment;
 import com.github.gymodo.social.Post;
 import com.github.gymodo.user.User;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +51,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
         this.mContext = mContext;
         this.mPosts = mPosts;
     }
-
 
 
     @NonNull
@@ -68,11 +72,12 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
 
         db = FirebaseFirestore.getInstance();
 
+
         db.collection(Constants.COLLECTION_POSTS).document(post.getId())
                 .addSnapshotListener(new EventListener<DocumentSnapshot>() {
                     @Override
                     public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                        if (error != null){
+                        if (error != null) {
 
                             Log.d("errorFirestore", error.toString());
                         }
@@ -119,11 +124,11 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
                 });
 
         //If there is no likes
-        if (post.getLikedByIds() == null){
+        if (post.getLikedByIds() == null) {
             post.setLikedByIds(new ArrayList<>());
         }
 
-        if (post.getAuthor() != null){
+        if (post.getAuthor() != null) {
             post.getAuthor().addOnSuccessListener(new OnSuccessListener<User>() {
                 @Override
                 public void onSuccess(User user) {
@@ -132,31 +137,40 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
             });
         }
 
-        if (post.getDescription() != null){
+        if (post.getDescription() != null) {
             holder.postContent.setText(post.getDescription());
         }
 
-        if (post.getCommentIds() != null && post.getCommentIds().size() > 0){
+        if (post.getCommentIds() != null && post.getCommentIds().size() > 0) {
             holder.commentNum.setText(post.getCommentIds().size() + "");
         }
 
-        if (post.getLikedByIds() != null && post.getLikedByIds().size() > 0){
+        if (post.getLikedByIds() != null && post.getLikedByIds().size() > 0) {
             holder.likeNum.setText(post.getLikedByIds().size() + "");
         }
 
-        if (post.getImageUrl() != null){
-
+        if (post.getImageUrl() != null) {
+            FirebaseStorage.getInstance().getReference().child(post.getImageUrl()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Picasso.get().load(uri.toString()).fit().centerCrop().into(holder.image);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    holder.image.setVisibility(View.GONE);
+                }
+            });
         } else {
             holder.image.setVisibility(View.GONE);
         }
 
-        if (post.getLikedByIds().contains(userID)){
+        if (post.getLikedByIds().contains(userID)) {
             holder.postRowLike.setImageResource(R.drawable.ic_like_icon);
         }
 
 
         holder.postRowLike.setOnClickListener(v -> {
-
            if (post.getLikedByIds().contains(userID)){
 
                post.getLikedByIds().remove(userID);
@@ -186,6 +200,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
         });
 
         holder.commentNum.setOnClickListener(v -> {
+
 
             opencomments(mPosts.get(position).getId());
         });

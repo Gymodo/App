@@ -63,4 +63,5 @@
     <string name="comments">COMMENTS</string>
     <string name="comment_hint">Add a comment</string>
     <string name="scan_again">Scan again</string>
+    <string name="write_about_your_post">Write about your post...</string>
 </resources>
