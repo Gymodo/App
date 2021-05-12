@@ -67,6 +67,7 @@ public class NewPostActivity extends AppCompatActivity {
 
     private String filePathTmp;
     private Uri contentUriTmp;
+    private String imageFullPath;
 
 
     @Override
@@ -89,18 +90,14 @@ public class NewPostActivity extends AppCompatActivity {
 
         newPostPublishBtn.setOnClickListener(v -> {
 
-            if (canPublish) {
-                date = Calendar.getInstance().getTime();
-                author = firebaseAuth.getCurrentUser().getUid();
-
-                description = newPostContent.getText().toString();
-
-                Post post = new Post();
-                post.setAuthorId(author);
-                post.setDescription(description);
-                post.setCreatedAt(date);
-                post.save().addOnSuccessListener(s -> Toast.makeText(NewPostActivity.this, "Post published", Toast.LENGTH_SHORT).show());
+            if ((newPostContent.getText().toString().isEmpty()) && (postImage.getDrawable() == null)) {
+                Toast.makeText(this, "Nothing to post!", Toast.LENGTH_SHORT).show();
+            } else if (postImage.getDrawable() != null) {
+                uploadImageToFirebase(filePathTmp, contentUriTmp);
+            } else {
+                publishPost();
             }
+
         });
 
         //Add new image
@@ -171,8 +168,13 @@ public class NewPostActivity extends AppCompatActivity {
             MimeTypeMap mime = MimeTypeMap.getSingleton();
             String ext = mime.getExtensionFromMimeType(contentResolver.getType(contentURI));
 
+            filePathTmp = "JPEG_" + timeStamp + "." + ext;
+
+            Log.d("contenturi", contentURI.toString()+"");
+
             //Set image
             postImage.setImageURI(contentURI);
+            contentUriTmp = contentURI;
         }
     }
 
@@ -228,6 +230,12 @@ public class NewPostActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Uri uri) {
                         Toast.makeText(NewPostActivity.this, "Upload Image Url", Toast.LENGTH_SHORT).show();
+                        imageFullPath = f.toString();
+
+                        Log.d("image", "before call post method");
+                        Log.d("image", imageFullPath);
+
+                        publishPost();
                     }
                 });
             }
@@ -237,5 +245,21 @@ public class NewPostActivity extends AppCompatActivity {
                 Toast.makeText(NewPostActivity.this, "Image Upload Failled!", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void publishPost() {
+        date = Calendar.getInstance().getTime();
+        author = firebaseAuth.getCurrentUser().getUid();
+        description = newPostContent.getText().toString();
+
+        Log.d("image", "publishPost method");
+        Log.d("image", imageFullPath + "");
+
+        Post post = new Post();
+        post.setAuthorId(author);
+        post.setDescription(description);
+        post.setCreatedAt(date);
+        post.setImageUrl(imageFullPath);
+        post.save().addOnSuccessListener(s -> Toast.makeText(NewPostActivity.this, "Post published", Toast.LENGTH_SHORT).show());
     }
 }
