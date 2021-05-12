@@ -45,6 +45,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.github.gymodo.R;
 import com.github.gymodo.food.Food;
+import com.github.gymodo.food.MealType;
 import com.github.gymodo.viewmodels.FoodViewModel;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.mlkit.vision.barcode.Barcode;
@@ -65,6 +66,9 @@ import static android.content.Context.CAMERA_SERVICE;
  * create an instance of this fragment.
  */
 public class ScanFoodFragment extends Fragment {
+    public static final String ARG_MEALTYPE = "ARG_MEALTYPE";
+    MealType mealType;
+
     private static final int PERMISSION_REQUEST_CAMERA = 0;
     private PreviewView previewView;
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
@@ -73,11 +77,10 @@ public class ScanFoodFragment extends Fragment {
     boolean found;
     RequestQueue queue;
 
-    FoodViewModel foodViewModel;
-
-    public static ScanFoodFragment newInstance() {
+    public static ScanFoodFragment newInstance(MealType mealType) {
         ScanFoodFragment fragment = new ScanFoodFragment();
         Bundle args = new Bundle();
+        args.putSerializable(ARG_MEALTYPE, mealType.ordinal());
         fragment.setArguments(args);
         return fragment;
     }
@@ -85,6 +88,13 @@ public class ScanFoodFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mealType = (MealType) getArguments().getSerializable(ARG_MEALTYPE);
+        }
+
+        queue = Volley.newRequestQueue(getContext());
+        queue.start();
+        found = false;
     }
 
     @Override
@@ -99,14 +109,11 @@ public class ScanFoodFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        foodViewModel = new ViewModelProvider(requireActivity()).get("ScannedFood", FoodViewModel.class);
-
         debugText = view.findViewById(R.id.ScanFoodDebugText);
         scanAgain = view.findViewWithTag(R.id.ScanFoodAgain);
         previewView = view.findViewById(R.id.ScanFoodPreview);
-        found = false;
-        queue = Volley.newRequestQueue(view.getContext());
-        queue.start();
+
+
 
         cameraProviderFuture = ProcessCameraProvider.getInstance(view.getContext());
         requestCamera();
@@ -208,7 +215,9 @@ public class ScanFoodFragment extends Fragment {
                                         if(nutriments.has("fat"))
                                             food.setTotalFat(nutriments.getDouble("fat"));
 
-                                        foodViewModel.setFood(food);
+                                        Bundle result = new Bundle();
+                                        result.putSerializable("foodData", new FoodMessage(food, mealType));
+                                        getParentFragmentManager().setFragmentResult("foodData", result);
 
                                         NavController navController = Navigation.findNavController(getView());
                                         navController.popBackStack();

@@ -3,22 +3,23 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="wrap_content"
+    android:id="@+id/FragmentCreateDiet"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".fragments.diet.CreateDietFragment">
 
     <LinearLayout
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="32dp"
         tools:context=".AddDietActivity">
 
         <TextView
-            android:gravity="center"
             android:id="@+id/AddDietTextTitle"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/add_diet"
             android:textSize="36sp"
             android:textStyle="bold" />
@@ -38,26 +39,26 @@
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:hint="@string/description"
                 android:id="@+id/AddDietTextInputDescription"
-                android:inputType="textMultiLine"
+                android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:layout_width="match_parent" />
+                android:hint="@string/description"
+                android:inputType="textMultiLine" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_width="match_parent">
+            android:layout_marginTop="16dp">
 
             <TextView
                 android:id="@+id/AddDietTextBreakfast"
-                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@string/breakfast"
                 android:textSize="24sp"
                 android:textStyle="bold"
@@ -67,11 +68,11 @@
 
             <TextView
                 android:id="@+id/AddDietTextBreakfastCalories"
-                android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                tools:text="300kcal"
+                android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="300kcal" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -86,23 +87,23 @@
         </androidx.recyclerview.widget.RecyclerView>
 
         <Button
-            style="@android:style/Widget.Material.Button.Colored"
-            android:drawableLeft="@drawable/ic_add"
             android:id="@+id/AddDietBreakfastButton"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content"
+            style="@android:style/Widget.Material.Button.Colored"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawableLeft="@drawable/ic_add"
             android:text="@string/add_food" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="16dp"
-            android:layout_width="match_parent">
+            android:layout_marginTop="16dp">
 
             <TextView
                 android:id="@+id/AddDietTextLunch"
-                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@string/lunch"
                 android:textSize="24sp"
                 android:textStyle="bold"
@@ -112,11 +113,11 @@
 
             <TextView
                 android:id="@+id/AddDietTextLunchCalories"
-                android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                tools:text="300kcal"
+                android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="300kcal" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -127,23 +128,23 @@
             tools:listitem="@layout/diet_food_row" />
 
         <Button
-            style="@android:style/Widget.Material.Button.Colored"
-            android:drawableLeft="@drawable/ic_add"
             android:id="@+id/AddDietLaunchButton"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content"
+            style="@android:style/Widget.Material.Button.Colored"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawableLeft="@drawable/ic_add"
             android:text="@string/add_food" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="16dp"
-            android:layout_width="match_parent">
+            android:layout_marginTop="16dp">
 
             <TextView
                 android:id="@+id/AddDietTextDinner"
-                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@string/dinner"
                 android:textSize="24sp"
                 android:textStyle="bold"
@@ -153,11 +154,11 @@
 
             <TextView
                 android:id="@+id/AddDietTextDinnerCalories"
-                android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                tools:text="300kcal"
+                android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="300kcal" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -168,23 +169,23 @@
             tools:listitem="@layout/diet_food_row" />
 
         <Button
-            style="@android:style/Widget.Material.Button.Colored"
-            android:drawableLeft="@drawable/ic_add"
             android:id="@+id/AddDietDinnerButton"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content"
+            style="@android:style/Widget.Material.Button.Colored"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawableLeft="@drawable/ic_add"
             android:text="@string/add_food" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="16dp"
-            android:layout_width="match_parent">
+            android:layout_marginTop="16dp">
 
             <TextView
                 android:id="@+id/AddDietTextSnack"
-                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@string/snack"
                 android:textSize="24sp"
                 android:textStyle="bold"
@@ -194,11 +195,11 @@
 
             <TextView
                 android:id="@+id/AddDietTextSnackCalories"
-                android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                tools:text="300kcal"
+                android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="300kcal" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -209,26 +210,26 @@
             tools:listitem="@layout/diet_food_row" />
 
         <Button
-            style="@android:style/Widget.Material.Button.Colored"
-            android:drawableLeft="@drawable/ic_add"
             android:id="@+id/AddDietSnackButton"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content"
+            style="@android:style/Widget.Material.Button.Colored"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawableLeft="@drawable/ic_add"
             android:text="@string/add_food" />
 
         <Switch
             android:id="@+id/AddDietMakePublicButton"
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/make_public" />
 
         <Button
             android:id="@+id/AddDietCreateDietButton"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
             android:text="Create Diet" />
     </LinearLayout>
 </ScrollView>
