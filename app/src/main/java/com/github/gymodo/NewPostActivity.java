@@ -18,11 +18,15 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.github.gymodo.exercise.Routine;
 import com.github.gymodo.social.Post;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -34,8 +38,10 @@ import com.google.firebase.storage.UploadTask;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class NewPostActivity extends AppCompatActivity {
 
@@ -50,9 +56,12 @@ public class NewPostActivity extends AppCompatActivity {
     //Images on Listener
     private ImageView addNewImage;
     private ImageView addExistingImage;
+    private ImageView addRoutine;
 
     private EditText newPostContent;
     private Button newPostPublishBtn;
+    private Spinner routineSpinner;
+
 
     //Post publish info
     private String description;
@@ -68,7 +77,7 @@ public class NewPostActivity extends AppCompatActivity {
     private String filePathTmp;
     private Uri contentUriTmp;
     private String imageFullPath;
-
+    List<String> routineArrayList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,8 +89,9 @@ public class NewPostActivity extends AppCompatActivity {
         newPostPublishBtn = findViewById(R.id.newPostPublishBtn);
         addNewImage = findViewById(R.id.addNewImagePost);
         addExistingImage = findViewById(R.id.addExisteImagePost);
+        addRoutine = findViewById(R.id.newPostWorkout);
         postImage = findViewById(R.id.newPostImageView);
-
+        routineSpinner = findViewById(R.id.routineSpinner);
 
         firebaseAuth = FirebaseAuth.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
@@ -119,6 +129,36 @@ public class NewPostActivity extends AppCompatActivity {
             }
         });
 
+
+        Routine.listAll().addOnSuccessListener(routines -> {
+            for (Routine r : routines){
+                Toast.makeText(this, ""+r.getName(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
+        addRoutine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Mostrar spinner
+                //ArrayAdapter<String> routineArrayAdapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, routineArrayList);
+                //routineSpinner.setAdapter(routineArrayAdapter);
+            }
+        });
+
+        routineSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String selectedCondition = parent.getItemAtPosition(position).toString();
+                Toast.makeText(NewPostActivity.this, "" + selectedCondition, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                Toast.makeText(NewPostActivity.this, "Nothing selected", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void askCameraPermission() {
@@ -170,7 +210,7 @@ public class NewPostActivity extends AppCompatActivity {
 
             filePathTmp = "JPEG_" + timeStamp + "." + ext;
 
-            Log.d("contenturi", contentURI.toString()+"");
+            Log.d("contenturi", contentURI.toString() + "");
 
             //Set image
             postImage.setImageURI(contentURI);
@@ -261,5 +301,6 @@ public class NewPostActivity extends AppCompatActivity {
         post.setCreatedAt(date);
         post.setImageUrl(imageFullPath);
         post.save().addOnSuccessListener(s -> Toast.makeText(NewPostActivity.this, "Post published", Toast.LENGTH_SHORT).show());
+        onBackPressed();
     }
 }
