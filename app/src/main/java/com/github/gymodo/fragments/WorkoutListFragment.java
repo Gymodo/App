@@ -47,6 +47,9 @@ public class WorkoutListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        adapter = new WorkoutAdapter(true);
+
+
     }
 
     @Override
@@ -57,9 +60,14 @@ public class WorkoutListFragment extends Fragment {
         recyclerView = view.findViewById(R.id.WorkoutListRecycler);
         addBtn = view.findViewById(R.id.WorkoutListAdd);
 
-        adapter = new WorkoutAdapter(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
+
+        addBtn.setOnClickListener(btnView -> {
+            NavController navController = Navigation.findNavController(view);
+            navController.navigate(R.id.action_workoutListFragment_to_addWorkoutFragment);
+
+        });
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         String userId = auth.getCurrentUser().getUid();
@@ -68,13 +76,7 @@ public class WorkoutListFragment extends Fragment {
             adapter.submitList(routines);
         }).addOnFailureListener(fail -> {
             Log.e("listByAuthor", fail.getLocalizedMessage());
-            Toast.makeText(view.getContext(), "Error al cargar los workouts.", Toast.LENGTH_SHORT).show();
-        });
-
-        addBtn.setOnClickListener(btnView -> {
-            NavController navController = Navigation.findNavController(view);
-            navController.navigate(R.id.action_workoutListFragment_to_addWorkoutFragment);
-
+            Toast.makeText(getContext(), "Error al cargar los workouts.", Toast.LENGTH_SHORT).show();
         });
 
         return view;

@@ -2,6 +2,7 @@ package com.github.gymodo.food;
 
 import com.github.gymodo.Constants;
 import com.github.gymodo.DatabaseUtil;
+import com.github.gymodo.exercise.Exercise;
 import com.github.gymodo.exercise.Routine;
 import com.github.gymodo.user.User;
 import com.google.android.gms.tasks.Task;
@@ -9,6 +10,7 @@ import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.Serializable;
 import java.util.List;
 
 import kotlin.NotImplementedError;
@@ -20,9 +22,11 @@ import kotlin.NotImplementedError;
  * @see Meal
  * @see MealType
  */
-public class Diet {
+public class Diet implements Serializable {
     @DocumentId
     private String id;
+    private String name;
+    private String description;
     private String dinnerId;
     private String breakfastId;
     private String launchId;
@@ -32,13 +36,31 @@ public class Diet {
     public Diet() {
     }
 
-    public Diet(String id, String dinnerId, String breakfastId, String launchId, String snackId, String authorId) {
+    public Diet(String id, String name, String description, String dinnerId, String breakfastId, String launchId, String snackId, String authorId) {
         this.id = id;
+        this.name = name;
+        this.description = description;
         this.dinnerId = dinnerId;
         this.breakfastId = breakfastId;
         this.launchId = launchId;
         this.snackId = snackId;
         this.authorId = authorId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**
@@ -202,5 +224,14 @@ public class Diet {
     @Exclude
     public static Task<List<Diet>> getWhereIdIn(List<String> ids) {
         return DatabaseUtil.getWhereIdIn(Constants.COLLECTION_DIETS, ids, Diet.class);
+    }
+
+    /**
+     * Get all the Exercise.
+     * @return all the Exercise
+     */
+    @Exclude
+    public static Task<List<Diet>> listAll() {
+        return DatabaseUtil.getAll(Constants.COLLECTION_DIETS, Diet.class);
     }
 }

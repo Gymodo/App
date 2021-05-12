@@ -34,18 +34,8 @@
         android:label="fragment_create_diet"
         tools:layout="@layout/fragment_create_diet" >
         <action
-            android:id="@+id/action_createDietFragment_to_addFoodFragment"
-            app:destination="@id/addFoodFragment"
-            app:popUpTo="@id/createDietFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/addFoodFragment"
-        android:name="com.github.gymodo.fragments.diet.AddFoodFragment"
-        android:label="fragment_add_food"
-        tools:layout="@layout/fragment_add_food" >
-        <action
-            android:id="@+id/action_addFoodFragment_to_scanFoodFragment"
+            android:id="@+id/action_createDietFragment_to_scanFoodFragment"
             app:destination="@id/scanFoodFragment"
-            app:popUpTo="@id/addFoodFragment" />
+            app:popUpTo="@id/createDietFragment" />
     </fragment>
 </navigation>
