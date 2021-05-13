@@ -29,6 +29,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+/**
+ * Adapter for user reservations.
+ */
 public class UserReservationsAdapter extends RecyclerView.Adapter<UserReservationsAdapter.MyViewHolder> {
 
 

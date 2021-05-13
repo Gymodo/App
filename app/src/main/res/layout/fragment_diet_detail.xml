@@ -61,8 +61,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/DietDetailBreakFastRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="230dp"
-                android:padding="10dp"
+                android:layout_height="wrap_content"
                 android:scrollbars="horizontal"
                 tools:itemCount="2"
                 tools:listitem="@layout/diet_food_row">
@@ -98,7 +97,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/DietDetailLaunchRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="230dp"
+                android:layout_height="wrap_content"
                 tools:itemCount="3"
                 tools:listitem="@layout/diet_food_row" />
 
@@ -131,7 +130,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/DietDetailDinnerRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="230dp"
+                android:layout_height="wrap_content"
                 tools:itemCount="3"
                 tools:listitem="@layout/diet_food_row" />
 
@@ -163,7 +162,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/DietDetailSnackRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="230dp"
+                android:layout_height="wrap_content"
                 tools:itemCount="3"
                 tools:listitem="@layout/diet_food_row" />
 

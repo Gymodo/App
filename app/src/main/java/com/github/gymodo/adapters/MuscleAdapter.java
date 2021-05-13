@@ -19,6 +19,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Adapter for mucles.
+ */
 public class MuscleAdapter extends ListAdapter<Muscle, MuscleAdapter.Viewholder> {
     ArrayList<Boolean> selectedItems;
 

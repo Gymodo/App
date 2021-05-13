@@ -3,6 +3,7 @@ package com.github.gymodo.fragments.diet;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentResultListener;
 import androidx.navigation.NavController;
@@ -92,12 +93,7 @@ public class MyDietsFragment extends Fragment {
         dietList.setLayoutManager(new LinearLayoutManager(getContext()));
         dietList.setAdapter(dietAdapter);
 
-        Diet.listAll().addOnSuccessListener(list -> {
-            Toast.makeText(getContext(), "Loaded diets: " + list.size(), Toast.LENGTH_SHORT).show();
-            diets.clear();
-            diets.addAll(list);
-            dietAdapter.submitList(diets);
-        });
+
 
         addDiet.setOnClickListener(v -> {
             NavController navController = Navigation.findNavController(view);
@@ -105,5 +101,17 @@ public class MyDietsFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        Diet.listAll().addOnSuccessListener(list -> {
+            Toast.makeText(getContext(), "Loaded diets: " + list.size(), Toast.LENGTH_SHORT).show();
+            diets.clear();
+            diets.addAll(list);
+            dietAdapter.submitList(diets);
+        });
     }
 }

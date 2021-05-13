@@ -49,7 +49,6 @@ public class LoginActivity extends AppCompatActivity {
     //public static final String PREF_FILE_NAME = "Authentication";
     public static final int REQUEST_EXIT = 12345;
 
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -64,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
             password = credential[1];
 
             firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-                if (task.isSuccessful()){
+                if (task.isSuccessful()) {
                     data();
                 }
             });
@@ -96,7 +95,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
 
-        if (requestCode == REQUEST_EXIT){
+        if (requestCode == REQUEST_EXIT) {
             this.finish();
         }
     }
@@ -178,34 +177,4 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
         startActivityForResult(intent, REQUEST_EXIT);
     }
-
-    /*
-    private void saveSharePref() {
-        SharedPreferences sharedPrefs = getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPrefs.edit();
-        editor.putString("email", email);
-        editor.putString("password", password);
-        editor.commit();
-        Toast.makeText(getApplicationContext(), "Field saved", Toast.LENGTH_SHORT).show();
-    }*/
-
-    /*
-    private void readSharedPref() {//Si el fitxer de pref tenim dades vol dir que ja ens hem autenticat
-        SharedPreferences sharedPreferences = getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
-        email = sharedPreferences.getString("email", null);
-        password = sharedPreferences.getString("password", null);
-        if (email != null & password != null) {
-            Toast.makeText(LoginActivity.this, "Already signing in", Toast.LENGTH_SHORT).show();
-            //loginUser();
-            //+data();
-            firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-                if (task.isSuccessful()){
-                    data();
-                }
-            });
-        }
-    }*/
-
-
-
 }

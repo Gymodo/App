@@ -2,13 +2,20 @@ package com.github.gymodo.fragments.diet;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.github.gymodo.R;
+import com.github.gymodo.adapters.FoodAdapter;
+import com.github.gymodo.food.Diet;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,33 +24,35 @@ import com.github.gymodo.R;
  */
 public class DietDetailFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    public  static final String ARG_DIET_ID = "ARG_DIET_ID";
+    String dietId;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    TextView textTitle;
+    TextView textDesc;
+
+    TextView totalKcalBreakfast;
+    TextView totalKcalDinner;
+    TextView totalKcalLaunch;
+    TextView totalKcalSnack;
+
+    RecyclerView breakfastList;
+    RecyclerView dinnerList;
+    RecyclerView launchList;
+    RecyclerView snackList;
+
+    FoodAdapter breakfastAdapter;
+    FoodAdapter dinnerAdapter;
+    FoodAdapter launchAdapter;
+    FoodAdapter snackAdapter;
 
     public DietDetailFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment DietDetailFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static DietDetailFragment newInstance(String param1, String param2) {
+    public static DietDetailFragment newInstance(String dietId) {
         DietDetailFragment fragment = new DietDetailFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_DIET_ID, dietId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,9 +61,13 @@ public class DietDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            dietId = getArguments().getString(ARG_DIET_ID);
         }
+
+        breakfastAdapter = new FoodAdapter();
+        dinnerAdapter = new FoodAdapter();
+        launchAdapter = new FoodAdapter();
+        snackAdapter = new FoodAdapter();
     }
 
     @Override
@@ -62,5 +75,69 @@ public class DietDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_diet_detail, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        textTitle = view.findViewById(R.id.DietDetailTextTitle);
+        textDesc = view.findViewById(R.id.DietDetailDescription);
+
+        totalKcalBreakfast = view.findViewById(R.id.DietDetailTextBreakfastCalories);
+        totalKcalDinner = view.findViewById(R.id.DietDetailTextDinnerCalories);
+        totalKcalLaunch = view.findViewById(R.id.DietDetailTextLunchCalories);
+        totalKcalSnack = view.findViewById(R.id.DietDetailTextSnackCalories);
+
+        breakfastList = view.findViewById(R.id.DietDetailBreakFastRecyclerView);
+        dinnerList = view.findViewById(R.id.DietDetailDinnerRecyclerView);
+        launchList = view.findViewById(R.id.DietDetailLaunchRecyclerView);
+        snackList = view.findViewById(R.id.DietDetailSnackRecyclerView);
+
+        breakfastList.setLayoutManager(new LinearLayoutManager(getContext()));
+        breakfastList.setAdapter(breakfastAdapter);
+        dinnerList.setLayoutManager(new LinearLayoutManager(getContext()));
+        dinnerList.setAdapter(dinnerAdapter);
+        launchList.setLayoutManager(new LinearLayoutManager(getContext()));
+        launchList.setAdapter(launchAdapter);
+        snackList.setLayoutManager(new LinearLayoutManager(getContext()));
+        snackList.setAdapter(snackAdapter);
+
+        Diet.getByID(dietId).addOnSuccessListener(diet -> {
+            textTitle.setText(diet.getName());
+            textDesc.setText(diet.getDescription());
+
+            diet.getLaunch().addOnSuccessListener(meal -> {
+                meal.getFoods().addOnSuccessListener(foods -> {
+                    double total = foods.parallelStream().mapToDouble(x -> x.getCalories()).sum();
+                    totalKcalLaunch.setText(String.format("Total: %.02f kcal", total));
+                    launchAdapter.submitList(foods);
+                });
+            });
+
+            diet.getBreakfast().addOnSuccessListener(meal -> {
+                meal.getFoods().addOnSuccessListener(foods -> {
+                    double total = foods.parallelStream().mapToDouble(x -> x.getCalories()).sum();
+                    totalKcalBreakfast.setText(String.format("Total: %.02f kcal", total));
+                    breakfastAdapter.submitList(foods);
+                });
+            });
+
+            diet.getDinner().addOnSuccessListener(meal -> {
+                meal.getFoods().addOnSuccessListener(foods -> {
+                    double total = foods.parallelStream().mapToDouble(x -> x.getCalories()).sum();
+                    totalKcalDinner.setText(String.format("Total: %.02f kcal", total));
+                    dinnerAdapter.submitList(foods);
+                });
+            });
+
+            diet.getSnack().addOnSuccessListener(meal -> {
+                meal.getFoods().addOnSuccessListener(foods -> {
+                    double total = foods.parallelStream().mapToDouble(x -> x.getCalories()).sum();
+                    totalKcalSnack.setText(String.format("Total: %.02f kcal", total));
+                    snackAdapter.submitList(foods);
+                });
+            });
+        });
     }
 }

@@ -13,6 +13,9 @@ import com.github.gymodo.R;
 import com.github.gymodo.databinding.DietFoodRowBinding;
 import com.github.gymodo.food.Food;
 
+/**
+ * Adapter for food objects.
+ */
 public class FoodAdapter extends ListAdapter<Food, FoodAdapter.ViewHolder> {
 
     public FoodAdapter() {
