@@ -12,6 +12,8 @@
 \usepackage{float}
 \usepackage{placeins}
 \usepackage{afterpage}
+\usepackage[export]{adjustbox}
+\usepackage{multicol}
 \usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
 \graphicspath{ {./images/} }
 
@@ -26,6 +28,7 @@
 
 \renewcommand{\headrulewidth}{2pt}
 \renewcommand{\footrulewidth}{1pt}
+
 
 \begin{document}
 
@@ -83,6 +86,10 @@ Este proyecto se basa en el desarrollo de una aplicación para Android, esta apl
 \item Ver noticias relacionadas con el mundo del ejercicio.
 \end{itemize}
 
+La función que creemos mas importante es la de reservar hora en un gimnasio, ya que en estos tiempos de pandemia se puede requerir pedir hora previa antes de ir a un gimnasio.
+
+Usando la librería \textbf{ML Kit} de Google podemos escanear el código de barras que tienen los productos, esto nos da una id que podemos usar para buscar el producto usando la API del servicio \textbf{Open Food Facts} que es una base de datos abierta sin animo de lucro con información sobre productos alimenticios "hecha por todos y para todos".
+
 \newpage
 
 \section{Estructura y Organización}
@@ -94,46 +101,77 @@ TODO EXPLICAR ORGANIZACION AQUI
 
 \subsection{Organización}
 
-\begin{wrapfigure}{R}{0.25\textwidth}
-  \centering
-    \includegraphics[width=\linewidth]{asana}
-  	\bigskip\par
-  	 \includegraphics[width=\linewidth]{toggl}
-  	\bigskip\par
-   \includegraphics[width=\linewidth]{git}
-   \bigskip\par
-    \includegraphics[width=\linewidth]{androidstudio}
-   \bigskip\par
-\end{wrapfigure}
-
 \subsubsection{Asana}
 
+
+\begin{minipage}{.75\textwidth}
 Para organizar las tareas que tenemos que hacer hemos empleado Asana, una aplicación web que permite organizar el trabajo.
 
 
 Con Asana podemos crear tareas, sub-tareas y asignarlas a cada uno, también permite poner un tiempo limite. 
+\end{minipage} %
+\begin{minipage}{.25\textwidth}
+  \includegraphics[width=0.7\textwidth, right]{asana}
+\end{minipage}
+
 
 \subsubsection{Toggl}
+
+\begin{minipage}{.75\textwidth}
 Para saber el tiempo empleado en cada tarea usamos la herramienta toggl tracker.
+\end{minipage} %
+\begin{minipage}{.25\textwidth}
+  \includegraphics[width=0.7\textwidth, right]{toggl}
+\end{minipage}
 
 \subsection{Desarrollo}
 
 \subsubsection{Control de Versiones}
 
+\begin{minipage}{.75\textwidth}
 El sistema de control de versiones que hemos usado es git, gracias a esta herramienta podemos mantener el proyecto de forma eficiente, este es nuestra forma de trabajar:
 
 \begin{enumerate}
-\item Actualizar la branca rama principal
+\item Actualizar la branca rama principal.
 \item Crear una rama donde guardaras tu nuevo trabajo.
 \item Hacer el trabajo y subirlo.
-\item Otro miembro revisa el código y si esta bien se hace un merge a la rama principal.
+\item Otro miembro revisa el código y si está bien se hace un merge a la rama principal.
 \item Repetir el paso 1.
 \end{enumerate}
+\end{minipage} %
+\begin{minipage}{.25\textwidth}
+  \includegraphics[width=0.7\textwidth, right]{git}
+\end{minipage}
+
 
 \subsubsection{Android Studio}
-Para desarrollar la aplicación hemos usado el IDE Android Studio.
-Este IDE es el estándar de la industria para crear aplicaciones de Android, esta desarrollada por Google y Jetbrains.
 
+\begin{minipage}{.75\textwidth}
+Para desarrollar la aplicación hemos usado el IDE Android Studio.
+Este IDE es el estándar de la industria para crear aplicaciones de Android, está desarrollada por Google y Jetbrains.
+\end{minipage} %
+\begin{minipage}{.25\textwidth}
+  \includegraphics[width=0.7\textwidth, right]{androidstudio}
+\end{minipage}
+
+
+\subsubsection{Firebase}
+
+\begin{minipage}{.75\textwidth}
+Es una plataforma que te permite crear aplicaciones web y para el móvil, este nos proporciona una base de datos en la nube y una API para interactuar con esta. También nos permite guardar imágenes, ver estadísticas sobre los usuarios que usan la app y más.
+\end{minipage} %
+\begin{minipage}{.25\textwidth}
+  \includegraphics[width=0.7\textwidth, right]{firebase}
+\end{minipage}
+
+\subsubsection{ML Kit}
+
+\begin{minipage}{.75\textwidth}
+Es una librería de Google que usa \textit{Machine Learning} y permite realizar acciones como detección de cara, escanear barcodes, identificar objectos, texto, etc.
+\end{minipage} %
+\begin{minipage}{.25\textwidth}
+  \includegraphics[width=0.7\textwidth, right]{mlkit}
+ \end{minipage}
 
 \newpage
 
