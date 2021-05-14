@@ -11,9 +11,9 @@
         android:title="@string/workouts"/>
 
     <item
-        android:id="@+id/nav_new_post"
-        android:icon="@drawable/add"
-        android:title="@string/new_post_lowercase"/>
+        android:id="@+id/nav_posts"
+        android:icon="@drawable/ic_baseline_chat_24"
+        android:title="@string/posts" />
 
     <item
         android:id="@+id/nav_reservations"

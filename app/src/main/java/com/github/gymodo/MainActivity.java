@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.github.gymodo.fragments.admin.AdminActivity;
+import com.github.gymodo.fragments.base_fragments.PostBaseFragment;
 import com.github.gymodo.reservation.Reservation;
 import com.github.gymodo.sharedPreferences.MySharedPreferences;
 import com.github.gymodo.fragments.base_fragments.DietBaseFragment;
@@ -152,9 +153,6 @@ public class MainActivity extends AppCompatActivity {
         //Bottom navigation
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        //Disable visual check from new post option, it will still working
-        bottomNav.getMenu().getItem(2).setCheckable(false);
-
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -174,19 +172,18 @@ public class MainActivity extends AppCompatActivity {
 
                         return true;
 
-                    case R.id.nav_new_post:
-                        //viewPager.setCurrentItem(2, false);
-                        Intent intent = new Intent(MainActivity.this, NewPostActivity.class);
-                        startActivity(intent);
-                        return true;
-
-                    case R.id.nav_reservations:
+                    case R.id.nav_posts:
                         //viewPager.setCurrentItem(2, false);
                         setHostFragment(2);
                         return true;
 
-                    case R.id.nav_diets:
+                    case R.id.nav_reservations:
+                        //viewPager.setCurrentItem(2, false);
                         setHostFragment(3);
+                        return true;
+
+                    case R.id.nav_diets:
+                        setHostFragment(4);
                         return true;
 
                     default:
@@ -230,11 +227,13 @@ public class MainActivity extends AppCompatActivity {
 
         HomeBaseFragment homeBaseFragment = new HomeBaseFragment();
         WorkoutBaseFragment workoutBaseFragment = new WorkoutBaseFragment();
+        PostBaseFragment postBaseFragment = new PostBaseFragment();
         ReservationBaseFragment reservationBaseFragment = new ReservationBaseFragment();
         DietBaseFragment dietBaseFragment = new DietBaseFragment();
 
         adapter.addFragment(homeBaseFragment);
         adapter.addFragment(workoutBaseFragment);
+        adapter.addFragment(postBaseFragment);
         adapter.addFragment(reservationBaseFragment);
         adapter.addFragment(dietBaseFragment);
         viewPager.setAdapter(adapter);

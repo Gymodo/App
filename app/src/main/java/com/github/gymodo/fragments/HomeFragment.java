@@ -1,14 +1,10 @@
 package com.github.gymodo.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,11 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.gymodo.MainActivity;
-import com.github.gymodo.NewPostActivity;
 import com.github.gymodo.R;
 import com.github.gymodo.adapters.PostsAdapter;
 import com.github.gymodo.social.Post;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -43,8 +37,6 @@ public class HomeFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    List<Post> postsList = new ArrayList<>();
-    PostsAdapter postsAdapter;
     FirebaseAuth firebaseAuth;
 
     AddReservationFragment addReservationFragment = new AddReservationFragment();
@@ -97,17 +89,6 @@ public class HomeFragment extends Fragment {
         RecyclerView recyclerViewPosts = (RecyclerView) view.findViewById(R.id.recyclerViewPosts);
 
         firebaseAuth = FirebaseAuth.getInstance();
-
-        Post.listAllOrdered().addOnSuccessListener(posts -> {
-            postsList = posts;
-            recyclerViewPosts.setLayoutManager(new LinearLayoutManager((getContext())));
-            recyclerViewPosts.suppressLayout(true);
-
-            postsAdapter = new PostsAdapter(getContext(), postsList);
-
-            recyclerViewPosts.setAdapter(postsAdapter);
-
-        });
 
 
         cardViewAddReservation.setOnClickListener(new View.OnClickListener() {

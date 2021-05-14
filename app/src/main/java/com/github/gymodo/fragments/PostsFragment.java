@@ -4,21 +4,18 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.github.gymodo.NewPostActivity;
 import com.github.gymodo.R;
 import com.github.gymodo.adapters.PostsAdapter;
-import com.github.gymodo.adapters.UserReservationsAdapter;
 import com.github.gymodo.social.Post;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -41,7 +38,7 @@ public class PostsFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    List<Post> postsList = new ArrayList<>();
+    List<Post> postsList;
     PostsAdapter postsAdapter;
     FirebaseAuth firebaseAuth;
 
@@ -74,6 +71,9 @@ public class PostsFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        postsList = new ArrayList<>();
+        postsAdapter = new PostsAdapter(getContext(), postsList);
     }
 
     @Override
@@ -82,26 +82,24 @@ public class PostsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_posts, container, false);
 
-        FloatingActionButton btnAddNewPost = (FloatingActionButton) view.findViewById(R.id.btnAddNewPost);
-        RecyclerView recyclerViewPosts = (RecyclerView) view.findViewById(R.id.recyclerViewPosts);
+        FloatingActionButton btnAddNewPost = view.findViewById(R.id.btnAddNewPost);
+        RecyclerView recyclerViewPosts = view.findViewById(R.id.recyclerViewPosts);
+        recyclerViewPosts.setLayoutManager(new LinearLayoutManager((getContext())));
+        recyclerViewPosts.setAdapter(postsAdapter);
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        Post.listAll().addOnSuccessListener(posts -> {
-            postsList = posts;
-            recyclerViewPosts.setLayoutManager(new LinearLayoutManager((getContext())));
-
-            postsAdapter = new PostsAdapter(getContext(), postsList);
-
-            recyclerViewPosts.setAdapter(postsAdapter);
-
+        Post.listAllOrdered().addOnSuccessListener(posts -> {
+            postsList.clear();
+            postsList.addAll(posts);
+            postsAdapter.notifyDataSetChanged();
         });
 
         btnAddNewPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), NewPostActivity.class);
-                startActivity(intent);
+                NavController navController = Navigation.findNavController(getView());
+                navController.navigate(R.id.action_postsFragment2_to_newPostFragment);
             }
         });
 

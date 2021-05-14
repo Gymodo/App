@@ -29,9 +29,6 @@
 
         <activity android:name=".NewsActivity" />
         <activity android:name=".CommentsActivity" />
-        <activity
-            android:name=".NewPostActivity"
-            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".fragments.admin.AddExerciseActivity" />
         <activity android:name=".fragments.admin.AdminActivity" />
         <activity android:name=".SettingsActivity" />

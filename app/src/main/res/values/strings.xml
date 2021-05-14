@@ -64,4 +64,9 @@
     <string name="comment_hint">Add a comment</string>
     <string name="scan_again">Scan again</string>
     <string name="write_about_your_post">Write about your post...</string>
+    <string name="logout">Logout</string>
+    <string name="posts">Posts</string>
+    <string name="profile2">Profile</string>
+    <string name="settings2">Settings</string>
+    <string name="news2">News</string>
 </resources>

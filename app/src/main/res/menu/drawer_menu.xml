@@ -5,25 +5,25 @@
         <item
             android:id="@+id/menu_home"
             android:icon="@drawable/ic_home"
-            android:title="Home" />
+            android:title="@string/home" />
     </group>
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/menu_profile"
             android:icon="@drawable/ic_person"
-            android:title="Profile" />
+            android:title="@string/profile2" />
         <item
             android:id="@+id/menu_news"
             android:icon="@drawable/ic_news"
-            android:title="News" />
+            android:title="@string/news2" />
         <item
             android:id="@+id/menu_settings"
             android:icon="@drawable/ic_settings"
-            android:title="Settings"></item>
+            android:title="@string/settings2"></item>
         <item
             android:id="@+id/menu_logout"
             android:icon="@drawable/ic_exit"
-            android:title="Logout" />
+            android:title="@string/logout" />
         <item
             android:id="@+id/menu_admin"
             android:title="@string/admin"

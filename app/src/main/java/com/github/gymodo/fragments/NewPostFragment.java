@@ -1,10 +1,4 @@
-package com.github.gymodo;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
+package com.github.gymodo.fragments;
 
 import android.Manifest;
 import android.content.ContentResolver;
@@ -13,10 +7,22 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -27,6 +33,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.github.gymodo.R;
 import com.github.gymodo.exercise.Routine;
 import com.github.gymodo.social.Post;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -44,7 +51,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class NewPostActivity extends AppCompatActivity {
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link NewPostFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class NewPostFragment extends Fragment {
 
     static final int GALLERY_REQUEST_CODE = 103;
     static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -82,33 +94,54 @@ public class NewPostActivity extends AppCompatActivity {
     List<String> routineArrayList = new ArrayList<>();
     List<String> routineIdsList = new ArrayList<>();
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_post);
+    public NewPostFragment() {
+        // Required empty public constructor
+    }
 
+    public static NewPostFragment newInstance(String param1, String param2) {
+        NewPostFragment fragment = new NewPostFragment();
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_new_post, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         //Hooks
-        newPostContent = findViewById(R.id.newPostContent);
-        newPostPublishBtn = findViewById(R.id.newPostPublishBtn);
-        addNewImage = findViewById(R.id.addNewImagePost);
-        addExistingImage = findViewById(R.id.addExisteImagePost);
-        addRoutine = findViewById(R.id.newPostWorkout);
-        postImage = findViewById(R.id.newPostImageView);
-        routineSpinner = findViewById(R.id.routineSpinner);
+        newPostContent = view.findViewById(R.id.newPostContent);
+        newPostPublishBtn = view.findViewById(R.id.newPostPublishBtn);
+        addNewImage = view.findViewById(R.id.addNewImagePost);
+        addExistingImage = view.findViewById(R.id.addExisteImagePost);
+        addRoutine = view.findViewById(R.id.newPostWorkout);
+        postImage = view.findViewById(R.id.newPostImageView);
+        routineSpinner = view.findViewById(R.id.routineSpinner);
 
         //Firebase instances
         firebaseAuth = FirebaseAuth.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
         //Set adapter
-        ArrayAdapter<String> routineArrayAdapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, routineArrayList);
+        ArrayAdapter<String> routineArrayAdapter = new ArrayAdapter<String>(getContext(), R.layout.support_simple_spinner_dropdown_item, routineArrayList);
         routineSpinner.setAdapter(routineArrayAdapter);
 
         //TODO make sure there is content to publish to prevent an empty post
         newPostPublishBtn.setOnClickListener(v -> {
 
             if ((newPostContent.getText().toString().isEmpty()) && (postImage.getDrawable() == null)) {
-                Toast.makeText(this, "Nothing to post!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Nothing to post!", Toast.LENGTH_SHORT).show();
             } else if (postImage.getDrawable() != null) {
                 uploadImageToFirebase(filePathTmp, contentUriTmp);
             } else {
@@ -174,17 +207,16 @@ public class NewPostActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                Toast.makeText(NewPostActivity.this, "Nothing selected", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Nothing selected", Toast.LENGTH_SHORT).show();
             }
         });
-
 
     }
 
     private void askCameraPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERM_CODE);
+            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, CAMERA_PERM_CODE);
             } else {
                 dispatchTakePictureIntent();
             }
@@ -194,11 +226,11 @@ public class NewPostActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         //Set taken image into imageview
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == getActivity().RESULT_OK) {
 
             postImage.setVisibility(View.VISIBLE);
 
@@ -207,7 +239,7 @@ public class NewPostActivity extends AppCompatActivity {
             Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
             Uri contentUri = Uri.fromFile(f);
             mediaScanIntent.setData(contentUri);
-            this.sendBroadcast(mediaScanIntent);
+            getActivity().sendBroadcast(mediaScanIntent);
 
             //Save file path and content uri in local variable
             filePathTmp = f.getName();
@@ -219,7 +251,7 @@ public class NewPostActivity extends AppCompatActivity {
         }
 
         //Show selected image in imageview
-        if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+        if (requestCode == GALLERY_REQUEST_CODE && resultCode == getActivity().RESULT_OK && data != null) {
 
             postImage.setVisibility(View.VISIBLE);
 
@@ -228,7 +260,7 @@ public class NewPostActivity extends AppCompatActivity {
             String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
 
             //Extension
-            ContentResolver contentResolver = getContentResolver();
+            ContentResolver contentResolver = getActivity().getContentResolver();
             MimeTypeMap mime = MimeTypeMap.getSingleton();
             String ext = mime.getExtensionFromMimeType(contentResolver.getType(contentURI));
 
@@ -241,15 +273,13 @@ public class NewPostActivity extends AppCompatActivity {
             contentUriTmp = contentURI;
 
         }
-
     }
-
 
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",         /* suffix */
@@ -275,7 +305,7 @@ public class NewPostActivity extends AppCompatActivity {
         }
         // Continue only if the File was successfully created
         if (photoFile != null) {
-            Uri photoURI = FileProvider.getUriForFile(this,
+            Uri photoURI = FileProvider.getUriForFile(getContext(),
                     "com.example.android.fileprovider",
                     photoFile);
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
@@ -295,7 +325,7 @@ public class NewPostActivity extends AppCompatActivity {
                 imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        Toast.makeText(NewPostActivity.this, "Upload Image Url", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Upload Image Url", Toast.LENGTH_SHORT).show();
                         imageFullPath = f.toString();
 
                         Log.d("image", "before call post method");
@@ -308,7 +338,7 @@ public class NewPostActivity extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(NewPostActivity.this, "Image Upload Failled!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Image Upload Failled!", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -327,7 +357,10 @@ public class NewPostActivity extends AppCompatActivity {
         post.setCreatedAt(date);
         post.setImageUrl(imageFullPath);
         post.setRoutineId(workoutIdTmp);
-        post.save().addOnSuccessListener(s -> Toast.makeText(NewPostActivity.this, "Post published", Toast.LENGTH_SHORT).show());
-        onBackPressed();
+        post.save().addOnSuccessListener(s -> {
+            NavController navController = Navigation.findNavController(getView());
+            navController.popBackStack();
+        });
+
     }
 }

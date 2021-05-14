@@ -58,7 +58,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
         this.mPosts = mPosts;
     }
 
-
     @NonNull
     @Override
     public PostsAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -154,16 +153,10 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
             FirebaseStorage.getInstance().getReference().child(post.getImageUrl()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
-                    Picasso.get().load(uri.toString()).fit().centerCrop().into(holder.image);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    holder.image.setVisibility(View.GONE);
+                    holder.image.setVisibility(View.VISIBLE);
+                    Picasso.get().load(uri.toString()).into(holder.image);
                 }
             });
-        } else {
-            holder.image.setVisibility(View.GONE);
         }
 
         if (post.getRoutineId() != null) {
@@ -180,7 +173,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
                     NavController navController = Navigation.findNavController(v);
                     Bundle bundle = new Bundle();
                     bundle.putString(WorkoutDetailFragment.ARG_ROUTINE_ID, post.getRoutineId());
-                    navController.navigate(R.id.workout_list_to_detail, bundle);
+                    navController.navigate(R.id.workoutDetailFragment, bundle);
                 }
             });
         } else {
