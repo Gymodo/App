@@ -105,9 +105,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
                                     }
                                 }
 
-                                if (p.getImageUrl() != null){
-
-                                } else {
+                                if (p.getImageUrl() == null){
                                     holder.image.setVisibility(View.GONE);
                                 }
 

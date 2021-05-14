@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="20dp"
@@ -59,45 +60,48 @@
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/postRowImage"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
         app:srcCompat="@drawable/ic_like_icon_outline" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="364dp" />
 
     <TextView
         android:id="@+id/postRowLikeNum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginStart="16dp"
         android:text=""
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/postRowLike"
         app:layout_constraintStart_toEndOf="@+id/postRowLike"
-        app:layout_constraintTop_toBottomOf="@+id/postRowImage" />
+        app:layout_constraintTop_toTopOf="@+id/postRowLike" />
 
 
-        <ImageView
-            android:id="@+id/postRowComment"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"
-            android:clickable="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/postRowLikeNum"
-            app:layout_constraintTop_toBottomOf="@+id/postRowImage"
-            app:srcCompat="@drawable/ic_comment_outline" />
+    <ImageView
+        android:id="@+id/postRowComment"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="16dp"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="@+id/postRowLike"
+        app:layout_constraintStart_toEndOf="@+id/postRowLikeNum"
+        app:layout_constraintTop_toTopOf="@+id/postRowLike"
+        app:srcCompat="@drawable/ic_comment_outline" />
 
-        <TextView
-            android:id="@+id/postRowCommentNum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/postRowComment"
-            app:layout_constraintTop_toBottomOf="@+id/postRowImage" />
+    <TextView
+        android:id="@+id/postRowCommentNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/postRowComment"
+        app:layout_constraintStart_toEndOf="@+id/postRowComment"
+        app:layout_constraintTop_toTopOf="@+id/postRowComment" />
 
 
 
