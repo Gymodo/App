@@ -9,6 +9,7 @@ import com.google.common.collect.Lists;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -121,6 +122,28 @@ public abstract class DatabaseUtil {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         return db.collection(collection)
+                .get()
+                .onSuccessTask(query -> {
+                    if (query != null) {
+                        return Tasks.forResult(query.toObjects(valueType));
+                    }
+                    return Tasks.forCanceled();
+                });
+    }
+
+
+    /**
+     * Gets all the objects.
+     *
+     * @param collection The database collection.
+     * @param valueType  The class type.
+     * @param <T>        The class type.
+     * @return A task with the list of objects as result.
+     */
+    public static <T> Task<List<T>> getAllOrderBydate(@NonNull String collection, @NonNull Class<T> valueType) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        return db.collection(collection).orderBy("createdAt", Query.Direction.DESCENDING)
                 .get()
                 .onSuccessTask(query -> {
                     if (query != null) {

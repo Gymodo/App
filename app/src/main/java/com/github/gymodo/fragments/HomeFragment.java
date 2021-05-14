@@ -96,7 +96,7 @@ public class HomeFragment extends Fragment {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        Post.listAll().addOnSuccessListener(posts -> {
+        Post.listAllOrdered().addOnSuccessListener(posts -> {
             postsList = posts;
             recyclerViewPosts.setLayoutManager(new LinearLayoutManager((getContext())));
             recyclerViewPosts.suppressLayout(true);
