@@ -16,6 +16,9 @@ import com.google.mlkit.vision.common.InputImage;
 
 import java.util.List;
 
+/**
+ * A image analyzer to find barcodes.
+ */
 public class BarcodeAnalyzer implements ImageAnalysis.Analyzer {
 
     BarcodeListener listener;

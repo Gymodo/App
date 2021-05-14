@@ -27,6 +27,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Adapter for workouts.
+ */
 public class WorkoutAdapter extends ListAdapter<Routine, WorkoutAdapter.ViewHolder> {
     boolean detailOnSelect;
 

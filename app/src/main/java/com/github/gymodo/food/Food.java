@@ -11,6 +11,7 @@ import com.google.firebase.firestore.DocumentId;
 import com.google.firebase.firestore.Exclude;
 import com.squareup.picasso.Picasso;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -20,7 +21,7 @@ import java.util.List;
  * @see Diet
  * @see Meal
  */
-public class Food {
+public class Food implements Serializable {
     @DocumentId
     private String id;
     private String name;
@@ -34,6 +35,7 @@ public class Food {
     private double protein;
 
     public Food() {
+        this.name = "";
     }
 
     public Food(String name, double calories, double totalFat, double cholesterol, double sodium, double totalCarboHydrate, double protein) {

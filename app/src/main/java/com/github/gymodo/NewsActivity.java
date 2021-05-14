@@ -37,7 +37,6 @@ public class NewsActivity extends AppCompatActivity {
     private ArrayList<String> links = new ArrayList<>();
     private ArrayList<String> images = new ArrayList<>();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,11 +73,7 @@ public class NewsActivity extends AppCompatActivity {
                                 links.add(parse.getElementsByTagName("link").item(i).getTextContent());
                             }
 
-                        } catch (ParserConfigurationException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (SAXException e) {
+                        } catch (ParserConfigurationException | IOException | SAXException e) {
                             e.printStackTrace();
                         }
 

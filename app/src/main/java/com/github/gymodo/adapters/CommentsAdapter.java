@@ -18,6 +18,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.List;
 
+/**
+ * Adapter for comments.
+ */
 public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyViewHolder> {
 
     private Context mContext;
