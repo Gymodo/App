@@ -22,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -54,9 +55,9 @@ public class NewPostActivity extends AppCompatActivity {
     private ImageView postImage;
 
     //Images on Listener
-    private ImageView addNewImage;
-    private ImageView addExistingImage;
-    private ImageView addRoutine;
+    private ImageButton addNewImage;
+    private ImageButton addExistingImage;
+    private ImageButton addRoutine;
 
     private EditText newPostContent;
     private Button newPostPublishBtn;
@@ -77,7 +78,9 @@ public class NewPostActivity extends AppCompatActivity {
     private String filePathTmp;
     private Uri contentUriTmp;
     private String imageFullPath;
+    private String workoutIdTmp;
     List<String> routineArrayList = new ArrayList<>();
+    List<String> routineIdsList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,8 +96,13 @@ public class NewPostActivity extends AppCompatActivity {
         postImage = findViewById(R.id.newPostImageView);
         routineSpinner = findViewById(R.id.routineSpinner);
 
+        //Firebase instances
         firebaseAuth = FirebaseAuth.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
+
+        //Set adapter
+        ArrayAdapter<String> routineArrayAdapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, routineArrayList);
+        routineSpinner.setAdapter(routineArrayAdapter);
 
         //TODO make sure there is content to publish to prevent an empty post
 
@@ -130,28 +138,39 @@ public class NewPostActivity extends AppCompatActivity {
         });
 
 
-        Routine.listAll().addOnSuccessListener(routines -> {
-            for (Routine r : routines){
-                Toast.makeText(this, ""+r.getName(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
-
         addRoutine.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                addRoutine.setClickable(false);
                 //Mostrar spinner
-                //ArrayAdapter<String> routineArrayAdapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, routineArrayList);
-                //routineSpinner.setAdapter(routineArrayAdapter);
+                Routine.listAll().addOnSuccessListener(routines -> {
+                    routineArrayList.clear();
+                    for (Routine r : routines) {
+                        String userId = r.getAuthorId();
+
+                        if (userId == null)
+                            continue;
+
+                        if (userId.isEmpty())
+                            continue;
+
+                        if (userId.equalsIgnoreCase(firebaseAuth.getUid())) {
+                            routineArrayList.add(r.getName());
+                            routineIdsList.add(r.getId());
+                        }
+                    }
+                    routineArrayAdapter.notifyDataSetChanged();
+                    routineSpinner.setVisibility(View.VISIBLE);
+                });
             }
         });
 
         routineSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedCondition = parent.getItemAtPosition(position).toString();
-                Toast.makeText(NewPostActivity.this, "" + selectedCondition, Toast.LENGTH_SHORT).show();
+                workoutIdTmp = routineIdsList.get(position);
+                Log.d("workoutid", workoutIdTmp);
             }
 
             @Override
@@ -159,6 +178,8 @@ public class NewPostActivity extends AppCompatActivity {
                 Toast.makeText(NewPostActivity.this, "Nothing selected", Toast.LENGTH_SHORT).show();
             }
         });
+
+
     }
 
     private void askCameraPermission() {
@@ -180,6 +201,8 @@ public class NewPostActivity extends AppCompatActivity {
         //Set taken image into imageview
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
 
+            postImage.setVisibility(View.VISIBLE);
+
             //galleryAddPic
             File f = new File(currentPhotoPath);
             Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
@@ -199,6 +222,8 @@ public class NewPostActivity extends AppCompatActivity {
         //Show selected image in imageview
         if (requestCode == GALLERY_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
 
+            postImage.setVisibility(View.VISIBLE);
+
             //Crear un nom per la imatge
             Uri contentURI = data.getData();
             String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -215,7 +240,9 @@ public class NewPostActivity extends AppCompatActivity {
             //Set image
             postImage.setImageURI(contentURI);
             contentUriTmp = contentURI;
+
         }
+
     }
 
 
@@ -300,6 +327,7 @@ public class NewPostActivity extends AppCompatActivity {
         post.setDescription(description);
         post.setCreatedAt(date);
         post.setImageUrl(imageFullPath);
+        post.setRoutineId(workoutIdTmp);
         post.save().addOnSuccessListener(s -> Toast.makeText(NewPostActivity.this, "Post published", Toast.LENGTH_SHORT).show());
         onBackPressed();
     }

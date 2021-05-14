@@ -46,6 +46,7 @@
         android:layout_height="200dp"
         android:layout_marginTop="24dp"
         android:scaleType="centerCrop"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
@@ -61,37 +62,44 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/addNewImagePost"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="16dp"
-        app:tint="#FFFFFF"
+        android:background="@drawable/row_background"
+        android:backgroundTint="@color/primaryColor"
+        android:padding="3dp"
+        android:src="@drawable/ic_camera"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_camera" />
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/addExisteImagePost"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="16dp"
-        app:tint="#FFFFFF"
+        android:background="@drawable/row_background"
+        android:backgroundTint="@color/primaryColor"
+        android:padding="3dp"
+        android:src="@drawable/ic_gallery"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/addNewImagePost"
-        app:srcCompat="@drawable/ic_gallery" />
+        app:layout_constraintStart_toEndOf="@+id/addNewImagePost" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/newPostWorkout"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="16dp"
+        android:background="@drawable/row_background"
+        android:backgroundTint="@color/primaryColor"
+        android:padding="3dp"
+        android:src="@drawable/ic_fitness"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/addExisteImagePost"
-        app:srcCompat="@drawable/ic_fitness" />
+        app:layout_constraintStart_toEndOf="@+id/addExisteImagePost" />
 
     <Spinner
         android:id="@+id/routineSpinner"
@@ -100,6 +108,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/newPostImageView" />
