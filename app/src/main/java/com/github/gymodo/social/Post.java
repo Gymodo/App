@@ -161,6 +161,17 @@ public class Post {
         return DatabaseUtil.getAll(Constants.COLLECTION_POSTS, Post.class);
     }
 
+
+    /**
+     * Get all the Posts.
+     *
+     * @return all the Posts
+     */
+    @Exclude
+    public static Task<List<Post>> listAllOrdered() {
+        return DatabaseUtil.getAllOrderBydate(Constants.COLLECTION_POSTS, Post.class);
+    }
+
     @Exclude
     public int getTotalLikes() {
         return likedByIds.size();
