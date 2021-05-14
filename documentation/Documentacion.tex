@@ -9,8 +9,11 @@
 \usepackage{graphicx}
 \usepackage{fancyhdr}
 \usepackage{wrapfig}
+\usepackage{caption}
+\usepackage{subcaption}
 \usepackage{float}
 \usepackage{placeins}
+\usepackage{listings}
 \usepackage{afterpage}
 \usepackage[export]{adjustbox}
 \usepackage{multicol}
@@ -28,6 +31,11 @@
 
 \renewcommand{\headrulewidth}{2pt}
 \renewcommand{\footrulewidth}{1pt}
+
+\lstset{
+  language=bash,
+  basicstyle=\ttfamily
+}
 
 
 \begin{document}
@@ -197,15 +205,111 @@ Para destacar nuestro color principal y hacer contraste, se han escogido colores
  \caption{Paleta de colores}
 \end{figure}
 
+\clearpage
+
 \section{Documentación Técnica}
 
-\subsection{Navigation Component}
+\subsection{Importar el proyecto}
 
-\begin{figure}[h]
-  \centering
- \includegraphics[width=1\textwidth]{navComExample}
- \caption{Nav Component}
+Para importar el proyecto se necesita Android Studio y git.
+
+Primero se clona el repositorio con el código:
+\begin{lstlisting}
+git clone git@github.com:Gymodo/App.git Gymodo
+\end{lstlisting}
+
+Se abre el Android Studio y se importa la carpeta:
+
+\begin{figure}[htb]
+    \begin{minipage}[t]{.55\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{android-studio-menu1}
+        \subcaption{El menu de Android Studio.}\label{fig:androidmenu}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{.35\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{android-studio-menu2}
+        \subcaption{Buscar el proyecto.}\label{fig:androidmenu2}
+    \end{minipage}  
+    \label{fig:androidimport}
+    \caption{Importar el proyecto en Android Studio.}
 \end{figure}
+
+Como se ve en la figura \ref{fig:androidmenu} se hace click en \textit{Open an Existing Project} y saldra el menu (figura \ref{fig:androidmenu2}) donde puedes buscar el proyecto.
+
+Una vez cargado el proyecto puedes presionar \textit{shift-f10 }para probar la aplicación.
+
+\subsection{Estructura del código}
+
+El código esta separado en paquetes (que son directorios), estos son los paquetes que tenemos:
+
+\subsubsection{Objectos}
+Estos son los objectos que se usan en toda la aplicación
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{  |l|l| }
+\hline
+Nombre & Descripción \\
+\hline
+ Exercise & Representa un ejercicio. \\ 
+ \hline
+ Muscle & Representa un musculo. \\ 
+ \hline
+  Serie & Representa una serie de ejercicios. \\ 
+ \hline
+  Routine & Representa una rutina, que es una serie con información sobre las repeticiones y el peso. \\ 
+ \hline
+  Diet & Representa una dieta, que esta formada por Meals. \\ 
+ \hline
+  Meal & Representa una comida del día, formada por varias Foods. \\ 
+ \hline
+  Food & Representa una comida. \\ 
+ \hline
+ User & Representa un Usuario. \\ 
+ \hline
+\end{tabular}
+\end{table}
+
+
+\subsubsection{Adapters}
+En este paquete estan las clases que implementan la logica para poder mostrar listas de objectos:
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{  |l|l| }
+\hline
+Nombre & Descripción \\
+\hline
+ CommentsAdapter & Adapter para el object Comments. \\ 
+ \hline
+ FoodAdapter & Adapter para el objeto Food. \\  
+ \hline
+ MuscleAdapter & Adapter para el objeto Muscle. \\
+ \hline
+  NewsAdapter & Adapter para el objeto News. \\
+ \hline
+  PostsAdapter & Adapter para el objeto Post. \\
+ \hline
+  ReservationAdapter & Adapter para el objeto Reservation solo con las horas. \\
+ \hline
+ SeriesAdapter & Adapter para el objeto Serie. \\
+ \hline
+ SeriesSelectAdapter & Adapter para el objeto Serie con selección. \\
+ \hline
+ UserReservationsAdapter & Adapter para el objeto Reservation con todo. \\
+ \hline
+ ViewPagerAdapter & Adapter para los fragment. \\
+ \hline
+ WorkoutAdapter & Adapter para el objeto Workout. \\
+ \hline
+\end{tabular}
+\end{table}
+
+
+\clearpage
+
 
 \subsection{Diagrama UML}
 
