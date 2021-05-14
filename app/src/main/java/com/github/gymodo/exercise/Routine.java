@@ -75,18 +75,16 @@ public class Routine {
         return id;
     }
 
-    public Routine setId(String id) {
+    public void setId(String id) {
         this.id = id;
-        return this;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public Routine setDescription(String description) {
+    public void setDescription(String description) {
         this.description = description;
-        return this;
     }
 
     /**
@@ -104,9 +102,8 @@ public class Routine {
      * @param seriesIds seriesList
      * @return this
      */
-    public Routine setSeriesIds(List<String> seriesIds) {
+    public void setSeriesIds(List<String> seriesIds) {
         this.seriesIds = seriesIds;
-        return this;
     }
 
     /**
@@ -136,9 +133,8 @@ public class Routine {
      * @param authorId author
      * @return this
      */
-    public Routine setAuthorId(String authorId) {
+    public void setAuthorId(String authorId) {
         this.authorId = authorId;
-        return this;
     }
 
     @Exclude

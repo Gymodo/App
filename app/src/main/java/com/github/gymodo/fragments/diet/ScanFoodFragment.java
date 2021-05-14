@@ -72,8 +72,6 @@ public class ScanFoodFragment extends Fragment {
     private static final int PERMISSION_REQUEST_CAMERA = 0;
     private PreviewView previewView;
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
-    Button scanAgain;
-    TextView debugText;
     boolean found;
     RequestQueue queue;
 
@@ -109,11 +107,7 @@ public class ScanFoodFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        debugText = view.findViewById(R.id.ScanFoodDebugText);
-        scanAgain = view.findViewWithTag(R.id.ScanFoodAgain);
         previewView = view.findViewById(R.id.ScanFoodPreview);
-
-
 
         cameraProviderFuture = ProcessCameraProvider.getInstance(view.getContext());
         requestCamera();
@@ -181,7 +175,6 @@ public class ScanFoodFragment extends Fragment {
                 public void onBarcodeFound(Barcode barcode) {
                     if (found)
                         return;
-                    debugText.setText("Found barcode:" + barcode.getRawValue());
 
                     JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, getFoodUrl(barcode.getRawValue()),
                             new Response.Listener<JSONObject>() {
@@ -191,7 +184,6 @@ public class ScanFoodFragment extends Fragment {
                                         Log.d("BARCODE","BARCODE FOUND: " + barcode.getRawValue());
                                         JSONObject product = response.getJSONObject("product");
                                         String name = product.getString("product_name");
-                                        debugText.setText("Product found: " + name);
 
                                         Food food = new Food();
                                         food.setName(product.getString("product_name"));
@@ -231,7 +223,6 @@ public class ScanFoodFragment extends Fragment {
                             new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    debugText.setText("Error finding product: " + error.getLocalizedMessage());
                                     found = false;
                                 }
                             }
