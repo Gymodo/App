@@ -60,17 +60,18 @@
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/postRowRoutine"
         app:srcCompat="@drawable/ic_like_icon_outline" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/postRowRoutine"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:text="TextView"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="364dp" />
+        app:layout_constraintTop_toBottomOf="@+id/postRowImage" />
 
     <TextView
         android:id="@+id/postRowLikeNum"
