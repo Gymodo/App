@@ -431,9 +431,9 @@ para que no hubiese problemas si el usuario vuelve a visitarla.
 
 Para esto, Android nos proporciona el \textbf{Navigation Component},
 una serie de librerías y herramientas que nos ayudan a construir una buena experiencia de navegación.
-El componente consta de 3 partes importantes:
+El \textbf{Navigation Component} consta de 3 partes importantes:
 
--NavigationGraph: Es un gráfico que contiene información sobre qué pantallas llevan a qué destinos.
+-{NavigationGraph}: Es un gráfico que contiene información sobre qué pantallas llevan a qué destinos.
 
 \begin{figure}[h]
   \centering
@@ -442,12 +442,14 @@ El componente consta de 3 partes importantes:
 \end{figure}
 
 -NavHost: Es el contenedor, que muestra los destinos del NavigationGraph.
+
+
 -NavController: Es un objeto que administra toda la lógica de la navegación.
 
 
-Esta herramienta nos fue de gran ayuda, pero aún no nos resolvía el problema del backspace,
+Esta herramienta nos fue de gran ayuda, pero aún no nos resolvía el problema del backstack,
 por ello usamos diferentes gráficos de navegación para cada apartado del menú inferior,
-estos items del menú inferior nos llevarían a un NavHost que contendría los NavGraphs.
+estos items del menú inferior nos llevarían a un \textit{NavHost} que contendría los \textit{NavGraphs}.
 
 \begin{figure}[h]
   \centering
@@ -456,9 +458,9 @@ estos items del menú inferior nos llevarían a un NavHost que contendría los N
 \end{figure}
 
 
-A diferencia de las Activities, los Fragments nos permiten poner contenido si necesidad de que ocupen toda la pantalla de móvil,
-por lo que se decidió usar Fragments para el contenido que esté relacionado con la navegación.
-Por último, se decidió agrupar cada uno de los NavHost en un ViewPager (un componente con el que vemos diferente contenido deslizando con el dedo).
+A diferencia de las Activities, los \textit{Fragments} nos permiten poner contenido si necesidad de que ocupen toda la pantalla de móvil,
+por lo que se decidió usar \textit{Fragments} para el contenido que esté relacionado con la navegación.
+Por último, se decidió agrupar cada uno de los \textit{NavHost} en un \textit{ViewPager} (un componente con el que vemos diferente contenido deslizando con el dedo).
 
 \begin{figure}[h]
   \centering
