@@ -96,12 +96,13 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
 
                 //Select another host frgament
-                mainActivity.setHostFragment(2);
+                MainActivity mainActivity = (MainActivity) getActivity();
+                mainActivity.setHostFragment(3);
 
                 Fragment fragment = mainActivity.adapter.getItem(mainActivity.viewPager.getCurrentItem());
 
                 NavController myNavController =  NavHostFragment.findNavController(fragment.getChildFragmentManager().getPrimaryNavigationFragment());
-                //myNavController.navigate(R.id.user_reservations_to_addReservation);
+                myNavController.navigate(R.id.user_reservations_to_addReservation);
 
 
             }
@@ -111,10 +112,9 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //Select another host frgament
-                mainActivity.setHostFragment(3);
+                mainActivity.setHostFragment(4);
 
                 Fragment fragment = mainActivity.adapter.getItem(mainActivity.viewPager.getCurrentItem());
-
                 NavController myNavController =  NavHostFragment.findNavController(fragment.getChildFragmentManager().getPrimaryNavigationFragment());
                 myNavController.navigate(R.id.myDietsFragment);
 
