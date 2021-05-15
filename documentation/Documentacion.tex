@@ -1,6 +1,6 @@
 \documentclass[12pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
-\usepackage[spanish]{babel}
+\usepackage[spanish, es-tabla]{babel}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
@@ -278,6 +278,7 @@ Nombre & Descripción \\
  User & Representa un Usuario. \\ 
  \hline
 \end{tabular}
+\caption{Lista de objetos}
 \end{table}
 
 
@@ -313,7 +314,72 @@ Nombre & Descripción \\
  WorkoutAdapter & Adapter para el objeto Workout. \\
  \hline
 \end{tabular}
+\caption{Lista de Adapters}
 \end{table}
+
+\subsubsection{Fragments}
+Aquí están todas las vistas que no son \textit{Activity}, es mejor así porque se tiene que poder navegar y guardar el estado entre estas fácilmente.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{  |l|l| }
+\hline
+Nombre & Descripción \\
+ \hline
+ HomeFragment & Vista principal. \\ 
+ \hline
+ CreateDietFragment & Vista para crear una dieta. \\ 
+ \hline
+  DietDetailFragment & Vista para ver una dieta en detalle.  \\ 
+ \hline
+  MyDietsFragment & Vista para ver una lista de dietas. \\ 
+ \hline
+  ScanFoodFragment & Vista para escanear comida. \\ 
+ \hline
+  UserReservationsFragment & Vista para ver tus reservas. \\ 
+ \hline
+  AddReservationFragment & Vista para crear una reserva. \\ 
+ \hline
+  WorkoutListFragment & Vista para ver una lista de workouts. \\ 
+ \hline
+ AddWorkoutFragment & Vista para añadir un workout. \\ 
+ \hline
+ WorkoutDetailFragment & Vista para ver un workout en detalle.  \\ 
+ \hline
+ NewSeriesFragment & Vista para añadir una rutina.  \\ 
+ \hline
+\end{tabular}
+\caption{Lista de Fragments}
+\end{table}
+
+\clearpage
+
+\subsubsection{Activities}
+Estas son las vistas que van mejor separadas, por eso son una \textit{Activity} i no un \textit{Fragment}.
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{  |l|l| }
+\hline
+Nombre & Descripción \\
+ \hline
+ MainActivity & Actividad principal. \\ 
+ \hline
+ NewsActivity & Vista para ver noticias \\ 
+ \hline
+ ProfileActivity & Vista para ver tu perfil \\ 
+ \hline
+ RegisterActivity & Vista para registrarse. \\ 
+ \hline
+ LoginActivity & Vista para hacer login. \\ 
+ \hline
+ SettingsActivity & Vista para editar la configuración de la app. \\ 
+ \hline
+
+\end{tabular}
+\caption{Lista de Activities}
+\end{table}
+
 
 
 \clearpage
