@@ -99,7 +99,6 @@ public class MyDietsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         Diet.listAll().addOnSuccessListener(list -> {
-            Toast.makeText(getContext(), "Loaded diets: " + list.size(), Toast.LENGTH_SHORT).show();
             diets.clear();
             diets.addAll(list);
             dietAdapter.submitList(diets);
