@@ -19,12 +19,11 @@ public class MySharedPreferences {
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putString("email", email);
         editor.putString("password", password);
-        editor.commit();
-        Toast.makeText(context, "Field saved", Toast.LENGTH_SHORT).show();
+        editor.apply();
     }
 
-    public static String[] readSharedPref(Context context) {//Si el fitxer de pref tenim dades vol dir que ja ens hem autenticat
-
+    public static String[] readSharedPref(Context context) {
+        //Si el fitxer de pref tenim dades vol dir que ja ens hem autenticat
         String[] credential = new String[2];
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
 
@@ -32,7 +31,6 @@ public class MySharedPreferences {
         credential[1] = sharedPreferences.getString("password", null);
 
         if (credential[0] != null & credential[1] != null) {
-            //Toast.makeText(MySharedPreferences.this, "Already signing in", Toast.LENGTH_SHORT).show();
             return credential;
         }
         return null;
@@ -41,7 +39,6 @@ public class MySharedPreferences {
     public static void deleteSharedPref(Context context) {
         SharedPreferences.Editor editor = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE).edit();
         editor.clear().apply();
-        Toast.makeText(context, "Delete prefs", Toast.LENGTH_SHORT).show();
     }
 
 }

@@ -40,22 +40,16 @@ public class BarcodeAnalyzer implements ImageAnalysis.Analyzer {
             BarcodeScanner scanner = BarcodeScanning.getClient();
 
             scanner.process(image)
-                    .addOnSuccessListener(new OnSuccessListener<List<Barcode>>() {
-                        @Override
-                        public void onSuccess(List<Barcode> barcodes) {
-                            for (Barcode barcode : barcodes) {
-                                listener.onBarcodeFound(barcode);
-                            }
-                            imageProxy.close();
+                    .addOnSuccessListener(barcodes -> {
+                        for (Barcode barcode : barcodes) {
+                            listener.onBarcodeFound(barcode);
                         }
+                        imageProxy.close();
                     })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.d("BARCODE", "failure: " + e.getLocalizedMessage());
-                            // Task failed with an exception
-                            // ...
-                        }
+                    .addOnFailureListener(e -> {
+                        Log.d("BARCODE", "failure: " + e.getLocalizedMessage());
+                        // Task failed with an exception
+                        // ...
                     });
         }
 

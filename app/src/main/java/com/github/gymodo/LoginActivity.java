@@ -37,8 +37,6 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private TextInputEditText loginUseremail;
     private TextInputEditText loginPassword;
-    private Button loginLoginBtn;
-    private Button googleLoginBtn;
     private String email;
     private String password;
     private ProgressBar loadingIcon;
@@ -109,8 +107,8 @@ public class LoginActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         loginUseremail = findViewById(R.id.inputTextLogin);
         loginPassword = findViewById(R.id.registerInputTextPassword);
-        loginLoginBtn = findViewById(R.id.loginBtn);
-        googleLoginBtn = findViewById(R.id.googleLoginBtn);
+        Button loginLoginBtn = findViewById(R.id.loginBtn);
+        Button googleLoginBtn = findViewById(R.id.googleLoginBtn);
         loadingIcon = findViewById(R.id.loadingIcon);
         loginMainContainer = findViewById(R.id.loginMainContainer);
         loginMainContainer = findViewById(R.id.loginMainContainer);

@@ -32,10 +32,10 @@ public class NewsActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     NewsAdapter newsAdapter;
 
-    private ArrayList<String> titles = new ArrayList<>();
-    private ArrayList<String> descriptions = new ArrayList<>();
-    private ArrayList<String> links = new ArrayList<>();
-    private ArrayList<String> images = new ArrayList<>();
+    private final ArrayList<String> titles = new ArrayList<>();
+    private final ArrayList<String> descriptions = new ArrayList<>();
+    private final ArrayList<String> links = new ArrayList<>();
+    private final ArrayList<String> images = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

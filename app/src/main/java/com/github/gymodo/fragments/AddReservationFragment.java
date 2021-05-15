@@ -31,26 +31,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AddReservationFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class AddReservationFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    private FirebaseFirestore db;
     private List<Reservation> reservationList;
     ReservationAdapter reservationAdapter;
-    NavController navController;
 
     CalendarView calendarView;
     RecyclerView recyclerView;
@@ -59,61 +43,12 @@ public class AddReservationFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AddReservationFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static AddReservationFragment newInstance(String param1, String param2) {
         AddReservationFragment fragment = new AddReservationFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
-
-        // This callback will only be called when MyFragment is at least Started.
-/*
-        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default *//*) {
-            @Override
-            public void handleOnBackPressed() {
-
-
-                int num = getParentFragmentManager().getBackStackEntryCount();
-                Toast.makeText(getActivity(), "entra: " + num, Toast.LENGTH_SHORT).show();
-
-                if (num > 0){
-
-                    MainActivity mainActivity = (MainActivity)getActivity();
-                    if (mainActivity.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                        mainActivity.drawerLayout.closeDrawer(GravityCompat.START);
-                    } else {
-
-                    }
-                }
-
-
-            }
-        };
-        requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);*/
-        // The callback can be enabled or disabled here or in handleOnBackPressed()
-
-    }
-
 
     private void showHours(Date date, int year, int month, int day){
 
@@ -171,10 +106,10 @@ public class AddReservationFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_add_reservation, container, false);
 
 
-        calendarView = (CalendarView) view.findViewById(R.id.calendarView);
+        calendarView = view.findViewById(R.id.calendarView);
         recyclerView = view.findViewById(R.id.reservationsRecyclerView);
 
-        db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         Calendar cal = Calendar.getInstance();
         int year  = cal.get(Calendar.YEAR);

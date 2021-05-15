@@ -33,69 +33,40 @@ import java.util.Date;
 import java.util.List;
 
 public class CommentsActivity extends AppCompatActivity {
-
-    private FirebaseFirestore db;
     private String postId = null;
     List<Comment> commentList = new ArrayList<>();
     private Post post;
-
     private EditText commentInput;
-    private Button commentBtn;
     private CommentsAdapter commentsAdapter;
-    private RecyclerView recyclerViewComments;
 
     FirebaseAuth firebaseAuth;
-
 
     @Override
     protected void onStart() {
         super.onStart();
 
         readIntent();
-        db = FirebaseFirestore.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection(Constants.COLLECTION_POSTS).document(postId).
-                addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                        if (error != null){
-                            Toast.makeText(CommentsActivity.this, "Error loading comments", Toast.LENGTH_SHORT).show();
-                            Log.d("comments", error.toString());
-                        }
+                addSnapshotListener((value, error) -> {
+                    if (error != null) {
+                        Toast.makeText(CommentsActivity.this, "Error loading comments", Toast.LENGTH_SHORT).show();
+                        Log.d("comments", error.toString());
+                    }
 
-                        if (value.exists()){
-                            post = value.toObject(Post.class);
+                    if (value.exists()) {
+                        post = value.toObject(Post.class);
 
-                            if (post.getCommentIds() != null){
-                                post.getComments().addOnSuccessListener(new OnSuccessListener<List<Comment>>() {
-                                    @Override
-                                    public void onSuccess(List<Comment> comments) {
-                                        commentList = comments;
-                                        Collections.sort(commentList, new Comparator<Comment>() {
-                                            public int compare(Comment o1, Comment o2) {
-                                                return o2.getCreatedAt().compareTo(o1.getCreatedAt());
-                                            }
-                                        });
-                                        showComments();
-                                        /*/
-                                        recyclerViewComments.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
-                                        commentsAdapter = new CommentsAdapter(getApplicationContext(), commentList);
-
-                                        recyclerViewComments.setAdapter(commentsAdapter);*/
-                                    }
-                                });
-                            }
+                        if (post.getCommentIds() != null && !post.getCommentIds().isEmpty()) {
+                            post.getComments().addOnSuccessListener(comments -> {
+                                commentList.clear();
+                                commentList.addAll(comments);
+                                commentList.sort((o1, o2) -> o2.getCreatedAt().compareTo(o1.getCreatedAt()));
+                                commentsAdapter.notifyDataSetChanged();
+                            });
                         }
                     }
                 });
-    }
-
-    private void showComments() {
-        recyclerViewComments.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
-        commentsAdapter = new CommentsAdapter(getApplicationContext(), commentList);
-
-        recyclerViewComments.setAdapter(commentsAdapter);
     }
 
     @Override
@@ -105,56 +76,43 @@ public class CommentsActivity extends AppCompatActivity {
 
         //hook
         commentInput = findViewById(R.id.commentsNewCommentInput);
-        commentBtn = findViewById(R.id.commentsNewCommentBtn);
-        recyclerViewComments = findViewById(R.id.recyclerViewComments);
-
-
+        Button commentBtn = findViewById(R.id.commentsNewCommentBtn);
+        RecyclerView recyclerViewComments = findViewById(R.id.recyclerViewComments);
+        recyclerViewComments.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        commentsAdapter = new CommentsAdapter(commentList);
+        recyclerViewComments.setAdapter(commentsAdapter);
+        
         firebaseAuth = FirebaseAuth.getInstance();
 
-        commentBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!commentInput.getText().toString().isEmpty()){
+        commentBtn.setOnClickListener(v -> {
+            String input = commentInput.getText().toString();
+            if (!input.isEmpty()) {
 
-                    Date date = Calendar.getInstance().getTime();
-                    String authorId = firebaseAuth.getCurrentUser().getUid();
+                Date date = Calendar.getInstance().getTime();
+                String authorId = firebaseAuth.getCurrentUser().getUid();
 
-                    Comment comment = new Comment(commentInput.getText().toString(), authorId, date);
-                    comment.save().addOnSuccessListener(new OnSuccessListener<String>() {
-                        @Override
-                        public void onSuccess(String s) {
+                Comment comment = new Comment(input, authorId, date);
+                comment.save().addOnSuccessListener(commentId -> {
+                    List<String> commentIds = post.getCommentIds();
 
-                            List<String> commentIds = post.getCommentIds();
+                    if (commentIds != null) {
+                        post.getCommentIds().add(commentId);
 
-                            if (commentIds != null){
-                                post.getCommentIds().add(s);
-
-                            } else {
-                                commentIds = new ArrayList<>();
-                                commentIds.add(s);
-                                post.setCommentIds(commentIds);
-
-                            }
-
-                            post.update().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    commentInput.setText("");
-                                }
-                            });
-                        }
-                    });
-
-                }
+                    } else {
+                        commentIds = new ArrayList<>();
+                        commentIds.add(commentId);
+                        post.setCommentIds(commentIds);
+                    }
+                    
+                    post.update().addOnSuccessListener(aVoid -> commentInput.setText(""));
+                });
             }
         });
-
     }
 
-
-    private void readIntent(){
+    private void readIntent() {
         Intent intent = getIntent();
-        if (intent.hasExtra("postID")){
+        if (intent.hasExtra("postID")) {
             postId = intent.getStringExtra("postID");
         }
     }

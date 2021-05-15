@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     MenuItem prevMenuItem;
     int previousHostFragment;
 
-    private Stack<Integer> backstack = new Stack<>();
+    private final Stack<Integer> backstack = new Stack<>();
 
     //CardViews
     private CardView cardViewDiet;

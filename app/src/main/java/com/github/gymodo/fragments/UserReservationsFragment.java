@@ -32,21 +32,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link UserReservationsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class UserReservationsFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     FirebaseAuth firebaseAuth;
     UserReservationsAdapter reservationAdapter;
@@ -67,8 +53,6 @@ public class UserReservationsFragment extends Fragment {
     public static UserReservationsFragment newInstance(String param1, String param2) {
         UserReservationsFragment fragment = new UserReservationsFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -76,10 +60,6 @@ public class UserReservationsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -106,11 +86,7 @@ public class UserReservationsFragment extends Fragment {
                 }
             }
 
-            Collections.sort(userReservations, new Comparator<Reservation>() {
-                public int compare(Reservation o1, Reservation o2) {
-                    return o1.getDate().compareTo(o2.getDate());
-                }
-            });
+            Collections.sort(userReservations, (o1, o2) -> o1.getDate().compareTo(o2.getDate()));
 
             userReservationsRecyclerView.setLayoutManager(new LinearLayoutManager((getContext())));
             reservationAdapter = new UserReservationsAdapter(getContext(), userReservations);
@@ -118,14 +94,9 @@ public class UserReservationsFragment extends Fragment {
 
         });
 
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                NavController navController = Navigation.findNavController(view);
-
-                navController.navigate(R.id.user_reservations_to_addReservation);
-            }
+        floatingActionButton.setOnClickListener(v -> {
+            NavController navController = Navigation.findNavController(view);
+            navController.navigate(R.id.user_reservations_to_addReservation);
         });
 
         return view;

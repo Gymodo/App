@@ -288,7 +288,7 @@ public class CreateDietFragment extends Fragment {
                     diet.save().addOnSuccessListener(id -> {
                         Toast.makeText(getContext(), "Diet created", Toast.LENGTH_SHORT).show();
                         diet.setId(id);
-                        // Send this id back?
+
                         Bundle result = new Bundle();
                         result.putSerializable("addedDiet", diet);
                         getParentFragmentManager().setFragmentResult("addedDiet", result);

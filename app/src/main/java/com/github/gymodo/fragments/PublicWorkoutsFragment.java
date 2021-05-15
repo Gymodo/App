@@ -10,21 +10,7 @@ import android.view.ViewGroup;
 
 import com.github.gymodo.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link PublicWorkoutsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class PublicWorkoutsFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public PublicWorkoutsFragment() {
         // Required empty public constructor
@@ -42,8 +28,6 @@ public class PublicWorkoutsFragment extends Fragment {
     public static PublicWorkoutsFragment newInstance(String param1, String param2) {
         PublicWorkoutsFragment fragment = new PublicWorkoutsFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -51,10 +35,6 @@ public class PublicWorkoutsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override

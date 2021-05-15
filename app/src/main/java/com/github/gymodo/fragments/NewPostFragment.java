@@ -1,6 +1,7 @@
 package com.github.gymodo.fragments;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -151,22 +152,14 @@ public class NewPostFragment extends Fragment {
         });
 
         //Add new image
-        addNewImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                askCameraPermission();
-            }
-        });
+        addNewImage.setOnClickListener(v -> askCameraPermission());
 
         //Add existing image
-        addExistingImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Choose an image"), GALLERY_REQUEST_CODE);
-            }
+        addExistingImage.setOnClickListener(v -> {
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Choose an image"), GALLERY_REQUEST_CODE);
         });
 
 
@@ -214,12 +207,8 @@ public class NewPostFragment extends Fragment {
     }
 
     private void askCameraPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, CAMERA_PERM_CODE);
-            } else {
-                dispatchTakePictureIntent();
-            }
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, CAMERA_PERM_CODE);
         } else {
             dispatchTakePictureIntent();
         }
@@ -230,7 +219,8 @@ public class NewPostFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
 
         //Set taken image into imageview
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == getActivity().RESULT_OK) {
+        getActivity();
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
 
             postImage.setVisibility(View.VISIBLE);
 
@@ -251,7 +241,8 @@ public class NewPostFragment extends Fragment {
         }
 
         //Show selected image in imageview
-        if (requestCode == GALLERY_REQUEST_CODE && resultCode == getActivity().RESULT_OK && data != null) {
+        getActivity();
+        if (requestCode == GALLERY_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
 
             postImage.setVisibility(View.VISIBLE);
 
@@ -338,7 +329,7 @@ public class NewPostFragment extends Fragment {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getContext(), "Image Upload Failled!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Image Upload Failed!", Toast.LENGTH_SHORT).show();
             }
         });
     }

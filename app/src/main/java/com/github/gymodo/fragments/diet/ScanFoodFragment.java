@@ -117,11 +117,7 @@ public class ScanFoodFragment extends Fragment {
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             startCamera();
         } else {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.CAMERA)) {
-                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CAMERA);
-            } else {
-                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CAMERA);
-            }
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST_CAMERA);
         }
     }
 
@@ -177,58 +173,50 @@ public class ScanFoodFragment extends Fragment {
                         return;
 
                     JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, getFoodUrl(barcode.getRawValue()),
-                            new Response.Listener<JSONObject>() {
-                                @Override
-                                public void onResponse(JSONObject response) {
-                                    try {
-                                        Log.d("BARCODE","BARCODE FOUND: " + barcode.getRawValue());
-                                        JSONObject product = response.getJSONObject("product");
-                                        String name = product.getString("product_name");
+                            response -> {
+                                try {
+                                    Log.d("BARCODE","BARCODE FOUND: " + barcode.getRawValue());
+                                    JSONObject product = response.getJSONObject("product");
+                                    String name = product.getString("product_name");
 
-                                        Food food = new Food();
-                                        food.setName(product.getString("product_name"));
-                                        food.setBarcode(barcode.getRawValue());
+                                    Food food = new Food();
+                                    food.setName(product.getString("product_name"));
+                                    food.setBarcode(barcode.getRawValue());
 
-                                        if(product.has("image_url"))
-                                            food.setImageUrl(product.getString("image_url"));
+                                    if(product.has("image_url"))
+                                        food.setImageUrl(product.getString("image_url"));
 
-                                        JSONObject nutriments = product.getJSONObject("nutriments");
+                                    JSONObject nutriments = product.getJSONObject("nutriments");
 
-                                        if(nutriments.has("energy-kcal"))
-                                            food.setCalories(nutriments.getDouble("energy-kcal"));
-                                        if(nutriments.has("cholesterol"))
-                                            food.setCholesterol(nutriments.getDouble("cholesterol"));
-                                        if(nutriments.has("carbohydrates"))
-                                            food.setTotalCarboHydrate(nutriments.getDouble("carbohydrates"));
-                                        if(nutriments.has("proteins"))
-                                            food.setProtein(nutriments.getDouble("proteins"));
-                                        if(nutriments.has("sodium"))
-                                            food.setSodium(nutriments.getDouble("sodium"));
-                                        if(nutriments.has("fat"))
-                                            food.setTotalFat(nutriments.getDouble("fat"));
+                                    if(nutriments.has("energy-kcal"))
+                                        food.setCalories(nutriments.getDouble("energy-kcal"));
+                                    if(nutriments.has("cholesterol"))
+                                        food.setCholesterol(nutriments.getDouble("cholesterol"));
+                                    if(nutriments.has("carbohydrates"))
+                                        food.setTotalCarboHydrate(nutriments.getDouble("carbohydrates"));
+                                    if(nutriments.has("proteins"))
+                                        food.setProtein(nutriments.getDouble("proteins"));
+                                    if(nutriments.has("sodium"))
+                                        food.setSodium(nutriments.getDouble("sodium"));
+                                    if(nutriments.has("fat"))
+                                        food.setTotalFat(nutriments.getDouble("fat"));
 
-                                        Bundle result = new Bundle();
-                                        result.putSerializable("foodData", new FoodMessage(food, mealType));
-                                        getParentFragmentManager().setFragmentResult("foodData", result);
+                                    Bundle result = new Bundle();
+                                    result.putSerializable("foodData", new FoodMessage(food, mealType));
+                                    getParentFragmentManager().setFragmentResult("foodData", result);
 
-                                        NavController navController = Navigation.findNavController(getView());
-                                        navController.popBackStack();
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                        found = false;
-                                    }
-
-                                }
-                            },
-                            new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
+                                    NavController navController = Navigation.findNavController(getView());
+                                    navController.popBackStack();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                     found = false;
                                 }
-                            }
+
+                            },
+                            error -> found = false
                     ) {
                         @Override
-                        public Map<String, String> getHeaders() throws AuthFailureError {
+                        public Map<String, String> getHeaders() {
                             Map<String, String> headers = new HashMap<>();
                             headers.put("User-agent", "Gymodo - Android - Version 1.0 - https://github.com/Gymodo/App");
                             return headers;
