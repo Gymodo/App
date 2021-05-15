@@ -88,4 +88,4 @@ fabric.properties
 
 
 #Documentation generated pdf
-documentation/Documentacion.pdf
+documentation/*.pdf
