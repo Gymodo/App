@@ -27,6 +27,7 @@ public class User {
     @DocumentId
     private String id;
     private String name;
+    private String email;
     private Date birthDate;
     private float weight;
     private boolean isAdmin;
@@ -79,6 +80,14 @@ public class User {
     public User setName(String name) {
         this.name = name;
         return this;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     /**

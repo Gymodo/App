@@ -32,10 +32,12 @@ import com.github.gymodo.fragments.base_fragments.ReservationBaseFragment;
 import com.github.gymodo.fragments.base_fragments.WorkoutBaseFragment;
 import com.github.gymodo.adapters.ViewPagerAdapter;
 import com.github.gymodo.user.User;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -44,6 +46,7 @@ import java.util.Stack;
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mainActivityFirebaseAuth;
+    private FirebaseUser firebaseUser;
 
     //Menu burger and drawerlayout
     Toolbar toolbar;
@@ -93,6 +96,8 @@ public class MainActivity extends AppCompatActivity {
         headerUsername = navigationView.getHeaderView(0).findViewById(R.id.textHeaderUsername);
 
         //Set username
+
+
         User.getByID(FirebaseAuth.getInstance().getUid()).addOnSuccessListener(user -> {
             headerUsername.setText(user.getName());
             //Toast.makeText(this, ""+user.getName(), Toast.LENGTH_SHORT).show();
@@ -115,7 +120,9 @@ public class MainActivity extends AppCompatActivity {
         toggle.syncState();
 
         Log.d("ADMIN", "calling");
-        User.getByID(mainActivityFirebaseAuth.getUid()).addOnSuccessListener(user -> {
+
+
+        User.getByID(mainActivityFirebaseAuth.getCurrentUser().getUid()).addOnSuccessListener(user -> {
             Log.d("ADMIN", "got user");
             if (user.isAdmin()) {
                 Log.d("ADMIN", "user is admin");
@@ -295,4 +302,6 @@ public class MainActivity extends AppCompatActivity {
         mainActivityFirebaseAuth.signOut();
         onBackPressed();
     }
+
+
 }

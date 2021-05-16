@@ -30,6 +30,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 public class LoginActivity extends AppCompatActivity {
@@ -50,6 +51,10 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        if(firebaseAuth.getCurrentUser() != null){
+            data();
+        }
 
         String[] credential = MySharedPreferences.readSharedPref(this);
         if (credential != null) {
@@ -83,9 +88,12 @@ public class LoginActivity extends AppCompatActivity {
             try {
                 GoogleSignInAccount signInAccount = signInTask.getResult(ApiException.class);
                 AuthCredential authCredential = GoogleAuthProvider.getCredential(signInAccount.getIdToken(), null);
+                Log.d("googl", "AuthCred: " + authCredential.toString());
                 firebaseAuth.signInWithCredential(authCredential).addOnCompleteListener(task -> {
                     Toast.makeText(getApplicationContext(), "Your google account is connected to our aplication", Toast.LENGTH_SHORT).show();
+
                     data();
+
                 }).addOnFailureListener(e -> showAlert(e));
             } catch (ApiException e) {
                 e.printStackTrace();
@@ -154,7 +162,10 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    //Intent to MainActivity
+    /**
+     * Intent to MainActivity
+     */
+
     public void data() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
