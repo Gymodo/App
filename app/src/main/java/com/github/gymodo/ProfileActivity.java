@@ -49,7 +49,7 @@ public class ProfileActivity extends AppCompatActivity {
         //Set min and max value for numberpicker
         profileNumberPicker.setMinValue(18);
         profileNumberPicker.setMaxValue(250);
-
+        profileNumberPicker.setValue(70);
         getUserDataFromDb();
 
 
@@ -93,20 +93,25 @@ public class ProfileActivity extends AppCompatActivity {
 
             //Save user data in local variables
             userWeightTmp = (int) user.getWeight();
-            userGoalTmp = user.getGoal();
-
-            profileNumberPicker.setValue(userWeightTmp);
-            switch (userGoalTmp) {
-                case BUILD_MUSCLE:
-                    profileRadioBtnBuildMuscle.setBackgroundResource(R.drawable.radio_button_shadow);
-                    break;
-                case LOSE_FAT:
-                    profileRadioBtnLoseFat.setBackgroundResource(R.drawable.radio_button_shadow);
-                    break;
-                case GET_HARDY:
-                    profileRadioBtnGetHardy.setBackgroundResource(R.drawable.radio_button_shadow);
-                    break;
+            if (userWeightTmp != 0) {
+                profileNumberPicker.setValue(userWeightTmp);
             }
+
+            userGoalTmp = user.getGoal();
+            if (userGoalTmp != null) {
+                switch (userGoalTmp) {
+                    case BUILD_MUSCLE:
+                        profileRadioBtnBuildMuscle.setBackgroundResource(R.drawable.radio_button_shadow);
+                        break;
+                    case LOSE_FAT:
+                        profileRadioBtnLoseFat.setBackgroundResource(R.drawable.radio_button_shadow);
+                        break;
+                    case GET_HARDY:
+                        profileRadioBtnGetHardy.setBackgroundResource(R.drawable.radio_button_shadow);
+                        break;
+                }
+            }
+
         }).addOnFailureListener(e -> {
             Toast.makeText(ProfileActivity.this, "Error while loading user data!", Toast.LENGTH_SHORT).show();
             Log.d("profileLoadUserDataError", "" + e);
