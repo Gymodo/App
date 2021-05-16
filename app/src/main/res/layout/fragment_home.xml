@@ -25,6 +25,7 @@
                 android:id="@+id/home_diet_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:alpha="0.5"
                 android:scaleType="centerCrop"
                 app:srcCompat="@drawable/food" />
 
@@ -58,6 +59,7 @@
                     android:id="@+id/home_workout_image"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:alpha="0.5"
                     android:scaleType="centerCrop"
                     app:srcCompat="@drawable/women_working" />
 
@@ -68,7 +70,7 @@
                     android:gravity="center"
                     android:text="@string/explore_workouts"
                     android:textColor="@color/white"
-                    android:textSize="30sp"
+                    android:textSize="26sp"
                     android:textStyle="bold" />
             </androidx.cardview.widget.CardView>
 
@@ -82,6 +84,7 @@
                     android:id="@+id/home_reservation_image"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:alpha="0.5"
                     android:scaleType="centerCrop"
                     app:srcCompat="@drawable/arm" />
 
@@ -92,7 +95,7 @@
                     android:gravity="center"
                     android:text="@string/make_reservations"
                     android:textColor="@color/white"
-                    android:textSize="30sp"
+                    android:textSize="26sp"
                     android:textStyle="bold" />
             </androidx.cardview.widget.CardView>
         </LinearLayout>
