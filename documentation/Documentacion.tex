@@ -211,13 +211,13 @@ También podemos ver el informe de tiempo que hemos dedicado está semana/mes al
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.9\textwidth]{informeSemanal}
-	\subcaption{Informe semanal}
+	\caption{Informe semanal}
 \end{figure}
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.9\textwidth]{informeMensual}
-	\subcaption{Informe mensual}
+	\caption{Informe mensual}
 \end{figure}
 
 
@@ -549,18 +549,25 @@ Para esto, Android nos proporciona el \textbf{Navigation Component},
 una serie de librerías y herramientas que nos ayudan a construir una buena experiencia de navegación.
 El \textbf{Navigation Component} consta de 3 partes importantes:
 
--{NavigationGraph}: Es un gráfico que contiene información sobre qué pantallas llevan a qué destinos.
+\begin{itemize}
+
+
+
+\item \textbf{NavigationGraph} (figura \ref{navgraph}): Es un gráfico que contiene información sobre qué pantallas llevan a qué destinos.
 
 \begin{figure}[h]
   \centering
- \includegraphics[width=0.7\textwidth]{nav_graph}
+ \includegraphics[width=\textwidth]{nav_graph}
  \caption{NavigationGraph}
+ \label{navgraph}
 \end{figure}
 
--NavHost: Es el contenedor, que muestra los destinos del NavigationGraph.
+\item \textbf{NavHost}: Es el contenedor, que muestra los destinos del NavigationGraph.
 
 
--NavController: Es un objeto que administra toda la lógica de la navegación.
+\item \textbf{NavController}: Es un objeto que administra toda la lógica de la navegación.
+
+\end{itemize}
 
 
 Esta herramienta nos fue de gran ayuda, pero aún no nos resolvía el problema del backstack,
@@ -569,19 +576,21 @@ estos items del menú inferior nos llevarían a un \textit{NavHost} que contendr
 
 \begin{figure}[h]
   \centering
- \includegraphics[width=0.7\textwidth]{bottom_menu}
+ \includegraphics[width=\textwidth]{bottom_menu}
  \caption{Menú inferior}
+ \label{menuinferior}
 \end{figure}
 
 
-A diferencia de las Activities, los \textit{Fragments} nos permiten poner contenido si necesidad de que ocupen toda la pantalla de móvil,
+A diferencia de las Activities, los \textit{Fragments} nos permiten poner contenido sin necesidad de que ocupen toda la pantalla de móvil,
 por lo que se decidió usar \textit{Fragments} para el contenido que esté relacionado con la navegación.
 Por último, se decidió agrupar cada uno de los \textit{NavHost} en un \textit{ViewPager} (un componente con el que vemos diferente contenido deslizando con el dedo).
 
 \begin{figure}[h]
   \centering
- \includegraphics[width=1\textwidth]{layout_img}
+ \includegraphics[width=\textwidth]{layout_img}
  \caption{Estructura de los contenedores}
+ \label{contenderos}
 \end{figure}
 
 \clearpage
