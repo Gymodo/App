@@ -53,25 +53,31 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
 
         if(firebaseAuth.getCurrentUser() != null){
-            data();
-        }
-
-        String[] credential = MySharedPreferences.readSharedPref(this);
-        if (credential != null) {
             loadingIcon.setVisibility(View.VISIBLE);
             loginLogoSplashScreen.setVisibility(View.VISIBLE);
             imgLoginLogoSplashScreen.setVisibility(View.VISIBLE);
             loginMainContainer.setVisibility(View.GONE);
-            email = credential[0];
-            password = credential[1];
+            data();
 
-            firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    data();
-                }
-            });
+        } else{
+            String[] credential = MySharedPreferences.readSharedPref(this);
+            if (credential != null) {
+
+                loadingIcon.setVisibility(View.VISIBLE);
+                loginLogoSplashScreen.setVisibility(View.VISIBLE);
+                imgLoginLogoSplashScreen.setVisibility(View.VISIBLE);
+                loginMainContainer.setVisibility(View.GONE);
+                email = credential[0];
+                password = credential[1];
+
+                firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        data();
+                    }
+                });
+            }
+            //readSharedPref();
         }
-        //readSharedPref();
     }
 
     //Login google
@@ -118,7 +124,6 @@ public class LoginActivity extends AppCompatActivity {
         Button loginLoginBtn = findViewById(R.id.loginBtn);
         Button googleLoginBtn = findViewById(R.id.googleLoginBtn);
         loadingIcon = findViewById(R.id.loadingIcon);
-        loginMainContainer = findViewById(R.id.loginMainContainer);
         loginMainContainer = findViewById(R.id.loginMainContainer);
         imgLoginLogoSplashScreen = findViewById(R.id.imgLoginLogoSplashScreen);
         loginLogoSplashScreen = findViewById(R.id.loginLogoSplashScreen);
