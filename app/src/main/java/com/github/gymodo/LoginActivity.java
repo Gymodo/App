@@ -52,31 +52,31 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        if(firebaseAuth.getCurrentUser() != null){
-            loadingIcon.setVisibility(View.VISIBLE);
-            loginLogoSplashScreen.setVisibility(View.VISIBLE);
-            imgLoginLogoSplashScreen.setVisibility(View.VISIBLE);
-            loginMainContainer.setVisibility(View.GONE);
+        loadingIcon.setVisibility(View.VISIBLE);
+        loginLogoSplashScreen.setVisibility(View.VISIBLE);
+        imgLoginLogoSplashScreen.setVisibility(View.VISIBLE);
+        loginMainContainer.setVisibility(View.GONE);
+
+        String[] credential = MySharedPreferences.readSharedPref(this);
+        if (credential != null) {
+
+            email = credential[0];
+            password = credential[1];
+
+            firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    data();
+                }
+            });
+        } else if(firebaseAuth.getCurrentUser() != null){
+
             data();
 
-        } else{
-            String[] credential = MySharedPreferences.readSharedPref(this);
-            if (credential != null) {
-
-                loadingIcon.setVisibility(View.VISIBLE);
-                loginLogoSplashScreen.setVisibility(View.VISIBLE);
-                imgLoginLogoSplashScreen.setVisibility(View.VISIBLE);
-                loginMainContainer.setVisibility(View.GONE);
-                email = credential[0];
-                password = credential[1];
-
-                firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        data();
-                    }
-                });
-            }
-            //readSharedPref();
+        } else {
+            loadingIcon.setVisibility(View.GONE);
+            loginLogoSplashScreen.setVisibility(View.GONE);
+            imgLoginLogoSplashScreen.setVisibility(View.GONE);
+            loginMainContainer.setVisibility(View.VISIBLE);
         }
     }
 
@@ -116,6 +116,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
 
         //Hooks
         firebaseAuth = FirebaseAuth.getInstance();

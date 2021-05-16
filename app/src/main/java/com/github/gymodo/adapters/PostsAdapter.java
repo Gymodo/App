@@ -71,6 +71,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(@NonNull PostsAdapter.MyViewHolder holder, int position) {
 
+        holder.setIsRecyclable(false);
         Post post = mPosts.get(position);
         firebaseAuth = FirebaseAuth.getInstance();
         String userID = firebaseAuth.getCurrentUser().getUid();
