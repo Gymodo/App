@@ -536,7 +536,53 @@ Nombre & Descripción \\
 \caption{Lista de Activities}
 \end{table}
 
+\subsection{Navegación}
 
+Una parte fundamental en las aplicaciones con distintas pantallas es la navegación, en nuestra aplicación queríamos que el usuario pueda estar 
+revisando un ejercicio, y, si de repente quisiese hacer una reserva, la haga, y que después pueda volver a lo que estaba haciendo anteriormente.
+
+Llevar al cabo lo deseado, conlleva guardar un historial de las pantallas ya visitadas (llamado \textbf{backstack}) y asegurarse de que, al visitar una sección de
+reservas, por ejemplo, no se alterara el estado de la pantalla con la que el usuario estaba interactuando,
+para que no hubiese problemas si el usuario vuelve a visitarla.
+
+Para esto, Android nos proporciona el \textbf{Navigation Component},
+una serie de librerías y herramientas que nos ayudan a construir una buena experiencia de navegación.
+El \textbf{Navigation Component} consta de 3 partes importantes:
+
+-{NavigationGraph}: Es un gráfico que contiene información sobre qué pantallas llevan a qué destinos.
+
+\begin{figure}[h]
+  \centering
+ \includegraphics[width=0.7\textwidth]{nav_graph}
+ \caption{NavigationGraph}
+\end{figure}
+
+-NavHost: Es el contenedor, que muestra los destinos del NavigationGraph.
+
+
+-NavController: Es un objeto que administra toda la lógica de la navegación.
+
+
+Esta herramienta nos fue de gran ayuda, pero aún no nos resolvía el problema del backstack,
+por ello usamos diferentes gráficos de navegación para cada apartado del menú inferior,
+estos items del menú inferior nos llevarían a un \textit{NavHost} que contendría los \textit{NavGraphs}.
+
+\begin{figure}[h]
+  \centering
+ \includegraphics[width=0.7\textwidth]{bottom_menu}
+ \caption{Menú inferior}
+\end{figure}
+
+
+A diferencia de las Activities, los \textit{Fragments} nos permiten poner contenido si necesidad de que ocupen toda la pantalla de móvil,
+por lo que se decidió usar \textit{Fragments} para el contenido que esté relacionado con la navegación.
+Por último, se decidió agrupar cada uno de los \textit{NavHost} en un \textit{ViewPager} (un componente con el que vemos diferente contenido deslizando con el dedo).
+
+\begin{figure}[h]
+  \centering
+ \includegraphics[width=1\textwidth]{layout_img}
+ \caption{Estructura de los contenedores}
+\end{figure}
 
 \clearpage
 
