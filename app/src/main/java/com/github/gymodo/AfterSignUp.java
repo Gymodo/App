@@ -108,6 +108,7 @@ public class AfterSignUp extends AppCompatActivity {
 
         //Get user name from getIntent
         userTmp.setName(getIntent().getStringExtra("registerUserName"));
+        userTmp.setEmail(getIntent().getStringExtra("registerEmail"));
 
         afterSignupRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             int radioSelected = afterSignupRadioGroup.getCheckedRadioButtonId();
