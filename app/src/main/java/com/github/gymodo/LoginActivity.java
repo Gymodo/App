@@ -119,7 +119,6 @@ public class LoginActivity extends AppCompatActivity {
         Button googleLoginBtn = findViewById(R.id.googleLoginBtn);
         loadingIcon = findViewById(R.id.loadingIcon);
         loginMainContainer = findViewById(R.id.loginMainContainer);
-        loginMainContainer = findViewById(R.id.loginMainContainer);
         imgLoginLogoSplashScreen = findViewById(R.id.imgLoginLogoSplashScreen);
         loginLogoSplashScreen = findViewById(R.id.loginLogoSplashScreen);
 

@@ -98,13 +98,13 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
                                 }
 
                                 if (p.getCommentIds() != null && p.getCommentIds().size() > 0) {
-                                    holder.commentNum.setText(p.getCommentIds().size() + "");
+                                    holder.commentNum.setText(String.valueOf(p.getCommentIds().size()));
                                 }
 
                                 if (p.getLikedByIds() != null) {
 
                                     if (p.getLikedByIds().size() > 0) {
-                                        holder.likeNum.setText(p.getLikedByIds().size() + "");
+                                        holder.likeNum.setText(String.valueOf(p.getLikedByIds().size()));
                                     } else {
                                         holder.likeNum.setText("");
                                     }
@@ -142,11 +142,11 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
         }
 
         if (post.getCommentIds() != null && post.getCommentIds().size() > 0) {
-            holder.commentNum.setText(post.getCommentIds().size() + "");
+            holder.commentNum.setText(String.valueOf(post.getCommentIds().size()));
         }
 
         if (post.getLikedByIds() != null && post.getLikedByIds().size() > 0) {
-            holder.likeNum.setText(post.getLikedByIds().size() + "");
+            holder.likeNum.setText(String.valueOf(post.getLikedByIds().size()));
         }
 
         if (post.getImageUrl() != null) {
