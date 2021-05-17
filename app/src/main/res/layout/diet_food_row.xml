@@ -12,9 +12,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/row_background"
-        android:padding="8dp">
+        android:padding="20dp">
 
         <ImageView
             android:id="@+id/DietFoodRowImage"
