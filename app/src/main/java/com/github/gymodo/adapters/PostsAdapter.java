@@ -174,7 +174,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.MyViewHolder
                     NavController navController = Navigation.findNavController(v);
                     Bundle bundle = new Bundle();
                     bundle.putString(WorkoutDetailFragment.ARG_ROUTINE_ID, post.getRoutineId());
-                    navController.navigate(R.id.workoutDetailFragment, bundle);
+                    navController.navigate(R.id.to_workoutDetail, bundle);
                 }
             });
         } else {
