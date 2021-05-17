@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.gymodo.MainActivity;
 import com.github.gymodo.R;
 import com.github.gymodo.adapters.SeriesAdapter;
 import com.github.gymodo.exercise.Routine;
@@ -96,6 +97,15 @@ public class WorkoutDetailFragment extends Fragment {
                 Log.e("getByID", fail.getLocalizedMessage());
                 Toast.makeText(view.getContext(), "Error al cargar el workout.", Toast.LENGTH_SHORT).show();
             });
+
+            MainActivity mainActivity = (MainActivity) getActivity();
+
+            int item = mainActivity.viewPager.getCurrentItem();
+
+            //If comes from post fragment (num 2 on viewpager), delete the add series button
+            if (mainActivity.viewPager.getCurrentItem() == 2){
+                addSerieButton.setVisibility(View.GONE);
+            }
 
             addSerieButton.setOnClickListener(btnView -> {
                 NavController navController = Navigation.findNavController(view);
